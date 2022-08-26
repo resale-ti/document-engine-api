@@ -1,0 +1,59 @@
+version: '3.5'
+
+services:
+  document-engine-api:
+    build:
+      context: .
+    container_name: document-engine-api
+    command: bash -c "uvicorn main:app --host 0.0.0.0 --reload"
+    ports:
+      - '8003:8000'
+    volumes:
+      - "./app:/app"
+    env_file:
+      - .env
+    networks:
+      - pgi_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  document-engine-rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: document-engine-rabbitmq
+    ports:
+      - "5674:5672"
+      - "15674:15672"
+    networks:
+      - pgi_network
+
+  document-engine-worker:
+    build:
+      context: .
+    container_name: document-engine-worker
+    command: watchmedo auto-restart --directory=/app --pattern=*.py --recursive -- celery -A api.tasks worker -l info -Q document-engine-queue -c 1
+    volumes:
+      - "./app:/app"
+    environment:
+      - C_FORCE_ROOT=True
+    depends_on:
+      - document-engine-rabbitmq
+    env_file:
+      - .env
+    networks:
+      - pgi_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  document-engine-flower:
+    image: mher/flower
+    container_name: document-engine-flower
+    env_file:
+      - .env
+    ports:
+      - "5557:5555"
+    networks:
+      - pgi_network
+
+networks:
+    pgi_network:
+        name: pgi_network

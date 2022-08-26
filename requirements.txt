@@ -1,0 +1,17 @@
+boto3
+botocore
+celery
+fastapi
+jinja2
+PyMySQL
+mysqlclient
+sqlacodegen
+SQLAlchemy
+uvicorn
+weasyprint
+XlsxWriter
+watchdog
+python-dotenv
+requests
+pytest
+rollbar
