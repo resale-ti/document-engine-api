@@ -1,3 +1,4 @@
+from curses import echo
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.automap import automap_base
 import os
@@ -9,23 +10,15 @@ DATABASE_PASS = os.environ.get('DATABASE_PASS')
 
 SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DATABASE_USER}:{DATABASE_PASS}@{DATABASE_HOST}/{DATABASE_NAME}"
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
 
 # produce our own MetaData object
 metadata = MetaData()
 
 # we can reflect it ourselves from a database, using options
 # such as 'only' to limit what tables we look at...
-metadata.reflect(engine, only=['tarefas_celery', 
-                               'imovel', 
-                               'carteira_imovel', 
-                               'carteira', 
-                               'imovel_history', 
-                               'carteira_history', 
-                               'oportunidade',
-                               'oportunidade_imovel',
-                               'ci_sessions', 
-                               'usuario'
-                               ])
+metadata.reflect(engine, only=['imovel', 'carteira_imovel', 'qualificacao', 'carteira', 'carteira_cronograma', 'cronograma',
+                               'tarefas_celery', 'carteira_gestor', 'gestor', 'disputa_wuzu', 'carteira_formas_pagamento',
+                               'carteira_condicoes_pagamento', 'carteira_parcelas'])
 
 Base = automap_base(metadata=metadata)
