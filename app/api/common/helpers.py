@@ -6,3 +6,7 @@ def get_property_valor_venda(property, wallet_id):
 
 def transform_dict(list_of_tuples: list):
     return [dict(tuplas) for tuplas in list_of_tuples]
+
+def float_format_str(number: float) -> str:
+    number = f"{float(number):.2f}"
+    return number.replace(".", ",")

@@ -21,5 +21,5 @@ class SellerRepository(DBSessionContext):
                                                  PaymentInstallments.qtd_maxima,
                                                  PaymentInstallments.porcentagem_entrada) \
                 .filter(PaymentInstallments.id_condition == payment_condition_id).one()
-            
+
             return payment_installments

@@ -5,6 +5,7 @@ from app.api.common.repositories.seller_repository import SellerRepository
 from app.api.common.repositories.qualification_repository import QualificationRepository
 from app.api.common.repositories.property_auction_repository import PropertyAuctionRepository
 from app.api.contract.regulamento_concorrencia.regulamento_helpers import set_property_valor
+from app.api.contract.regulamento_concorrencia.regulamento_facade import RegulamentoConcorrenciaFacade
 
 
 class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterface):
@@ -48,7 +49,14 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterfa
             properties[0].get("imovel_id"), properties[0].get("schedule_id")
         )
 
-        return payment_methods
+        regulamento_facade = RegulamentoConcorrenciaFacade(
+            wallet=wallet,
+            payment_methods=payment_methods,
+            properties=properties,
+            wuzu_action=wuzu_action,
+            qualificacao=qualification)
+
+        return regulamento_facade.parse()
 
     def __get_documents_objects_list(self):
         pass

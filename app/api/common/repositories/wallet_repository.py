@@ -82,6 +82,7 @@ class WalletRepository(DBSessionContext):
                 Property.idr_imovel,
                 Manager.id.label('manager_id'),
                 Manager.nome.label('manager_name'),
+                Manager.url_whitelabel.label('gestor_url'),
                 Schedule.id.label('schedule_id'),
                 DisputaWuzu.status,
                 DisputaWuzu.wuzu_disputa_id.label('auction_id'),
