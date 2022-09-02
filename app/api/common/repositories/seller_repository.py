@@ -9,7 +9,11 @@ class SellerRepository(DBSessionContext):
             payment_methods = session.query(PaymentConditionsWallet.id,
                                             PaymentConditionsWallet.tipo_condicao,
                                             PaymentFormsWallet.vendedor_id,
-                                            PaymentFormsWallet.status) \
+                                            PaymentFormsWallet.status,
+                                            PaymentConditionsWallet.porcentagem_sinal,
+                                            PaymentConditionsWallet.porcentagem_ccv,
+                                            PaymentConditionsWallet.porcentagem_escritura,
+                                            PaymentConditionsWallet.a_vista_desconto) \
                 .join(PaymentConditionsWallet, PaymentFormsWallet.id == PaymentConditionsWallet.id_method) \
                 .filter(PaymentFormsWallet.status == 'ativo', PaymentFormsWallet.id == payment_form_id).all()
 
@@ -20,6 +24,6 @@ class SellerRepository(DBSessionContext):
             payment_installments = session.query(PaymentInstallments.qtd_fixa,
                                                  PaymentInstallments.qtd_maxima,
                                                  PaymentInstallments.porcentagem_entrada) \
-                .filter(PaymentInstallments.id_condition == payment_condition_id).one()
+                .filter(PaymentInstallments.id_condition == payment_condition_id).all()
 
-            return payment_installments
+            return transform_dict(payment_installments)

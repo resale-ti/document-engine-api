@@ -23,6 +23,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterfa
 
     def build(self):
         data = self.get_contract_data()
+        oi = 123
 
     def get_file_name(self):
         """Isso aqui provavelmente não vai ser desse jeito."""
