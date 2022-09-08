@@ -3,11 +3,11 @@ from jinja2 import Environment, BaseLoader
 
 
 class BuilderEngine:
-    
+
     def __init__(self, stylesheet_path, header_logo) -> None:
         self.stylesheet_path = stylesheet_path
         self.header_logo = header_logo
-    
+
     @staticmethod
     def render(data, html) -> str:
         template = Environment(loader=BaseLoader()).from_string(html)

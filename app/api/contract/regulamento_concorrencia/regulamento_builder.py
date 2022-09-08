@@ -6,6 +6,7 @@ from app.api.common.repositories.qualification_repository import QualificationRe
 from app.api.common.repositories.property_auction_repository import PropertyAuctionRepository
 from app.api.contract.regulamento_concorrencia.regulamento_helpers import set_property_valor
 from app.api.contract.regulamento_concorrencia.regulamento_facade import RegulamentoConcorrenciaFacade
+from app.api.contract.regulamento_concorrencia.regulamento_factory import RegulamentoDocumentsFactory
 
 
 class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterface):
@@ -23,11 +24,16 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterfa
 
     def build(self):
         data = self.get_contract_data()
-        oi = 123
+        documents_objects = self.__get_documents_objects_list(data)
+        self._generate_documents(documents_objects)
 
-    def get_file_name(self):
-        """Isso aqui provavelmente não vai ser desse jeito."""
-        pass
+        return ""
+
+
+    def __get_documents_objects_list(self, data):
+        regulamento_documents_factory = RegulamentoDocumentsFactory().get_instance(self.wallet_id, data)
+
+        return regulamento_documents_factory
 
     def get_contract_data(self):
         # Arrumar um jeito de pegar Manager ID
@@ -58,6 +64,4 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterfa
             qualificacao=qualification)
 
         return regulamento_facade.parse()
-
-    def __get_documents_objects_list(self):
-        pass
+    

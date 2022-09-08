@@ -1,4 +1,5 @@
 from api.engine.builder import BuilderEngine
+from api.engine.document_builders import HTMLDocumentBuilder
 
 class ContractBuilderBase:
 
@@ -9,11 +10,17 @@ class ContractBuilderBase:
         """esse file stream vai ser do builder Engine"""
         pass
 
-    def _generate_documents(self):
-        pass
+    def _generate_documents(self, documents):
+        self.__handle_with_html_docs(documents)
+        self.__handle_with_pdfurl_docs(documents)
 
-    def __handle_with_html_docs(self):
-        pass
+    def __handle_with_html_docs(self, documents):
+        html_documents = list(filter(lambda document: isinstance(document, HTMLDocumentBuilder), documents))
+        
+        for document in html_documents:
+            document.build()
+            
+        return ""
 
-    def __handle_with_pdfurl_docs(self):
+    def __handle_with_pdfurl_docs(self, documents):
         pass
