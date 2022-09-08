@@ -7,8 +7,5 @@ class Contract:
         contract = ContractFactory().get_instance(contract_type=contract_type, data=data)
 
         contract.build()
-        
-        
-
 
         return contract

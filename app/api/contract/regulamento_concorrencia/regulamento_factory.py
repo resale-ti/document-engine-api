@@ -1,28 +1,25 @@
-from api.engine.document_builders import HTMLDocumentBuilder
-from api.contract.regulamento_concorrencia.regulamento_layers import MLP002CapaLayer
+from api.engine.document_interfaces import HTMLDocument, PDFDocument
+from api.contract.regulamento_concorrencia.regulamento_templates import MLP002
 
-# MLP_002 ---------------------------------------------------
-class MLP002Capa(HTMLDocumentBuilder):
+
+class MLP002Capa(MLP002, HTMLDocument):
 
     document_name = "MLP_002 - CAPA"
+    current_layer = "capa.html"
 
-    def build_html_layers(self):
-        data = self.data
-        
-        html_layers_list = [MLP002CapaLayer(data)]
 
-        return data
-# MLP_002 ---------------------------------------------------
+class MLP002Miolo(MLP002, PDFDocument):
+
+    document_name = "MLP_002 - MIOLO"
+    current_layer = "miolo.pdf"
 
 
 class RegulamentoDocumentsFactory:
 
-    MLP_002 = [MLP002Capa]
-
     def get_instance(self, wallet_id, data):
         regulamento_type = data.get("regulamento")
-        
+
         if regulamento_type == "MLP_002":
-            return [MLP002Capa(wallet_id, data)]
+            return [MLP002Capa(wallet_id, data), MLP002Miolo(wallet_id, data)]
 
         return ""

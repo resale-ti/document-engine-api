@@ -7,3 +7,5 @@ class RegulamentoDefaultLayer(HTMLBaseLayer):
 
 class MLP002CapaLayer(RegulamentoDefaultLayer):
     current_layer = "MLP_002/capa.html"
+    
+    

@@ -2,7 +2,7 @@
 </div>
 <!--Layer 1-->
 <p class="title-text document-title">
-    REGULAMENTO DA MELHOR PROPOSTA Nº ${N_REGULAMENTO}
+    REGULAMENTO DA MELHOR PROPOSTA Nº {{N_REGULAMENTO}}
 </p>
 <table>
     <tr>
@@ -20,7 +20,7 @@
     </tr>
     <tr>
         <td class="layer-column" colspan="4">
-            ${QUALIFICACAO_VENDEDORES}
+            {{QUALIFICACAO_VENDEDORES}}
         </td>
     </tr>
     <tr>
@@ -30,9 +30,9 @@
     </tr>
     <tr>
         <td class="layer-column layer-column-title">Data:</td>
-        <td class="layer-column">${DATA_INICIO}</td>
+        <td class="layer-column">{{DATA_INICIO}}</td>
         <td class="layer-column layer-column-title">Hora:</td>
-        <td class="layer-column">${HORA_INICIO}</td>
+        <td class="layer-column">{{HORA_INICIO}}</td>
     </tr>
     <tr>
         <td class="layer-column layer-column-title">Modalidade:</td>
@@ -52,9 +52,9 @@
     </tr>
     <tr>
         <td class="layer-column layer-column-title">Data:</td>
-        <td class="layer-column">${DATA_FIM}</td>
+        <td class="layer-column">{{DATA_FIM}}</td>
         <td class="layer-column layer-column-title">Hora:</td>
-        <td class="layer-column">${HORA_FIM}</td>
+        <td class="layer-column">{{HORA_FIM}}</td>
     </tr>
     <tr>
         <td class="layer-title" colspan="4">
@@ -64,7 +64,7 @@
     <tr>
         <td class="layer-column" colspan="4">
             <p>Portal da Resale: www.resale.com.br</p>
-            <p>Portal Vendedor: ${PORTAL_VENDEDOR}</p>
+            <p>Portal Vendedor: {{PORTAL_VENDEDOR}}</p>
         </td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@
     </tr>
     <tr>
         <td class="layer-column" colspan="4">
-            ${TAXA_INTERMEDIACAO}% sobre o valor proposto
+            {{TAXA_INTERMEDIACAO}}% sobre o valor proposto
         </td>
     </tr>
     <tr>
@@ -94,9 +94,9 @@
     </tr>
     <tr>
         <td class="layer-column" colspan="4">
-            ${TAXA_SERVICO}% sobre o lance vencedor
+            {{TAXA_SERVICO}}% sobre o lance vencedor
         </td>
     </tr>
 </table>
-<p class="document-footer-date"> Piracicaba/SP, ${DATA_ATUAL}</p>
+<p class="document-footer-date"> Piracicaba/SP, {{ DATA_ATUAL }}</p>
 <!--Fim layer 1-->
