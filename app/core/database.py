@@ -10,7 +10,7 @@ DATABASE_PASS = os.environ.get('DATABASE_PASS')
 
 SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DATABASE_USER}:{DATABASE_PASS}@{DATABASE_HOST}/{DATABASE_NAME}"
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 # produce our own MetaData object
 metadata = MetaData()

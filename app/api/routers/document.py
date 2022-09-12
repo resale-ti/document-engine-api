@@ -41,8 +41,8 @@ async def teste():
 @router.get('/{contract_type}/{id}')
 async def generate(contract_type: str, id: str):
     result = Contract.generate_contract(contract_type=contract_type, data={"wallet_id": id})
-    print(result)
-    return {"status": result}
+    print("alo galera de cowboy")
+    return {"status": 200}
 
 
 

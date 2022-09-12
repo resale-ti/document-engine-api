@@ -11,11 +11,6 @@ from app.api.contract.regulamento_concorrencia.regulamento_factory import Regula
 
 class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterface):
 
-    _document_id = None
-    _contract_base_name = "RegulamentoConcorrencia"
-    _stylesheet_path = "static/templates/regulamento_concorrencia/regulamento.css"
-    _header_logo = False
-
     def __init__(self, data) -> None:
         super().__init__()
         if not "wallet_id" in data:
@@ -44,7 +39,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterfa
 
         properties = WalletRepository().get_properties_wallet(self.wallet_id)
         properties = [set_property_valor(dict(property), self.wallet_id) for property in properties]
-        properties = sorted(properties, key=lambda p: p['lote'], reverse=True)
+        properties = sorted(properties, key=lambda p: p['lote'] if p['lote'] else "", reverse=True)
 
         payment_methods = SellerRepository().get_payment_method(payment_form_id=wallet.forma_pagamento_id)
         qualification = QualificationRepository().fetch_qualifications_of_manager(manager=manager_id)
@@ -65,4 +60,3 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterfa
             qualificacao=qualification)
 
         return regulamento_facade.parse()
-    

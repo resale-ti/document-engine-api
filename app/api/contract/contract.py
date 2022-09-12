@@ -8,4 +8,4 @@ class Contract:
 
         contract.build()
 
-        return contract
+        return "123"
