@@ -18,36 +18,6 @@ class BuilderEngine:
     def __init__(self) -> None:
         self.pdfWriter = PyPDF2.PdfFileWriter()
 
-    # def build(self, documents: list):
-
-    #     for document in documents:
-
-    #         if isinstance(document.current_layer, list):
-
-    #             for idx, layer in enumerate(document.current_layer):
-    #                 file_bytes = self._handle_with_instances(document=layer)
-
-    #                 pypdf_obj = PyPDF2.PdfFileReader(
-    #                 stream=io.BytesIO(initial_bytes=file_bytes))
-
-    #                 pdfWriter = self._handle_with_pages(pypdf_obj, pdfWriter)
-
-    #         else:
-    #             file_bytes = self._handle_with_instances(document)
-
-    #             pypdf_obj = PyPDF2.PdfFileReader(
-    #                 stream=io.BytesIO(initial_bytes=file_bytes))
-
-    #             pdfWriter = self._handle_with_pages(pypdf_obj, pdfWriter)
-
-    #     # Generate just for view - ver uma forma de pegar o bytes desse pdfWriter
-    #     pdfOutputFile = open('MergedFiles.pdf', 'wb')
-    #     pdfWriter.write(pdfOutputFile)
-
-    #     pdfOutputFile.close()
-
-    #     return "123"
-
     def _handle_file_bytes(self, file_bytes):
         pypdf_obj = PyPDF2.PdfFileReader(stream=io.BytesIO(initial_bytes=file_bytes))
 
@@ -90,7 +60,7 @@ class BuilderEngine:
             raise Exception("Type document not indetified.")
 
         return file_bytes
-    
+
     def _generate_html_with_data(self, document):
         html_template = self.get_html_template(
             document.template_path, document.folder, document.current_layer)

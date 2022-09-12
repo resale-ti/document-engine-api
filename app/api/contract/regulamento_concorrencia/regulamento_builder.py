@@ -1,4 +1,3 @@
-from app.api.contract.contract_builder_interface import ContractBuilderInterface
 from app.api.contract.contract_builder_base import ContractBuilderBase
 from app.api.common.repositories.wallet_repository import WalletRepository
 from app.api.common.repositories.seller_repository import SellerRepository
@@ -9,7 +8,7 @@ from app.api.contract.regulamento_concorrencia.regulamento_facade import Regulam
 from app.api.contract.regulamento_concorrencia.regulamento_factory import RegulamentoDocumentsFactory
 
 
-class RegulamentoConcorrenciaBuilder(ContractBuilderBase, ContractBuilderInterface):
+class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
     def __init__(self, data) -> None:
         super().__init__()
