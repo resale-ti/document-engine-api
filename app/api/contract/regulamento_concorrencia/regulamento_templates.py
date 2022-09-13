@@ -1,16 +1,12 @@
 import os
-from pathlib import Path
+from api.contract.regulamento_concorrencia import PATH_REGULAMENTO_FOLDER
 from app.api.contract.contract_builder_interface import ContractBuilderInterface
-from api.contract.regulamento_concorrencia.regulamento_layers import RegulamentoConcorrenciaRodapeTituloDefault, RegulamentoConcorrenciaRodapeImovelDefault
-
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
-template_path = os.path.join(BASE_DIR, 'static', 'templates', 'regulamento_concorrencia')
+from api.contract.regulamento_concorrencia.regulamento_layers_default import RegulamentoConcorrenciaRodapeTituloDefault, RegulamentoConcorrenciaRodapeImovelDefault
 
 
 class RegulamentoConcorrenciaRodapeDefault(ContractBuilderInterface):
 
-    template_path = template_path
+    template_path = PATH_REGULAMENTO_FOLDER
 
     def __init__(self, wallet_id, data) -> None:
         self.wallet_id = wallet_id
@@ -40,7 +36,7 @@ class RegulamentoConcorrenciaRodapeDefault(ContractBuilderInterface):
 class MLP002(ContractBuilderInterface):
 
     folder = "MLP_002"
-    template_path = template_path
+    template_path = PATH_REGULAMENTO_FOLDER
     stylesheets = "regulamento.css"
 
     def __init__(self, wallet_id, data) -> None:

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from api.routers import document
+from api.routers import document, task_control
 from rollbar.contrib.fastapi import ReporterMiddleware as RollbarMiddleware
 
 from rollbar.contrib.fastapi import LoggerMiddleware
@@ -34,6 +34,7 @@ app.add_middleware(LoggerMiddleware)
 async def health_check():
     return {'status': 'alive'}
 
+app.include_router(task_control.router, prefix='/tasks', tags=['Tasks'])
 app.include_router(document.router, prefix='/documents', tags=['Documents'])
 
 

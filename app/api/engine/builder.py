@@ -5,12 +5,10 @@ import io
 from pathlib import Path
 from jinja2 import Environment, BaseLoader
 from api.engine.document_interfaces import HTMLDocument, PDFDocument
-import base64
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-template_path = os.path.join(
-    BASE_DIR, 'static', 'templates', 'regulamento_concorrencia')
+template_path = os.path.join(BASE_DIR, 'static', 'templates', 'regulamento_concorrencia')
 
 
 class BuilderEngine:
@@ -30,8 +28,7 @@ class BuilderEngine:
 
 
     def _handle_with_html(self, document):
-        default_style = os.path.join(
-            document.template_path, document.stylesheets)
+        default_style = os.path.join(document.template_path, document.stylesheets)
 
         html = self._generate_html_with_data(document)
 
@@ -71,6 +68,21 @@ class BuilderEngine:
 
         return html
 
+    def _get_file_bytes_pdf_writer(self, erase_file=True):
+        pdfOutputFile = open('MergedFiles.pdf', 'wb')
+        self.pdfWriter.write(pdfOutputFile)
+
+        pathOutputFile = os.path.realpath(pdfOutputFile.name)
+        pdfOutputFile.close()
+
+        with open(pathOutputFile, "rb") as pdf_file:
+            encoded_string = pdf_file.read()
+
+        if erase_file and os.path.isfile(pathOutputFile):
+            os.remove(pathOutputFile)
+
+        return encoded_string
+
     @staticmethod
     def render(data, html) -> str:
         template = Environment(loader=BaseLoader()).from_string(html)
@@ -83,5 +95,6 @@ class BuilderEngine:
         else:
             return HTML(string=html).write_pdf()
 
-    def get_html_template(self, template_path, document_folder, html_filename):
+    @staticmethod
+    def get_html_template(template_path, document_folder, html_filename):
         return Path(os.path.join(template_path + f'/{document_folder}', html_filename)).read_text()

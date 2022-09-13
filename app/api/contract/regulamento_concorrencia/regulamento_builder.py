@@ -3,49 +3,75 @@ from app.api.common.repositories.wallet_repository import WalletRepository
 from app.api.common.repositories.seller_repository import SellerRepository
 from app.api.common.repositories.qualification_repository import QualificationRepository
 from app.api.common.repositories.property_auction_repository import PropertyAuctionRepository
+from app.api.common.repositories.manager_repository import ManagerRepository
 from app.api.contract.regulamento_concorrencia.regulamento_helpers import set_property_valor
 from app.api.contract.regulamento_concorrencia.regulamento_facade import RegulamentoConcorrenciaFacade
 from app.api.contract.regulamento_concorrencia.regulamento_factory import RegulamentoDocumentsFactory
+from app.utils.admin_integrations.documents import AdminAPIDocuments
+from datetime import date
 
 
 class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
+    doc_name = "Regulamento Concorrencia"
+
     def __init__(self, data) -> None:
         super().__init__()
-        if not "wallet_id" in data:
+
+        if not "id" in data:
             raise Exception("[ERROR]: Missing wallet_id")
-        self.wallet_id = data.get("wallet_id")
 
+        self.wallet_id = data.get("id")
+        self.manager = ()
 
-    def build(self):
-        data = self.get_contract_data()
+    def build(self) -> None:
+        data = self.__get_contract_data()
         documents_objects = self.__get_documents_objects_list(data)
-        self._generate_documents(documents_objects)
+        file_bytes_b64 = self._generate_documents(documents_objects)
 
-        return ""
+        data_admin = self.mount_data_admin_document(file_bytes_b64=file_bytes_b64)
 
+        response = AdminAPIDocuments().post_create_document(data=data_admin)
+
+
+    def mount_data_admin_document(self, file_bytes_b64):
+        doc_name = f"{self.doc_name} - {self.manager.nome} - {date.today().strftime('%Y%m%d')}.pdf"
+
+        return {
+            "nome_doc": doc_name,
+            "documento_nome": doc_name,
+            "categoria_id": "regulamento",
+            "file_mime_type": "application/pdf",
+            "file": file_bytes_b64.decode('utf-8'),
+            "documento_status": "approved"
+        }
 
     def __get_documents_objects_list(self, data):
-        regulamento_documents_factory = RegulamentoDocumentsFactory().get_instance(self.wallet_id, data)
+        regulamento_documents_factory = RegulamentoDocumentsFactory(
+        ).get_instance(self.wallet_id, data)
 
         return regulamento_documents_factory
 
-    def get_contract_data(self):
-        # Arrumar um jeito de pegar Manager ID
-        manager_id = '4dd4393a-2318-4576-8d8f-56b25c5c0e3a'
+    def __get_contract_data(self):
+        self.manager = ManagerRepository().get_manager_by_wallet_id(self.wallet_id)
 
         wallet = WalletRepository().get_wallet_details(self.wallet_id)
 
         properties = WalletRepository().get_properties_wallet(self.wallet_id)
-        properties = [set_property_valor(dict(property), self.wallet_id) for property in properties]
-        properties = sorted(properties, key=lambda p: p['lote'] if p['lote'] else "", reverse=True)
+        properties = [set_property_valor(
+            dict(property), self.wallet_id) for property in properties]
+        properties = sorted(
+            properties, key=lambda p: p['lote'] if p['lote'] else "", reverse=True)
 
-        payment_methods = SellerRepository().get_payment_method(payment_form_id=wallet.forma_pagamento_id)
-        qualification = QualificationRepository().fetch_qualifications_of_manager(manager=manager_id)
+        payment_methods = SellerRepository().get_payment_method(
+            payment_form_id=wallet.forma_pagamento_id)
+        qualification = QualificationRepository(
+        ).fetch_qualifications_of_manager(manager=self.manager.id)
 
         for p in payment_methods:
             if (p.get('tipo_condicao') == 'parcelado'):
-                p['installments_db'] = SellerRepository().get_payment_installments(p.get('id'))
+                p['installments_db'] = SellerRepository(
+                ).get_payment_installments(p.get('id'))
 
         wuzu_action = PropertyAuctionRepository().get_wuzu_auction_id_by_property_id_from_property_auction(
             properties[0].get("imovel_id"), properties[0].get("schedule_id")

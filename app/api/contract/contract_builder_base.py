@@ -1,4 +1,6 @@
 from api.engine.builder import BuilderEngine
+from abc import abstractmethod
+import base64
 
 
 class ContractBuilderBase:
@@ -19,6 +21,13 @@ class ContractBuilderBase:
             else:
                 raise Exception(f"Cannot generate file bytes. Document: {document.__class__.__name__}.")
 
-        self.engine._generate_pdf_file()
+        # Erase file = False - This will generate a file in your file tree. | TRUE by default.
+        enconded_bytes = self.engine._get_file_bytes_pdf_writer(
+            erase_file=False)
 
-        return 'file_bytes'
+        # RETURN FILE BYTES ENCONDED FROM FILE
+        return base64.b64encode(enconded_bytes)
+
+    @abstractmethod
+    def build(self):
+        pass

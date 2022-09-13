@@ -7,7 +7,7 @@ def get_property_valor_venda(property, wallet_id):
 def transform_dict(list_of_tuples: list):
     return [dict(tuplas) for tuplas in list_of_tuples]
 
-def number_format(number, decimal_places=2) -> str:    
+def number_format(number, decimal_places=2) -> str:
     if isinstance(number, str) and "," in number:
         number = number.replace(",", ".")
 
