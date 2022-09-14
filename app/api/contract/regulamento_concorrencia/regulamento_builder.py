@@ -18,7 +18,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
     def __init__(self, data) -> None:
         super().__init__()
 
-        if not "id" in data:
+        if not "id_obj" in data:
             raise Exception("[ERROR]: Missing wallet_id")
 
         self.wallet_id = data.get("id_obj")

@@ -13,19 +13,21 @@ class RegulamentoConcorrenciaRodapeDefault(ContractBuilderInterface):
         self.data = data
 
     def instance_layers(self) -> None:
-        self.current_layer.append(RegulamentoConcorrenciaRodapeTituloDefault())
+        current_layer = []
+
+        current_layer.append(RegulamentoConcorrenciaRodapeTituloDefault())
 
         for imovel in self.data.get('imoveis'):
-            self.current_layer.append(
+            current_layer.append(
                 RegulamentoConcorrenciaRodapeImovelDefault(imovel))
 
-        return self.current_layer
+        return current_layer
 
     def build(self, engine):
         html = ""
-        layers = self.instance_layers()
+        self.current_layer = self.instance_layers()
 
-        for document in layers:
+        for document in self.current_layer:
             html += engine._generate_html_with_data(document)
 
         default_style = os.path.join(self.template_path, self.stylesheets)
