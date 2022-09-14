@@ -1,13 +1,13 @@
-from app.api.contract.contract_builder_base import ContractBuilderBase
-from app.api.common.repositories.wallet_repository import WalletRepository
-from app.api.common.repositories.seller_repository import SellerRepository
-from app.api.common.repositories.qualification_repository import QualificationRepository
-from app.api.common.repositories.property_auction_repository import PropertyAuctionRepository
-from app.api.common.repositories.manager_repository import ManagerRepository
-from app.api.contract.regulamento_concorrencia.regulamento_helpers import set_property_valor
-from app.api.contract.regulamento_concorrencia.regulamento_facade import RegulamentoConcorrenciaFacade
-from app.api.contract.regulamento_concorrencia.regulamento_factory import RegulamentoDocumentsFactory
-from app.utils.admin_integrations.documents import AdminAPIDocuments
+from api.contract.contract_builder_base import ContractBuilderBase
+from api.common.repositories.wallet_repository import WalletRepository
+from api.common.repositories.seller_repository import SellerRepository
+from api.common.repositories.qualification_repository import QualificationRepository
+from api.common.repositories.property_auction_repository import PropertyAuctionRepository
+from api.common.repositories.manager_repository import ManagerRepository
+from api.contract.regulamento_concorrencia.regulamento_helpers import set_property_valor
+from api.contract.regulamento_concorrencia.regulamento_facade import RegulamentoConcorrenciaFacade
+from api.contract.regulamento_concorrencia.regulamento_factory import RegulamentoDocumentsFactory
+from utils.admin_integrations.documents import AdminAPIDocuments
 from datetime import date
 
 
@@ -21,7 +21,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         if not "id" in data:
             raise Exception("[ERROR]: Missing wallet_id")
 
-        self.wallet_id = data.get("id")
+        self.wallet_id = data.get("id_obj")
         self.manager = ()
 
     def build(self) -> None:

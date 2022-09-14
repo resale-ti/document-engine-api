@@ -22,6 +22,8 @@ class TaskControlRepository(DBSessionContext):
 
         new_task_record = CeleryTask(
             id=attrs.get('task_id'),
+            solicitante_id=attrs.get('requester_id'),
+            aplicacao_origem=attrs.get('origin_application'),
             nome_tarefa=attrs.get('task_name'),
             situacao=attrs.get('task_state'),
             data_criacao=now,

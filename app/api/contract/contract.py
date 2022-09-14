@@ -1,4 +1,4 @@
-from app.api.contract.contract_factory import ContractFactory
+from api.contract.contract_factory import ContractFactory
 
 
 class Contract:

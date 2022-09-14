@@ -1,11 +1,8 @@
-boto3
-botocore
 celery
 fastapi
 jinja2
 PyMySQL
 mysqlclient
-sqlacodegen
 SQLAlchemy
 uvicorn
 weasyprint
@@ -15,3 +12,4 @@ python-dotenv
 requests
 pytest
 rollbar
+PyPDF2

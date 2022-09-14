@@ -25,6 +25,10 @@ class CallbackTask(Task, ABC):
     base=CallbackTask,
 )
 def generate_document(task_request: dict) -> str:
+    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 1})
+
     contract_type = task_request.get("contract_type")
 
-    Contract.generate_contract(contract_type=contract_type, data={"id": task_request.get("id")})
+    # No futuro no data pode ser o task_request completo. - VER A NECESSIDADE.
+    Contract.generate_contract(contract_type=contract_type, data={"id_obj": task_request.get("id_obj")})
+

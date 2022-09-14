@@ -1,6 +1,6 @@
 import os
 from api.contract.regulamento_concorrencia import PATH_REGULAMENTO_FOLDER
-from app.api.contract.contract_builder_interface import ContractBuilderInterface
+from api.contract.contract_builder_interface import ContractBuilderInterface
 from api.contract.regulamento_concorrencia.regulamento_layers_default import RegulamentoConcorrenciaRodapeTituloDefault, RegulamentoConcorrenciaRodapeImovelDefault
 
 

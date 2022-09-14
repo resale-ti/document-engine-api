@@ -1,6 +1,6 @@
 from api.common.database_common import DBSessionContext
 from api.common.models import PaymentFormsWallet, PaymentConditionsWallet, PaymentInstallments
-from app.api.common.helpers import transform_dict
+from api.common.helpers import transform_dict
 
 
 class SellerRepository(DBSessionContext):

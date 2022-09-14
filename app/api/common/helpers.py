@@ -1,4 +1,4 @@
-from app.utils.pagimovel_integrations.service import PagimovelIntegration
+from utils.pagimovel_integrations.service import PagimovelIntegration
 
 
 def get_property_valor_venda(property, wallet_id):

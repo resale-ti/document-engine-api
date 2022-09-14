@@ -1,7 +1,6 @@
 from celery import Task
 from core.celery import celery_app
 from api.task_control.repositories import TaskControlRepository
-from api.common.helpers import setting_application_manager_id
 
 
 class TaskControlServices:
@@ -54,6 +53,8 @@ class TaskControlServices:
         task_control_repository = TaskControlRepository()
         task_control_repository.save_task(task_id=task.id,
                                           task_name=task_name,
-                                          task_state=task_state)
+                                          task_state=task_state,
+                                          requester_id=task_request.requester_id,
+                                          origin_application=task_request.origin_application)
 
         return task

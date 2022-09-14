@@ -1,6 +1,6 @@
 from api.common.database_common import DBSessionContext
 from api.common.models import DisputaWuzu
-from app.api.common.helpers import transform_dict
+from api.common.helpers import transform_dict
 
 
 class PropertyAuctionRepository(DBSessionContext):

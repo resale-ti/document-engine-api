@@ -1,23 +1,25 @@
 from fastapi import APIRouter, status, Response
-from api.contract.contract import Contract
+from api.contract.schemas import ContractSchema
 from api.task_control.services import TaskControlServices
+from api.contract.contract_enum import EnumContractType
 
 from utils.rollbar_handler import response_rollbar_handler
 
 router = APIRouter()
 
-@router.get('/fastapi/{contract_type}/{id}')
-async def generate_fastapi(contract_type: str, id: str):
-    result = Contract.generate_contract(contract_type=contract_type, data={"id": id})
-    return {"status": 200}
 
+@router.post("/contract-generate", status_code=status.HTTP_200_OK)
+async def generate_celery(payload: ContractSchema, response: Response) -> dict:
+    try:
+        if payload.contract_type not in [ct.value for ct in EnumContractType]:
+            raise Exception("Insert a valid type of ContractType.")
 
-@router.get("/{contract_type}/{id_obj}")
-async def generate_celery(contract_type: str, id_obj: str) -> dict:
-    task = TaskControlServices.send_task({
-        'task_name': f'{contract_type}.generate_document',
-        'task_state': 'PENDING',
-        'task_request': {"contract_type": contract_type, "id": id_obj}
-    })
+        task = TaskControlServices.send_task({
+            'task_name': 'contract.generate_document',
+            'task_state': 'PENDING',
+            'task_request': payload
+        })
+        return {'task': payload, 'message': 'Solicitação recebida com sucesso!'}
 
-    return {'task': task.task_id, 'message': 'Solicitação recebida com sucesso!'}
+    except Exception as err:
+        return response_rollbar_handler(err, response)
