@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Response
-from api.contract.schemas import ContractSchema
+from api.contract.schemas import ContractBaseSchema
 from api.task_control.services import TaskControlServices
 from api.contract.contract_enum import EnumContractType
 
@@ -9,17 +9,21 @@ router = APIRouter()
 
 
 @router.post("/contract-generate", status_code=status.HTTP_200_OK)
-async def generate_celery(payload: ContractSchema, response: Response) -> dict:
+async def generate_celery(payload: ContractBaseSchema, response: Response) -> dict:
     try:
-        if payload.contract_type not in [ct.value for ct in EnumContractType]:
+        contract_type = payload.contract_type
+
+        if contract_type not in [ct.value for ct in EnumContractType]:
             raise Exception("Insert a valid type of ContractType.")
 
         task = TaskControlServices.send_task({
-            'task_name': 'contract.generate_document',
+            'task_name': f'{contract_type}.generate_document',
             'task_state': 'PENDING',
             'task_request': payload
         })
+
         return {'task': payload, 'message': 'Solicitação recebida com sucesso!'}
 
     except Exception as err:
+        print("deu f")
         return response_rollbar_handler(err, response)

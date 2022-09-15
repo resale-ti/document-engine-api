@@ -6,5 +6,7 @@ celery_app = Celery('document-engine-worker')
 celery_app.config_from_object(celeryconfig)
 
 celery_app.conf.task_routes = {
-    'contract.generate_document': 'document-engine-queue'
+    'regulamento_concorrencia.generate_document': 'document-engine-queue',
+    'regulamento_concorrencia_completo.generate_document': 'document-engine-queue',
+    'certificado_venda.generate_document': 'document-engine-queue'
 }

@@ -22,8 +22,7 @@ class ContractBuilderBase:
                 raise Exception(f"Cannot generate file bytes. Document: {document.__class__.__name__}.")
 
         # Erase file = False - This will generate a file in your file tree. | TRUE by default.
-        enconded_bytes = self.engine._get_file_bytes_pdf_writer(
-            erase_file=False)
+        enconded_bytes = self.engine._get_file_bytes_pdf_writer()
 
         # RETURN FILE BYTES ENCONDED FROM FILE
         return base64.b64encode(enconded_bytes)

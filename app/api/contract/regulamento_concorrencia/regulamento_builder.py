@@ -7,7 +7,9 @@ from api.common.repositories.manager_repository import ManagerRepository
 from api.contract.regulamento_concorrencia.regulamento_helpers import set_property_valor
 from api.contract.regulamento_concorrencia.regulamento_facade import RegulamentoConcorrenciaFacade
 from api.contract.regulamento_concorrencia.regulamento_factory import RegulamentoDocumentsFactory
+from api.contract.regulamento_concorrencia.regulamento_library import RegulamentoConcorrenciaLibrary
 from utils.admin_integrations.documents import AdminAPIDocuments
+from utils.admin_integrations.wallets import AdminAPIWallets
 from datetime import date
 
 
@@ -15,7 +17,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
     doc_name = "Regulamento Concorrencia"
 
-    def __init__(self, data) -> None:
+    def __init__(self, data: dict) -> None:
         super().__init__()
 
         if not "id_obj" in data:
@@ -23,26 +25,48 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
         self.wallet_id = data.get("id_obj")
         self.manager = ()
+        self.requester_id = data.get("requester_id")
 
     def build(self) -> None:
         data = self.__get_contract_data()
         documents_objects = self.__get_documents_objects_list(data)
         file_bytes_b64 = self._generate_documents(documents_objects)
 
-        data_admin = self.mount_data_admin_document(file_bytes_b64=file_bytes_b64)
+        doc_data = self._handle_with_admin(file_bytes_b64=file_bytes_b64)
 
-        response = AdminAPIDocuments().post_create_document(data=data_admin)
+        document_id = doc_data.get("document_id")
+        RegulamentoConcorrenciaLibrary().inactive_documents_from_wallet_id(
+            wallet_id=self.wallet_id, document_id=document_id)
 
+        RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id, document_id, file_bytes_b64)
+
+
+    def _handle_with_admin(self, file_bytes_b64):
+        doc_data = self.mount_data_admin_document(
+            file_bytes_b64=file_bytes_b64)
+
+        response = AdminAPIDocuments().post_create_document(data=doc_data)
+
+        document_id = response.get("id")
+
+        response_wallet = AdminAPIWallets().post_create_wallet_related_document(
+            wallet_id=self.wallet_id, body={"data": [document_id]})
+
+        doc_data["document_id"] = document_id
+
+        return doc_data
 
     def mount_data_admin_document(self, file_bytes_b64):
-        doc_name = f"{self.doc_name} - {self.manager.nome} - {date.today().strftime('%Y%m%d')}.pdf"
+        doc_name = f"{self.doc_name} - {self.manager.nome} - {date.today().strftime('%Y%m%d')}"
 
         return {
             "nome_doc": doc_name,
-            "documento_nome": doc_name,
+            "documento_nome": doc_name + ".pdf",
             "categoria_id": "regulamento",
             "file_mime_type": "application/pdf",
             "file": file_bytes_b64.decode('utf-8'),
+            "tipo_exibicao": "publico",
+            "usuario_responsavel_id": self.requester_id,
             "documento_status": "approved"
         }
 

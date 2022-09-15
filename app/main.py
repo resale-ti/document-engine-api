@@ -38,7 +38,7 @@ app.include_router(task_control.router, prefix='/tasks', tags=['Tasks'])
 app.include_router(document.router, prefix='/documents', tags=['Documents'])
 
 # Router somente para desenvolvimento local, por aqui usamos somente FAST-API - conseguimos debugar.
-if os.environ.get("STAGE") not in ["DEV", "PROD"]:
+if (os.environ.get("STAGE")).upper() == "LOCAL":
     app.include_router(developer.router, prefix='/local', tags=['Developer'])
 
 

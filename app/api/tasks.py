@@ -21,14 +21,39 @@ class CallbackTask(Task, ABC):
 
 
 @celery_app.task(
-    name='contract.generate_document',
+    name='regulamento_concorrencia_completo.generate_document',
     base=CallbackTask,
 )
 def generate_document(task_request: dict) -> str:
     current_task.update_state(state='STARTED', meta={'current': 0, 'total': 1})
 
-    contract_type = task_request.get("contract_type")
+    contract_type = "regulamento_concorrencia"
 
-    # No futuro no data pode ser o task_request completo. - VER A NECESSIDADE.
-    Contract.generate_contract(contract_type=contract_type, data={"id_obj": task_request.get("id_obj")})
+    Contract.generate_contract(contract_type=contract_type, data=task_request)
 
+    # regulamento_cv(classe) vai ser chamado aqui passando a carteira e ele se vira pra lá
+
+@celery_app.task(
+    name='regulamento_concorrencia.generate_document',
+    base=CallbackTask,
+)
+def generate_document(task_request: dict) -> str:
+    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 1})
+
+    contract_type = "regulamento_concorrencia"
+
+    Contract.generate_contract(contract_type=contract_type, data=task_request)
+
+
+@celery_app.task(
+    name='certificado_venda.generate_document',
+    base=CallbackTask,
+)
+def generate_document(task_request: dict) -> str:
+    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 1})
+
+    contract_type = "certificado_venda"
+
+    Contract.generate_contract(contract_type=contract_type, data=task_request)
+
+    # regulamento_cv vai ser chamado aqui passando a carteira e ele se vira pra lá

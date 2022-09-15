@@ -68,7 +68,10 @@ class BuilderEngine:
 
         return html
 
-    def _get_file_bytes_pdf_writer(self, erase_file=True):
+    def _get_file_bytes_pdf_writer(self):
+        # Se for LOCAL arquivo será criado na pasta app
+        erase_file = False if (os.environ.get("STAGE")).upper() == "LOCAL" else True
+
         pdfOutputFile = open('MergedFiles.pdf', 'wb')
         self.pdfWriter.write(pdfOutputFile)
 
