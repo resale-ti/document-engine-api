@@ -26,6 +26,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         self.wallet_id = data.get("id_obj")
         self.manager = ()
         self.requester_id = data.get("requester_id")
+        self.data_inicio_regulamento = data.get("data_inicio")
 
     def build(self) -> None:
         data = self.__get_contract_data()
@@ -97,15 +98,14 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
                 p['installments_db'] = SellerRepository(
                 ).get_payment_installments(p.get('id'))
 
-        wuzu_action = PropertyAuctionRepository().get_wuzu_auction_id_by_property_id_from_property_auction(
-            properties[0].get("imovel_id"), properties[0].get("schedule_id")
-        )
+        regulamento_dates = {"data_inicio": self.data_inicio_regulamento,
+                             "data_fim": properties[0].get("data_limite")}
 
         regulamento_facade = RegulamentoConcorrenciaFacade(
             wallet=wallet,
             payment_methods=payment_methods,
             properties=properties,
-            wuzu_action=wuzu_action,
+            regulamento_dates=regulamento_dates,
             qualificacao=qualification)
 
         return regulamento_facade.parse()

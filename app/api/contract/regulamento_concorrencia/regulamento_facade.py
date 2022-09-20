@@ -8,12 +8,12 @@ today = date.today()
 
 class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
 
-    def __init__(self, wallet, payment_methods, properties, wuzu_action, qualificacao):
+    def __init__(self, wallet, payment_methods, properties, regulamento_dates, qualificacao):
         self.wallet = wallet
         self.payment_methods = payment_methods
         self.properties = properties
-        self.wuzu_action = wuzu_action
         self.qualificacao = qualificacao
+        self.regulamento_dates = regulamento_dates
 
     def parse(self) -> dict:
         base_data = self.__get_base_data()
@@ -97,26 +97,18 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
         }
 
     def __get_datas_concorrencia(self) -> dict:
-        if self.wuzu_action:
-            is_prod = os.environ.get("STAGE")
-            gmt_hours = 5 if is_prod == "PROD" else 3
+        is_prod = os.environ.get("STAGE")
+        gmt_hours = 5 if is_prod == "PROD" else 3
 
-            data_inicio = self.wuzu_action.date_start_auction
-            data_fim = self.wuzu_action.date_finish_auction
+        data_inicio = self.regulamento_dates.get("data_inicio")
+        data_fim = self.regulamento_dates.get("data_fim")
 
-            return {
-                "DATA_INICIO": (data_inicio - timedelta(gmt_hours)).strftime('%d/%m/%Y'),
-                "HORA_INICIO": (data_inicio - timedelta(gmt_hours)).strftime('%H:%m'),
-                "DATA_FIM": (data_fim - timedelta(gmt_hours)).strftime('%d/%m/%Y'),
-                "HORA_FIM": (data_fim - timedelta(gmt_hours)).strftime('%H:%m'),
-            }
-        else:
-            return {
-                "DATA_INICIO": "",
-                "HORA_INICIO": "",
-                "DATA_FIM": "",
-                "HORA_FIM": "",
-            }
+        return {
+            "DATA_INICIO": (data_inicio - timedelta(hours=gmt_hours)).strftime('%d/%m/%Y'),
+            "HORA_INICIO": (data_inicio - timedelta(hours=gmt_hours)).strftime('%H:%m'),
+            "DATA_FIM": (data_fim - timedelta(hours=gmt_hours)).strftime('%d/%m/%Y'),
+            "HORA_FIM": (data_fim - timedelta(hours=gmt_hours)).strftime('%H:%m'),
+        }
 
     def __get_imoveis_data(self) -> list:
         return {"imoveis": list(map(self.parse_imoveis, self.properties))}
