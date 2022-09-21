@@ -1,14 +1,13 @@
 from fastapi import APIRouter, status, Response
 from api.contract.schemas import ContractBaseSchema, RegulamentoSchema
 from api.task_control.services import TaskControlServices
-from api.contract.contract_enum import EnumContractType
 
 from utils.rollbar_handler import response_rollbar_handler
 
 router = APIRouter()
 
 
-@router.post("/regulamento-concorrencia-completo/contract-generate", status_code=status.HTTP_200_OK)
+@router.post("/regulamento-concorrencia-completo", status_code=status.HTTP_200_OK)
 async def generate_celery(payload: RegulamentoSchema, response: Response) -> dict:
     try:
         task = TaskControlServices.send_task({
@@ -17,8 +16,7 @@ async def generate_celery(payload: RegulamentoSchema, response: Response) -> dic
             'task_request': payload
         })
 
-        return {'task': payload, 'message': 'Solicitação recebida com sucesso!'}
+        return {'task': task.task_id, 'message': 'Solicitação recebida com sucesso!'}
 
     except Exception as err:
-        print("deu f")
         return response_rollbar_handler(err, response)

@@ -1,6 +1,7 @@
 from celery import Task
 from core.celery import celery_app
 from api.task_control.repositories import TaskControlRepository
+from datetime import timedelta
 
 
 class TaskControlServices:
@@ -14,7 +15,7 @@ class TaskControlServices:
         progression = None
         info = task.info
 
-        if task.state not in ['FAILURE', 'PENDING', 'REVOKED']:
+        if task.state not in ['FAILURE', 'PENDING', 'REVOKED', 'SUCCESS']:
             current = task.info.get('current', 0)
             total = task.info.get('total', 1)
             progression = (int(current) / int(total)) * 100
@@ -23,21 +24,37 @@ class TaskControlServices:
         if task.state == 'REVOKED':
             self.task_control_repository.update_task_state(task_id, 'REVOKED')
 
+        date = ""
+        date_done = task.date_done
+
+        if date_done is not None:
+                date = (date_done - timedelta(hours=3)).strftime('%d/%m/%Y %H:%M')
+
         return {
             'task_id': task_id,
             'state': task.state,
+            'date': date,
             'progression': float("{:.2f}".format(progression)) if progression is not None else None,
             'info': info
         }
 
-    def get_last_task_by_owner_application_origin(self, requester_id, origin_application, manager_id=None):
-        task = self.task_control_repository.get_last_task(requester_id, origin_application, manager_id)
+    def get_last_task_by_item_origem_application_origin(self, item_origem_id, origin_application):
+        task = self.task_control_repository.get_last_task(item_origem_id, origin_application)
 
         if task is not None:
+            user = self.task_control_repository.get_usuario(task['task_id'])
+            
             task = dict(task)
             result = self.celery.AsyncResult(task['task_id'])
+            task['user_id'] = user.get("id")
+            task['user'] = user.get("name")
             task['state'] = result.state
             task['result'] = result.result
+
+        date_done = result.date_done
+
+        if date_done is not None:
+            task['date'] = (date_done - timedelta(hours=3)).strftime('%d/%m/%Y %H:%M')
 
         return task
 
@@ -55,6 +72,8 @@ class TaskControlServices:
                                           task_name=task_name,
                                           task_state=task_state,
                                           requester_id=task_request.requester_id,
-                                          origin_application=task_request.origin_application)
+                                          origin_application=task_request.origin_application,
+                                          item_origem_id=task_request.id_obj,
+                                          manager_id=task_request.manager_id)
 
         return task

@@ -2,6 +2,7 @@ from abc import ABC
 from celery import current_task, Task
 
 from core.celery import celery_app
+import datetime
 
 from api.contract.contract import Contract
 from api.task_control.repositories import TaskControlRepository
@@ -26,8 +27,9 @@ class CallbackTask(Task, ABC):
 )
 def generate_document(task_request: dict) -> str:
     current_task.update_state(state='STARTED', meta={'current': 0, 'total': 1})
-
     contract_type = "regulamento_concorrencia"
+
+    task_request["data_inicio"] = datetime.datetime.strptime(task_request["data_inicio"], "%Y-%m-%dT%H:%M:%S")
 
     Contract.generate_contract(contract_type=contract_type, data=task_request)
 

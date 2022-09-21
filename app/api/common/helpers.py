@@ -1,4 +1,5 @@
 from utils.pagimovel_integrations.service import PagimovelIntegration
+from celery import current_task
 
 
 def get_property_valor_venda(property, wallet_id):
@@ -17,3 +18,8 @@ def number_format(number, decimal_places=2) -> str:
         number = int(number)
 
     return str(number).replace(".", ",")
+
+def update_task_progress(current: int, total: int):
+    if current_task:
+        current_task.update_state(state='PROGRESS', meta={
+                        'current': current, 'total': total})

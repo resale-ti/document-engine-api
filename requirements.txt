@@ -9,3 +9,5 @@ PyPDF2
 Jinja2
 mailchimp_transactional
 uvicorn
+watchdog
+mysqlclient

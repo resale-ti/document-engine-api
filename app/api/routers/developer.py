@@ -9,7 +9,7 @@ import sys
 
 router = APIRouter()
 
-@router.post('/regulamento-concorrencia/contract-generate')
+@router.post('/regulamento-concorrencia')
 async def generate_fastapi(payload: RegulamentoSchema):
     try:
         Contract.generate_contract(contract_type="regulamento_concorrencia", data=dict(payload))

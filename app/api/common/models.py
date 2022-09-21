@@ -19,3 +19,5 @@ PaymentConditionsWallet = Base.classes.carteira_condicoes_pagamento
 PaymentInstallments = Base.classes.carteira_parcelas
 
 Document, DocumentRevision, WalletDocument = Base.classes.documento, Base.classes.documento_revisao, Base.classes.carteira_documento
+
+Usuario = Base.classes.usuario

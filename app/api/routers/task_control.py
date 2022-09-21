@@ -17,12 +17,12 @@ def get_status(task_id, response: Response):
         return response_rollbar_handler(err, response)
 
 
-@router.get('/last/{requester_id}/{origin_application}')
-def get_last_task(requester_id, origin_application, response: Response):
+@router.get('/last/{origin_application}/{item_origem_id}')
+def get_last_task(item_origem_id, origin_application, response: Response):
     try:
         task_control_services = TaskControlServices()
 
-        return task_control_services.get_last_task_by_owner_application_origin(requester_id=requester_id,
+        return task_control_services.get_last_task_by_item_origem_application_origin(item_origem_id=item_origem_id,
                                                                            origin_application=origin_application)
 
     except Exception as err:
