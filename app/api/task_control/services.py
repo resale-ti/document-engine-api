@@ -43,7 +43,7 @@ class TaskControlServices:
 
         if task is not None:
             user = self.task_control_repository.get_usuario(task['task_id'])
-            
+
             task = dict(task)
             result = self.celery.AsyncResult(task['task_id'])
             task['user_id'] = user.get("id")
@@ -57,6 +57,13 @@ class TaskControlServices:
             task['date'] = (date_done - timedelta(hours=3)).strftime('%d/%m/%Y %H:%M')
 
         return task
+
+    def revoke_task(self, task_id):
+        task = self.celery.AsyncResult(task_id)
+        if task.state not in ['FAILURE', 'SUCCESS']:
+            self.celery.control.revoke(task_id, terminate=True)
+            self.task_control_repository.update_task_state(task_id, 'REVOKED')
+            self.celery.backend.store_result(task_id=task_id, state='REVOKED', result={})
 
     @staticmethod
     def send_task(task_params: dict):

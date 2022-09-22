@@ -47,7 +47,6 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
             wallet_id=self.wallet_id, document_id=document_id)
 
         RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id, document_id, file_bytes_b64)
-        
         update_task_progress(current=5, total=5)
 
 

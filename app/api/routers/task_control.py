@@ -28,3 +28,18 @@ def get_last_task(item_origem_id, origin_application, response: Response):
     except Exception as err:
         return response_rollbar_handler(err, response)
 
+
+@router.get("/revoke/{task_id}",)
+def revoke_task(task_id, response: Response):
+    try:
+        task_control_services = TaskControlServices()
+
+        task_control_services.revoke_task(task_id)
+
+        return {
+            'revocation_received': True,
+            'mesage': 'Solicitação de revogação recebida'
+        }
+    except Exception as err:
+        return response_rollbar_handler(err, response)
+
