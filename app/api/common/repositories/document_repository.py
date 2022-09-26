@@ -53,3 +53,16 @@ class DocumentRepository(DBSessionContext):
                         Document.categoria_id == "regulamento").one()
 
             return regulamento_approved
+
+    def get_active_regulamento_wallet(self, wallet_id: str):
+
+        with self.get_session_scope() as session:
+            regulamento_ativo = session.query(Document.id) \
+                .join(WalletDocument, Document.id == WalletDocument.documento_id) \
+                .join(Wallet, WalletDocument.carteira_id == Wallet.id) \
+                .filter(Document.documento_status != "approved",
+                        Wallet.id == wallet_id,
+                        Document.categoria_id == "regulamento") \
+                .all()
+
+            return regulamento_ativo

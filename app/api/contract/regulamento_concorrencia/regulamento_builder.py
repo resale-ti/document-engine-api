@@ -1,6 +1,7 @@
 from api.contract.contract_builder_base import ContractBuilderBase
 from api.common.repositories.wallet_repository import WalletRepository
 from api.common.repositories.seller_repository import SellerRepository
+from api.common.repositories.property_repository import PropertyRepository
 from api.common.repositories.qualification_repository import QualificationRepository
 from api.common.repositories.property_auction_repository import PropertyAuctionRepository
 from api.common.repositories.manager_repository import ManagerRepository
@@ -90,7 +91,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
         wallet = WalletRepository().get_wallet_details(self.wallet_id)
 
-        properties = WalletRepository().get_properties_wallet(self.wallet_id)
+        properties = PropertyRepository().get_properties_wallet(self.wallet_id)
         properties = [set_property_valor(
             dict(property), self.wallet_id) for property in properties]
         properties = sorted(

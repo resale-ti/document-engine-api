@@ -16,3 +16,13 @@ class PropertyAuctionRepository(DBSessionContext):
                 .order_by(DisputaWuzu.id.desc()).one()
 
             return wuzu_action
+
+    def get_wuzu_auction_id_by_many_properties(self, properties: tuple, schedule_id: str):
+        with self.get_session_scope() as session:
+            wuzu_actions = session.query(DisputaWuzu.wuzu_disputa_id) \
+                .filter(DisputaWuzu.imovel_id.in_(properties),
+                        DisputaWuzu.cronograma_id == schedule_id,
+                        DisputaWuzu.wuzu_status != "canceled") \
+                .order_by(DisputaWuzu.id.desc()).all()
+
+        return wuzu_actions
