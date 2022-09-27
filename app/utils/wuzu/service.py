@@ -11,14 +11,14 @@ class WuzuService(object):
                         "Authorization": "Token " + os.environ.get("WUZU_API_KEY")
                         }
 
-    def call_wuzu(self, enpoint, data, method="post") -> [dict, str]:
+    def call_wuzu(self, endpoint, data, method="post"):
         """
         Envia para o carteiras-admin os dados que serão salvos no BD e/ou S3.
         @param enpoint: endpoint da opração que será realizada.
         @param data: dados que serão salvos.
         @return: Em caso de sucesso, retornará um dict com os dados. Se não, uma mensagem de erro.
         """
-        url = self.base_url + enpoint
+        url = self.wuzu_url + endpoint
         try:
             body = json.dumps(data)
 

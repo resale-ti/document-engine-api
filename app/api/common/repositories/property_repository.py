@@ -54,12 +54,16 @@ class PropertyRepository(DBSessionContext):
             properties = session.query(
                 Property.id.label('imovel_id'),
                 Property.data_limite,
-                Schedule.id.label('schedule_id')) \
+                Schedule.id.label('schedule_id'),
+                DisputaWuzu.wuzu_disputa_id) \
                 .select_from(Wallet) \
                 .join(WalletProperty, Wallet.id == WalletProperty.carteira_id) \
                 .join(Property, WalletProperty.imovel_id == Property.id) \
                 .join(WalletSchedule, Wallet.id == WalletSchedule.carteira_id) \
                 .join(Schedule, WalletSchedule.cronograma_id == Schedule.id) \
+                .join(DisputaWuzu, and_(DisputaWuzu.imovel_id == Property.id,
+                                        Schedule.id == DisputaWuzu.cronograma_id,
+                                        DisputaWuzu.wuzu_status != 'canceled'), isouter=True) \
                 .filter(Wallet.id == wallet_id).all()
 
             return properties
