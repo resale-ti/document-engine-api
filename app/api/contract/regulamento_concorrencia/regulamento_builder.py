@@ -32,23 +32,23 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         self.data_inicio_regulamento = data.get("data_inicio")
 
     def build(self) -> None:
-        update_task_progress(current=1, total=5)
+        update_task_progress(current=5, total=9)
         data = self.__get_contract_data()
         documents_objects = self.__get_documents_objects_list(data)
 
-        update_task_progress(current=2, total=5)
+        update_task_progress(current=6, total=9)
         file_bytes_b64 = self._generate_documents(documents_objects)
 
-        update_task_progress(current=3, total=5)
+        update_task_progress(current=7, total=9)
         doc_data = self._handle_with_admin(file_bytes_b64=file_bytes_b64)
         document_id = doc_data.get("document_id")
 
-        update_task_progress(current=4, total=5)
+        update_task_progress(current=8, total=9)
         RegulamentoConcorrenciaLibrary().inactive_documents_from_wallet_id(
             wallet_id=self.wallet_id, document_id=document_id)
 
         RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id, document_id, file_bytes_b64)
-        update_task_progress(current=5, total=5)
+        update_task_progress(current=9, total=9)
 
 
     def _handle_with_admin(self, file_bytes_b64):
@@ -92,10 +92,9 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         wallet = WalletRepository().get_wallet_details(self.wallet_id)
 
         properties = PropertyRepository().get_properties_wallet(self.wallet_id)
-        properties = [set_property_valor(
-            dict(property), self.wallet_id) for property in properties]
-        properties = sorted(
-            properties, key=lambda p: p['lote'] if p['lote'] else "", reverse=True)
+
+        properties = [set_property_valor(dict(property), self.wallet_id) for property in properties]
+        properties = sorted(properties, key=lambda p: int(p['lote']) if p['lote'] else "")
 
         payment_methods = SellerRepository().get_payment_method(
             payment_form_id=wallet.forma_pagamento_id)

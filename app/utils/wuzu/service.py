@@ -8,8 +8,7 @@ class WuzuService(object):
     def __init__(self, *args, **kwargs):
         self.wuzu_url = os.environ.get("WUZU_URL")
         self.headers = {"Content-Type": "application/json",
-                        "Authorization": "Token " + os.environ.get("WUZU_API_KEY")
-                        }
+                        "x-api-key": os.environ.get("WUZU_API_KEY")}
 
     def call_wuzu(self, endpoint, data, method="post"):
         """
@@ -22,9 +21,7 @@ class WuzuService(object):
         try:
             body = json.dumps(data)
 
-            caller = getattr(requests, method)
-
-            r = caller(url, data=body, headers=self.headers)
+            r = requests.post(url, data=body, headers=self.headers)
 
             response = r.json()
         except Exception as e:
