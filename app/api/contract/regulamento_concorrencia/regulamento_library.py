@@ -1,6 +1,7 @@
 from api.common.repositories.document_repository import DocumentRepository
 from datetime import date, datetime
 from utils.mail import Mail
+import os
 
 
 class RegulamentoConcorrenciaLibrary:
@@ -32,7 +33,15 @@ class RegulamentoConcorrenciaLibrary:
     def _get_data_email(self, regulamento, doc_stream) -> dict:
         template_name = "PGI0032 - Regulamento ativo"
         subject = f"Regulamento Ativo - Melhor Proposta - {regulamento.disputa_id} - {regulamento.manager_name} - {date.today().strftime('%d/%m/%Y')}"
-        to = [{'email': 'wesley.gurgel@resale.com.br'}]
+
+        if os.environ.get("STAGE") == "PROD":
+            to = [{'email': 'concorrencia@pagimovel.com.br'},
+                  {'email': 'carteiras@pagimovel.com.br'}, {'email': 'homologacao@resale.com.br'}]
+        else:
+            # DEV OU LOCAL
+            to = [{'email': 'wesley.gurgel@resale.com.br'},
+                  {'email': 'dev.homologacao@resale.com.br'}]
+
         variables = [
             {"name": "NOME_GESTOR", "content": regulamento.manager_name},
             {"name": "ID_CARTEIRA", "content": regulamento.codigo},

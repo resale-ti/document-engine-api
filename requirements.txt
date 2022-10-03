@@ -11,3 +11,4 @@ mailchimp_transactional
 uvicorn
 watchdog
 mysqlclient
+requests

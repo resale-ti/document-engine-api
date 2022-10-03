@@ -8,6 +8,8 @@ from api.contract.contract import Contract
 from api.task_control.repositories import TaskControlRepository
 from core.rollbar_celery import rollbar_celery
 
+from utils.wuzu.auctions import Auctions
+
 
 class CallbackTask(Task, ABC):
     def on_success(self, retval, task_id, args, kwargs):
@@ -28,9 +30,12 @@ class CallbackTask(Task, ABC):
 def generate_document(task_request: dict) -> str:
     current_task.update_state(state='STARTED', meta={'current': 0, 'total': 1})
     contract_type = "regulamento_concorrencia"
-
     task_request["data_inicio"] = datetime.datetime.strptime(task_request["data_inicio"], "%Y-%m-%dT%H:%M:%S")
 
+    # Handled das auctions na Wuzu.
+    auctions = Auctions().handle_auctions(task_request)
+
+    # Geração do Regulamento
     Contract.generate_contract(contract_type=contract_type, data=task_request)
 
     # regulamento_cv(classe) vai ser chamado aqui passando a carteira e ele se vira pra lá
