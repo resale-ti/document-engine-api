@@ -3,7 +3,6 @@ from api.common.repositories.wallet_repository import WalletRepository
 from api.common.repositories.seller_repository import SellerRepository
 from api.common.repositories.property_repository import PropertyRepository
 from api.common.repositories.qualification_repository import QualificationRepository
-from api.common.repositories.property_auction_repository import PropertyAuctionRepository
 from api.common.repositories.manager_repository import ManagerRepository
 from api.contract.regulamento_concorrencia.regulamento_helpers import set_property_valor
 from api.contract.regulamento_concorrencia.regulamento_facade import RegulamentoConcorrenciaFacade
@@ -11,8 +10,7 @@ from api.contract.regulamento_concorrencia.regulamento_factory import Regulament
 from api.contract.regulamento_concorrencia.regulamento_library import RegulamentoConcorrenciaLibrary
 from utils.admin_integrations.documents import AdminAPIDocuments
 from utils.admin_integrations.wallets import AdminAPIWallets
-from api.common.helpers import update_task_progress
-import time
+from api.task_control.progressbar import TaskProgress
 from datetime import date
 
 
@@ -32,23 +30,23 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         self.data_inicio_regulamento = data.get("data_inicio")
 
     def build(self) -> None:
-        update_task_progress(current=5, total=9)
+        TaskProgress.update_task_progress()
         data = self.__get_contract_data()
         documents_objects = self.__get_documents_objects_list(data)
 
-        update_task_progress(current=6, total=9)
+        TaskProgress.update_task_progress()
         file_bytes_b64 = self._generate_documents(documents_objects)
 
-        update_task_progress(current=7, total=9)
+        TaskProgress.update_task_progress()
         doc_data = self._handle_with_admin(file_bytes_b64=file_bytes_b64)
         document_id = doc_data.get("document_id")
 
-        update_task_progress(current=8, total=9)
+        TaskProgress.update_task_progress()
         RegulamentoConcorrenciaLibrary().inactive_documents_from_wallet_id(
             wallet_id=self.wallet_id, document_id=document_id)
 
         RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id, document_id, file_bytes_b64)
-        update_task_progress(current=9, total=9)
+        TaskProgress.update_task_progress()
 
 
     def _handle_with_admin(self, file_bytes_b64):

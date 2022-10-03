@@ -3,6 +3,7 @@ from api.contract.contract import Contract
 from api.contract.schemas import ContractBaseSchema, RegulamentoSchema
 from api.contract.contract_enum import EnumContractType
 from utils.wuzu.auctions import Auctions
+
 import traceback
 import sys
 
@@ -13,7 +14,10 @@ router = APIRouter()
 @router.post('/regulamento-concorrencia')
 async def generate_fastapi(payload: RegulamentoSchema):
     try:
-        auctions = Auctions().handle_auctions(dict(payload))
+        # Handled das auctions na Wuzu.
+        # Auctions(task_progress=progressbar).handle_auctions(dict(payload))
+
+        # Geração do Regulamento
         Contract.generate_contract(contract_type="regulamento_concorrencia", data=dict(payload))
 
         return {"status": 200}
