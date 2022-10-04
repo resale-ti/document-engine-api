@@ -24,11 +24,11 @@ class RegulamentoSchema(ContractBaseSchema):
             raise ValueError("A data_inicio deve conter a seguinte formatação: {%d-%m-%Y %H:%M}")
 
 class CertificadoSchema(ContractBaseSchema):
-    data_inicio: str
+    data_criacao: str
 
-    @validator("data_inicio")
+    @validator("data_criacao")
     @classmethod
-    def check_data_inicio(cls, value):
+    def check_data_criacao(cls, value):
         format = "%d-%m-%Y %H:%M"
         try:
             return datetime.datetime.strptime(value, format)

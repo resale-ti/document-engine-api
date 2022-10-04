@@ -1,5 +1,7 @@
+from api.contract.certificado_venda.certificado_layers import CertificadoCapa, CertificadoRodape
 
-class CertificadoDocumentFactory:
-    
-    def get_instance():
-        certificado_type = data.get("certificado")
+class CertificadoDocumentsFactory:
+
+    def get_instance(self, wallet_id, data):
+        
+        return [CertificadoCapa(wallet_id, data), CertificadoRodape(wallet_id, data)]
