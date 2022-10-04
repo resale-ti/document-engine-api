@@ -28,14 +28,14 @@ class CallbackTask(Task, ABC):
     base=CallbackTask,
 )
 def generate_document(task_request: dict) -> str:
-    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 1})
+    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 0})
     contract_type = "regulamento_concorrencia"
     task_request["data_inicio"] = datetime.datetime.strptime(task_request["data_inicio"], "%Y-%m-%dT%H:%M:%S")
 
     # Handled das auctions na Wuzu.
-    auctions = Auctions().handle_auctions(task_request)
+    Auctions().handle_auctions(task_request)
 
-    # Geração do Regulamento
+    # # Geração do Regulamento
     Contract.generate_contract(contract_type=contract_type, data=task_request)
 
     # regulamento_cv(classe) vai ser chamado aqui passando a carteira e ele se vira pra lá

@@ -55,6 +55,8 @@ class PropertyRepository(DBSessionContext):
                 Property.id.label('imovel_id'),
                 Property.data_limite,
                 Schedule.id.label('schedule_id'),
+                Property.idr_imovel.label('idr'),
+                Wallet.codigo,
                 DisputaWuzu.wuzu_disputa_id) \
                 .select_from(Wallet) \
                 .join(WalletProperty, Wallet.id == WalletProperty.carteira_id) \
