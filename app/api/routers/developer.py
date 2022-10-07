@@ -22,3 +22,16 @@ async def generate_fastapi(payload: RegulamentoSchema):
         print(traceback.format_exc())
         print(sys.exc_info()[2])
         return {"status": 400, "error": str(err)}
+
+
+@router.post('/edital')
+async def generate_fastapi_edital(payload: RegulamentoSchema):
+    try:
+        Contract.generate_contract(contract_type="edital", data=dict(payload))
+        return {"status": 200}
+
+    except Exception as err:
+        print(traceback.format_exc())
+        print(sys.exc_info()[2])
+        return {"status": 400, "error": str(err)}
+    

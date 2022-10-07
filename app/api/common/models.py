@@ -11,6 +11,10 @@ WalletSchedule, Schedule = Base.classes.carteira_cronograma, Base.classes.cronog
 
 WalletManager, Manager = Base.classes.carteira_gestor, Base.classes.gestor
 
+ScheduleSalesChannel, SalesChannel = Base.classes.cronograma_canal_venda, Base.classes.canal_venda
+
+Management = Base.classes.gerenciador
+
 DisputaWuzu = Base.classes.disputa_wuzu
 Qualification = Base.classes.qualificacao
 
