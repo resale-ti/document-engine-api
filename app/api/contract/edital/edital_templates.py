@@ -1,0 +1,50 @@
+import os
+from api.contract.edital import PATH_EDITAL_FOLDER
+from api.contract.contract_builder_interface import ContractBuilderInterface
+from api.contract.edital.edital_layers_default import EditalRodapeTituloDefault, EditalRodapeImovelDefault
+
+
+class RegulamentoConcorrenciaRodapeDefault(ContractBuilderInterface):
+
+    template_path = PATH_EDITAL_FOLDER
+
+    def __init__(self, wallet_id, data) -> None:
+        self.wallet_id = wallet_id
+        self.data = data
+
+    def instance_layers(self) -> None:
+        current_layer = []
+
+        current_layer.append(RegulamentoConcorrenciaRodapeTituloDefault())
+
+        for imovel in self.data.get('imoveis'):
+            current_layer.append(
+                RegulamentoConcorrenciaRodapeImovelDefault(imovel))
+
+        return current_layer
+
+    def build(self, engine):
+        html = ""
+        self.current_layer = self.instance_layers()
+
+        for document in self.current_layer:
+            html += engine._generate_html_with_data(document)
+
+        default_style = os.path.join(self.template_path, self.stylesheets)
+
+        return engine.generate_pdf_byte(html=html, default_style=default_style)
+
+
+class DTBB001(ContractBuilderInterface):
+
+    folder = "DTBB001"
+    template_path = PATH_EDITAL_FOLDER
+    stylesheets = "edital.css"
+
+    def __init__(self, wallet_id, data) -> None:
+        self.wallet_id = wallet_id
+        self.data = data
+
+    def build(self, engine):
+        file_bytes = engine._handle_with_instances(self)
+        return file_bytes
