@@ -66,3 +66,12 @@ class DocumentRepository(DBSessionContext):
                 .all()
 
             return regulamento_ativo
+        
+    # def get_last_certificado_venda(self, prefix, year, competition_prefix, str_pag_length):
+        
+    #     with self.get_session_scope() as session:
+    #         key_cev = session.query(Document.numero_certificado_venda) \
+    #             .filter(Document.numero_certificado_venda != None,
+    #                     Document.numero_certificado_venda != '',
+                        
+    #                     )

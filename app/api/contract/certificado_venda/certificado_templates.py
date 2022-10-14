@@ -7,8 +7,8 @@ class CertificadoVendaRodapeDefault(ContractBuilderInterface):
 
     template_path = PATH_CERTIFICADO_FOLDER
 
-    def __init__(self, wallet_id, data) -> None:
-        self.wallet_id = wallet_id
+    def __init__(self, property_id, data) -> None:
+        self.property_id = property_id
         self.data = data
 
     def instance_layers(self) -> None:
@@ -16,6 +16,7 @@ class CertificadoVendaRodapeDefault(ContractBuilderInterface):
 
         current_layer.append(CertificadoVendaRodapeTituloDefault())
 
+        # substituir imovel por propoerty_id?
         for imovel in self.data.get('imoveis'):
             current_layer.append(
                 CertificadoVendaRodapeLogsDefault(imovel))
@@ -38,10 +39,10 @@ class CertificadoVenda(ContractBuilderInterface):
 
     folder = "Certificado_Venda"
     template_path = PATH_CERTIFICADO_FOLDER
-    stylesheets = "regulamento.css"
+    stylesheets = "certificado_venda.css"
 
-    def __init__(self, wallet_id, data) -> None:
-        self.wallet_id = wallet_id
+    def __init__(self, property_id, data) -> None:
+        self.property_id = property_id
         self.data = data
 
     def build(self, engine):
