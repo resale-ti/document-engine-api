@@ -3,7 +3,7 @@ from api.common.models import PaymentFormsWallet, PaymentConditionsWallet, Payme
 from api.common.helpers import transform_dict
 
 
-class SellerRepository(DBSessionContext):
+class PaymentRepository(DBSessionContext):
     def get_payment_method(self, payment_form_id: str):
         with self.get_session_scope() as session:
             payment_methods = session.query(PaymentConditionsWallet.id,

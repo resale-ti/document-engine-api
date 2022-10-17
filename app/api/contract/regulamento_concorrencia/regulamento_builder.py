@@ -1,6 +1,6 @@
 from api.contract.contract_builder_base import ContractBuilderBase
 from api.common.repositories.wallet_repository import WalletRepository
-from api.common.repositories.seller_repository import SellerRepository
+from app.api.common.repositories.payment_repository import PaymentRepository
 from api.common.repositories.property_repository import PropertyRepository
 from api.common.repositories.qualification_repository import QualificationRepository
 from api.common.repositories.manager_repository import ManagerRepository
@@ -94,14 +94,14 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         properties = [set_property_valor(dict(property), self.wallet_id) for property in properties]
         properties = sorted(properties, key=lambda p: int(p['lote']) if p['lote'] else "")
 
-        payment_methods = SellerRepository().get_payment_method(
+        payment_methods = PaymentRepository().get_payment_method(
             payment_form_id=wallet.forma_pagamento_id)
         qualification = QualificationRepository(
         ).fetch_qualifications_of_manager(manager=self.manager.id)
 
         for p in payment_methods:
             if (p.get('tipo_condicao') == 'parcelado'):
-                p['installments_db'] = SellerRepository(
+                p['installments_db'] = PaymentRepository(
                 ).get_payment_installments(p.get('id'))
 
         regulamento_dates = {"data_inicio": self.data_inicio_regulamento,

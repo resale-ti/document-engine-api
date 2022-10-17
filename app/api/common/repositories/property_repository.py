@@ -4,6 +4,20 @@ from sqlalchemy import func, and_, or_
 
 
 class PropertyRepository(DBSessionContext):
+
+    def get_properties_detail_by_wallet(self, imovel_id, wallet_id):
+        with self.get_session_scope() as session:
+            property = session.query(
+                Property.id.label('imovel_id'),
+                Property.data_limite,
+                Property.lote) \
+                .select_from(Wallet) \
+                .join(WalletProperty, Wallet.id == WalletProperty.carteira_id) \
+                .join(Property, WalletProperty.imovel_id == Property.id) \
+                .filter(Wallet.id == wallet_id, Property.id == imovel_id).one()
+
+            return property
+
     def get_properties_wallet_with_disputa(self, wallet_id: str):
         with self.get_session_scope() as session:
             properties = session.query(
