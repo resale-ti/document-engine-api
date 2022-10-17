@@ -67,18 +67,15 @@ class DocumentRepository(DBSessionContext):
                 .all()
 
             return regulamento_ativo
-        
-    def get_last_certificado_venda(self, prefix, year, competition_prefix, str_pag_length):
-        
-        where_prefix = f'{prefix}-{competition_prefix}{year}'   
-        
+
+    def get_last_certificado_venda(self, prefix, length):
         with self.get_session_scope() as session:
             certificado_venda = session.query(
                 Document.numero_certificado_venda,
-                cast(func.substr(Document.numero_certificado_venda, -{str_pag_length}, str_pag_length), Numeric()).label("sequential")) \
+                cast(func.substr(Document.numero_certificado_venda, -length, length), Numeric()).label("sequential")) \
                 .filter(Document.numero_certificado_venda != None,
                         Document.numero_certificado_venda != '',
-                        Document.numero_certificado_venda.like(where_prefix)) \
+                        Document.numero_certificado_venda.like(prefix)) \
                 .order_by(desc("sequential")).first()
-            
+
             return certificado_venda

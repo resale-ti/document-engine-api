@@ -6,16 +6,14 @@ import os
 
 
 class CertificadoVendaLibrary:
-    
-    def generate_new_key(self, wallet):
-        
-        data = {
-            'tipo': KeyGeneratorEnum.CERTIFICADO_VENDA.value,
-            'concorrencia_publica': wallet.disputa_id
-        }
-        
+
+    @staticmethod
+    def generate_new_key(wallet: dict):
+        data = {'tipo': KeyGeneratorEnum.CERTIFICADO_VENDA.value,
+                'concorrencia_publica': wallet.disputa_id}
+
         key = KeyGenerator.generate_key(data)
-        
+
         return key
-        
-        
+
+

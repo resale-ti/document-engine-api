@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Response
-from api.contract.schemas import ContractBaseSchema, RegulamentoSchema, CertificadoSchema
+from api.contract.schemas import ContractBaseSchema, RegulamentoSchema
 from api.task_control.services import TaskControlServices
 
 from utils.rollbar_handler import response_rollbar_handler
@@ -23,7 +23,7 @@ async def generate_celery(payload: RegulamentoSchema, response: Response) -> dic
 
 
 @router.post("/certificado-venda", status_code=status.HTTP_200_OK)
-async def generate_celery(payload: CertificadoSchema, response: Response) -> dict:
+async def generate_celery(payload: ContractBaseSchema, response: Response) -> dict:
     try:
         task = TaskControlServices.send_task({
             'task_name': f'certificado_venda.generate_document',

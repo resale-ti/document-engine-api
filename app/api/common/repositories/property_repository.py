@@ -4,7 +4,7 @@ from sqlalchemy import func, and_, or_
 
 
 class PropertyRepository(DBSessionContext):
-    def get_properties_wallet(self, wallet_id: str):
+    def get_properties_wallet_with_disputa(self, wallet_id: str):
         with self.get_session_scope() as session:
             properties = session.query(
                 Property.lote,

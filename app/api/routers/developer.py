@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from api.contract.contract import Contract
-from api.contract.schemas import CertificadoSchema, ContractBaseSchema, RegulamentoSchema
+from api.contract.schemas import ContractBaseSchema, RegulamentoSchema
 from api.contract.contract_enum import EnumContractType
 from utils.wuzu.auctions import Auctions
 
@@ -26,10 +26,10 @@ async def generate_fastapi(payload: RegulamentoSchema):
         print(traceback.format_exc())
         print(sys.exc_info()[2])
         return {"status": 400, "error": str(err)}
-    
+
 
 @router.post('/certificado-venda')
-async def generate_fastapi(payload: CertificadoSchema):
+async def generate_fastapi(payload: ContractBaseSchema):
     try:
         Contract.generate_contract(contract_type="certificado_venda", data=dict(payload))
 

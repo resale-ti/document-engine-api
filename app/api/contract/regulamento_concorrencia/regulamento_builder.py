@@ -89,7 +89,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
         wallet = WalletRepository().get_wallet_details(self.wallet_id)
 
-        properties = PropertyRepository().get_properties_wallet(self.wallet_id)
+        properties = PropertyRepository().get_properties_wallet_with_disputa(self.wallet_id)
 
         properties = [set_property_valor(dict(property), self.wallet_id) for property in properties]
         properties = sorted(properties, key=lambda p: int(p['lote']) if p['lote'] else "")
