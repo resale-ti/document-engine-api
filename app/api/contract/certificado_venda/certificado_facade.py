@@ -1,5 +1,4 @@
 import os
-from tkinter import HORIZONTAL
 from api.contract.contract_builder_interface import ContractFacadeInterface
 
 class CertificadoVendaFacade(ContractFacadeInterface):
