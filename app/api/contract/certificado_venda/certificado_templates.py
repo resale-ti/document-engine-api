@@ -3,7 +3,7 @@ import os
 from re import template
 from api.contract.certificado_venda import PATH_CERTIFICADO_FOLDER
 from api.contract.contract_builder_interface import ContractBuilderInterface
-# from api.contract.certificado_venda.certificado_layers_default import CertificadoVendaLayerLogs, CertificadoCapa
+from api.contract.certificado_venda.certificado_layers import CertificadoVendaLogsTitulo, CertificadoVendaLogsBody
 
 class CertificadoVendaTemplate(ContractBuilderInterface):
     
