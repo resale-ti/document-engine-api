@@ -1,6 +1,7 @@
 from api.common.database_common import DBSessionContext
 from api.common.models import CertificadoVendaLogs
-import uuid
+from sqlalchemy import and_
+
 
 
 class SalesCertificateRepository(DBSessionContext):
@@ -25,3 +26,16 @@ class SalesCertificateRepository(DBSessionContext):
                 data_criacao=data.get("data_criacao"))
 
             session.add(logs)
+            
+    def get_log(self, wallet_id: str, property_id: str):
+        with self.get_session_scope() as session:
+            log = session.query(
+                CertificadoVendaLogs.id,
+                CertificadoVendaLogs.data_criacao,
+                CertificadoVendaLogs.imovel_id,
+                CertificadoVendaLogs.descricao
+            )\
+            .filter(CertificadoVendaLogs.imovel_id == property_id, and_(CertificadoVendaLogs.carteira_id == wallet_id))\
+            .order_by(CertificadoVendaLogs.data_criacao.desc()).all()
+        
+        return log

@@ -9,7 +9,12 @@ class DocumentRepository(DBSessionContext):
     def get_wallet_regulamento(self, wallet_id: str):
 
         with self.get_session_scope() as session:
-            regulamentos = session.query(Document.id) \
+            regulamentos = session.query(
+                    Document.id,
+                    Document.documento_status,
+                    Document.data_criacao,
+                    Document.revisao_documento_id
+                ) \
                 .join(WalletDocument, Document.id == WalletDocument.documento_id) \
                 .join(Wallet, WalletDocument.carteira_id == Wallet.id) \
                 .join(WalletManager, Wallet.id == WalletManager.carteira_id) \
