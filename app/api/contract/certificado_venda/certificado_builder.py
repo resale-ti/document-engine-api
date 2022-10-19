@@ -8,15 +8,14 @@ from api.contract.certificado_venda.certificado_library import CertificadoVendaL
 from api.contract.certificado_venda.certificado_facade import CertificadoVendaFacade
 from api.contract.certificado_venda.certificado_layers import CertificadoVendaCapa, CertificadoVendaRegulamentoAprovado, CertificadoVendaLogsLayer
 from utils.carteiras_integrations.carteiras_integrations import CarteirasIntegration
-from datetime import datetime
+from utils.admin_integrations.documents import AdminAPIDocuments
+from utils.admin_integrations.property import AdminAPIProperty
+from datetime import datetime, date
 from api.common.helpers import parse_to_money
 
-
 class CertificadoVendaBuilder(ContractBuilderBase):
-
-    contract_base_name = "CertificadoVenda"
-    stylesheet_path = "static/contracts_templates/certificado_venda/default-style.css"
-    pagination = False
+    
+    doc_name = "Certificado Venda"
 
     def __init__(self, data: dict) -> None:
         super().__init__()
@@ -30,7 +29,33 @@ class CertificadoVendaBuilder(ContractBuilderBase):
 
         documents_objects = self.__get_documents_objects_list(data)
 
-        self._generate_documents(documents_objects)
+        file_bytes_b64 = self._generate_documents(documents_objects)
+        
+        self._handle_with_admin(file_bytes_b64, wallet, key)
+        
+    def _handle_with_admin(self, file_bytes_b64, wallet, key):
+        doc_data = self.mount_data_admin_document(
+            file_bytes_b64=file_bytes_b64, wallet=wallet, certificado_venda=key)
+
+        response = AdminAPIDocuments().post_create_document(data=doc_data)
+
+        document_id = response.get("id")
+
+        AdminAPIProperty().post_create_property_related_document(
+            property_id=self.property_id, body={"data": [document_id]})
+
+    def mount_data_admin_document(self, file_bytes_b64, wallet, certificado_venda):
+        doc_name = f"{self.doc_name} - {wallet.codigo} - {certificado_venda} - {date.today().strftime('%Y%m%d')}"
+
+        return {
+            "nome_doc": doc_name,
+            "documento_nome": doc_name + ".pdf",
+            "categoria_id": "certificado_venda",
+            "file_mime_type": "application/pdf",
+            "file": file_bytes_b64.decode('utf-8'),
+            "tipo_exibicao": "interno",
+            "numero_certificado_venda": certificado_venda
+        }
 
     def _generate_property_sale_certificate(self):
 

@@ -44,7 +44,7 @@ class CertificadoVendaFacade(ContractFacadeInterface):
         return {
             "DATA_MODIFICACAO" : data_modificacao,
             "HORA_MODIFICACAO" : hora_modificacao,
-            "TEXTO_MODIFICADO" : log.descricao
+            "TEXTO_MODIFICACAO" : log.descricao
         }
 
     def __get_regulamento_url(self):
