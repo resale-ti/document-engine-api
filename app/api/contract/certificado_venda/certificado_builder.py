@@ -10,11 +10,13 @@ from api.contract.certificado_venda.certificado_layers import CertificadoVendaCa
 from utils.carteiras_integrations.carteiras_integrations import CarteirasIntegration
 from utils.admin_integrations.documents import AdminAPIDocuments
 from utils.admin_integrations.property import AdminAPIProperty
+from api.task_control.progressbar import TaskProgress
 from datetime import datetime, date
-from api.common.helpers import parse_to_money
+from api.common.helpers import get_property_valor_venda, parse_to_money
+
 
 class CertificadoVendaBuilder(ContractBuilderBase):
-    
+
     doc_name = "Certificado Venda"
 
     def __init__(self, data: dict) -> None:
@@ -24,17 +26,37 @@ class CertificadoVendaBuilder(ContractBuilderBase):
 
     def build(self) -> None:
         wallet, property, key = self._generate_property_sale_certificate()
+        TaskProgress.update_task_progress()
 
         data = self.__get_data(wallet, property, key)
 
         documents_objects = self.__get_documents_objects_list(data)
+        TaskProgress.update_task_progress()
 
         file_bytes_b64 = self._generate_documents(documents_objects)
-        
+
         self._handle_with_admin(file_bytes_b64, wallet, key)
-        
+
+    def _generate_property_sale_certificate(self):
+
+        wallet = WalletRepository().get_wallet_details(self.wallet_id)
+        if len(wallet) == 0:
+            raise Exception("[ERROR]: Missing wallet_id")
+
+        property = PropertyRepository().get_property_detail_by_wallet(
+            imovel_id=self.property_id, wallet_id=self.wallet_id)
+
+        if len(property) == 0:
+            raise Exception("Imóvel não encontrado")
+
+        key = CertificadoVendaLibrary.generate_new_key(wallet=wallet)
+
+        self._generate_property_log(wallet, property)
+
+        return wallet, property, key
+
     def _handle_with_admin(self, file_bytes_b64, wallet, key):
-        doc_data = self.mount_data_admin_document(
+        doc_data = self.__mount_data_admin_document(
             file_bytes_b64=file_bytes_b64, wallet=wallet, certificado_venda=key)
 
         response = AdminAPIDocuments().post_create_document(data=doc_data)
@@ -44,7 +66,10 @@ class CertificadoVendaBuilder(ContractBuilderBase):
         AdminAPIProperty().post_create_property_related_document(
             property_id=self.property_id, body={"data": [document_id]})
 
-    def mount_data_admin_document(self, file_bytes_b64, wallet, certificado_venda):
+    #####################################################################################
+    # ------------------------ Utilites Functions  -------------------------------------#
+
+    def __mount_data_admin_document(self, file_bytes_b64, wallet, certificado_venda):
         doc_name = f"{self.doc_name} - {wallet.codigo} - {certificado_venda} - {date.today().strftime('%Y%m%d')}"
 
         return {
@@ -57,65 +82,35 @@ class CertificadoVendaBuilder(ContractBuilderBase):
             "numero_certificado_venda": certificado_venda
         }
 
-    def _generate_property_sale_certificate(self):
-
-        wallet = WalletRepository().get_wallet_details(self.wallet_id)
-        if len(wallet) == 0:
-            raise Exception("[ERROR]: Missing wallet_id")
-
-        property = PropertyRepository().get_properties_detail_by_wallet(
-            imovel_id=self.property_id, wallet_id=self.wallet_id)
-
-        if len(property) == 0:
-            raise Exception("Imóvel não encontrado")
-
-        key = CertificadoVendaLibrary.generate_new_key(wallet=wallet)
-
-        self._generate_property_log(wallet, property)
-
-        return wallet, property, key
-
     def __get_documents_objects_list(self, data):
         return [CertificadoVendaCapa(self.wallet_id, data),
-                CertificadoVendaRegulamentoAprovado(data.get('regulamento_url')),
+                CertificadoVendaRegulamentoAprovado(
+                    data.get('regulamento_url')),
                 CertificadoVendaLogsLayer(self.wallet_id, data)]
 
     def __get_data(self, wallet, property, key):
 
         schedule = SchedulesRepository().get_cronograma_carteira(self.wallet_id)
 
-        regulamento_db = DocumentRepository().get_wallet_regulamento(self.wallet_id)
-
-        last_regulamento = []
-
-        for r in regulamento_db:
-            if r.documento_status == 'approved' or r.documento_status == 'pending' and r.data > regulamento_data:
-                regulamento_data = r.data_criacao
-                last_regulamento = r
+        regulamento_db = DocumentRepository().get_active_regulamento_wallet(self.wallet_id)
 
         logs = SalesCertificateRepository().get_log(self.wallet_id, self.property_id)
 
-        sale_certificate_number = key
-
         certificado_venda_facade = CertificadoVendaFacade(
-            wallet,
-            schedule,
-            property,
-            last_regulamento,
-            logs,
-            sale_certificate_number
+            wallet, schedule, property, regulamento_db, logs, key
         )
 
         return certificado_venda_facade.parse()
 
     def _generate_property_log(self, wallet, property):
-        # values = get_property_valor_venda(property_id=property.imovel_id, wallet_id=wallet.id)
-        values = {"valor_avaliacao": 10000.32, "valor_venda": 30000.54}
+        values = get_property_valor_venda(property_id=property.imovel_id, wallet_id=wallet.id)
+        # values = {"valor_avaliacao": 10000.32, "valor_venda": 30000.54} - MOCK
 
         valor_avaliado = values.get("valor_avaliacao")
         valor_venda = values.get("valor_venda")
 
-        condicoes_pagamento_texto = CarteirasIntegration().get_condicoes_pagamentos(property.imovel_id)
+        condicoes_pagamento_texto = CarteirasIntegration(
+        ).get_condicoes_pagamentos(property.imovel_id)
 
         numero_grupo = property.lote
 
@@ -143,7 +138,8 @@ class CertificadoVendaBuilder(ContractBuilderBase):
             + ", status da venda " + wallet.status \
             + ", comissão " + str(float(wallet.tx_comissao)) + "%" \
             + ", taxa de serviço " + str(float(wallet.tx_servico)) + "%" \
-            + ", taxa gerenciamento " + str(float(wallet.tx_gerenciamento)) + "%."
+            + ", taxa gerenciamento " + \
+            str(float(wallet.tx_gerenciamento)) + "%."
 
         # // Snapshot
         data = {"data_criacao": datetime.now().strftime("%Y-%m-%d %H:%m:%S"),
@@ -152,4 +148,3 @@ class CertificadoVendaBuilder(ContractBuilderBase):
                 "descricao": description}
 
         SalesCertificateRepository().add_log(data)
-

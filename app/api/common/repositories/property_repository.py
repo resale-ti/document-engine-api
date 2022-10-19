@@ -5,7 +5,7 @@ from sqlalchemy import func, and_, or_
 
 class PropertyRepository(DBSessionContext):
 
-    def get_properties_detail_by_wallet(self, imovel_id, wallet_id):
+    def get_property_detail_by_wallet(self, imovel_id, wallet_id):
         with self.get_session_scope() as session:
             property = session.query(
                 Property.id.label('imovel_id'),

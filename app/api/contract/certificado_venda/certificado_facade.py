@@ -52,7 +52,7 @@ class CertificadoVendaFacade(ContractFacadeInterface):
 
         base_url = os.environ.get("IMAGES_URL")
 
-        if len(regulamento) != 0:
+        if regulamento:
             return f'{base_url}/{regulamento.revisao_documento_id}'
 
         return ''
