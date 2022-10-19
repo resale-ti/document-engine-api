@@ -1,4 +1,3 @@
-from operator import attrgetter
 from api.contract.contract_builder_base import ContractBuilderBase
 from api.common.repositories.wallet_repository import WalletRepository
 from api.common.repositories.property_repository import PropertyRepository
@@ -7,12 +6,10 @@ from api.common.repositories.schedules_repository import SchedulesRepository
 from api.common.repositories.sales_certificate_repository import SalesCertificateRepository
 from api.contract.certificado_venda.certificado_library import CertificadoVendaLibrary
 from api.contract.certificado_venda.certificado_facade import CertificadoVendaFacade
-from api.contract.regulamento_concorrencia.regulamento_factory import RegulamentoDocumentsFactory
-from app.api.common.models import CertificadoVendaLogs
+from api.contract.certificado_venda.certificado_layers import CertificadoVendaCapa, CertificadoVendaRegulamentoAprovado, CertificadoVendaLogsLayer
 from utils.carteiras_integrations.carteiras_integrations import CarteirasIntegration
-from api.contract.certificado_venda.certificado_factory import CertificadoDocumentsFactory
 from datetime import datetime
-from api.common.helpers import get_property_valor_venda, parse_to_money
+from api.common.helpers import parse_to_money
 
 
 class CertificadoVendaBuilder(ContractBuilderBase):
@@ -32,7 +29,7 @@ class CertificadoVendaBuilder(ContractBuilderBase):
         data = self.__get_data(wallet, property, key)
 
         documents_objects = self.__get_documents_objects_list(data)
-        
+
         self._generate_documents(documents_objects)
 
     def _generate_property_sale_certificate(self):
@@ -54,20 +51,18 @@ class CertificadoVendaBuilder(ContractBuilderBase):
         return wallet, property, key
 
     def __get_documents_objects_list(self, data):
-        return [
-            CertificadoVendaCapa(self.wallet_id, data), 
-            RegulamentoAprovado(data.get('regulamento_url')), 
-            CertificadoVendaLogs
-            ]
+        return [CertificadoVendaCapa(self.wallet_id, data),
+                CertificadoVendaRegulamentoAprovado(data.get('regulamento_url')),
+                CertificadoVendaLogsLayer(self.wallet_id, data)]
 
     def __get_data(self, wallet, property, key):
 
         schedule = SchedulesRepository().get_cronograma_carteira(self.wallet_id)
 
         regulamento_db = DocumentRepository().get_wallet_regulamento(self.wallet_id)
-        
+
         last_regulamento = []
-        
+
         for r in regulamento_db:
             if r.documento_status == 'approved' or r.documento_status == 'pending' and r.data > regulamento_data:
                 regulamento_data = r.data_criacao
