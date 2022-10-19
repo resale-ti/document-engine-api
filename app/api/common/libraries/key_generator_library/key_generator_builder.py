@@ -2,7 +2,7 @@ from datetime import datetime
 from abc import abstractmethod
 from api.common.libraries.key_generator_library.key_generator_interface import KeyGeneratorBuildInterface
 from api.common.libraries.key_generator_library.key_generator_enum import PrefixKeyGenertorBuildEnum
-from app.api.common.repositories.document_repository import DocumentRepository
+from api.common.repositories.document_repository import DocumentRepository
 
 
 class KeyGeneratorBuilder(KeyGeneratorBuildInterface):

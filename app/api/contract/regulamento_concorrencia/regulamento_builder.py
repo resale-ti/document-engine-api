@@ -1,6 +1,6 @@
 from api.contract.contract_builder_base import ContractBuilderBase
 from api.common.repositories.wallet_repository import WalletRepository
-from app.api.common.repositories.payment_repository import PaymentRepository
+from api.common.repositories.payment_repository import PaymentRepository
 from api.common.repositories.property_repository import PropertyRepository
 from api.common.repositories.qualification_repository import QualificationRepository
 from api.common.repositories.manager_repository import ManagerRepository
