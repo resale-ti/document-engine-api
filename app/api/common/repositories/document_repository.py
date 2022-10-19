@@ -1,6 +1,7 @@
 from api.common.database_common import DBSessionContext
 from api.common.models import Document, WalletDocument, Wallet, WalletManager, Manager, DocumentRevision
 from sqlalchemy import or_, update
+from sqlalchemy import func, desc, cast, Numeric
 
 
 class DocumentRepository(DBSessionContext):
@@ -8,7 +9,12 @@ class DocumentRepository(DBSessionContext):
     def get_wallet_regulamento(self, wallet_id: str):
 
         with self.get_session_scope() as session:
-            regulamentos = session.query(Document.id) \
+            regulamentos = session.query(
+                    Document.id,
+                    Document.documento_status,
+                    Document.data_criacao,
+                    Document.revisao_documento_id
+                ) \
                 .join(WalletDocument, Document.id == WalletDocument.documento_id) \
                 .join(Wallet, WalletDocument.carteira_id == Wallet.id) \
                 .join(WalletManager, Wallet.id == WalletManager.carteira_id) \
@@ -57,12 +63,24 @@ class DocumentRepository(DBSessionContext):
     def get_active_regulamento_wallet(self, wallet_id: str):
 
         with self.get_session_scope() as session:
-            regulamento_ativo = session.query(Document.id) \
+            regulamento_ativo = session.query(Document.id, Document.revisao_documento_id) \
                 .join(WalletDocument, Document.id == WalletDocument.documento_id) \
                 .join(Wallet, WalletDocument.carteira_id == Wallet.id) \
-                .filter(Document.documento_status != "approved",
+                .filter(Document.documento_status == "approved",
                         Wallet.id == wallet_id,
                         Document.categoria_id == "regulamento") \
-                .all()
+                .one()
 
             return regulamento_ativo
+
+    def get_last_certificado_venda(self, prefix, length):
+        with self.get_session_scope() as session:
+            certificado_venda = session.query(
+                Document.numero_certificado_venda,
+                cast(func.substr(Document.numero_certificado_venda, -length, length), Numeric()).label("sequential")) \
+                .filter(Document.numero_certificado_venda != None,
+                        Document.numero_certificado_venda != '',
+                        Document.numero_certificado_venda.like(prefix)) \
+                .order_by(desc("sequential")).first()
+
+            return certificado_venda
