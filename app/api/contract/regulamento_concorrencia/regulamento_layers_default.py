@@ -21,3 +21,21 @@ class RegulamentoConcorrenciaRodapeImovelDefault(HTMLDocument):
         self.data = imovel
 # ---------------------------------- DEFAULTS --------------------------------------#
 #####################################################################################
+
+
+"""
+Layers Default para modelo de regulamento MLPVA001 para venda amigável
+"""
+#####################################################################################
+# ----------------------------- DEFAULTS MLPVA001 ----------------------------------#
+
+class RegulamentoConcorrenciaRodapeImovelDefaultMLPVA001(HTMLDocument):
+
+    folder = "MLPVA_001"
+    template_path = PATH_REGULAMENTO_FOLDER
+
+    def __init__(self, imovel) -> None:
+        self.current_layer = "anexo-imovel.html"
+        self.data = imovel
+# ----------------------------- DEFAULTS MLPVA001 ----------------------------------#
+#####################################################################################
