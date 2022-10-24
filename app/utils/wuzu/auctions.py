@@ -19,7 +19,14 @@ class Auctions:
 
         properties = PropertyRepository().get_properties_wallet_to_wuzu(self.wallet_id)
 
-        TaskProgress.update_task_progress(total=int(len(properties)/5) + 7)
+        """
+        Explicação de: total=int( (len(properties)/5) *2) +10)
+
+        - Divido por 5, pois atualizamos de 5 em 5 imóveis a porcentagem da Task.
+        - Vezes 2, pois rodamos tanto aqui para a Wuzu, como para o Certificado de Venda, por Imóvel.
+        - +10, são passos a mais que existem dentro da geração dos Contratos. Sendo 7 no Regulamento e 3 no CV.
+        """
+        TaskProgress.update_task_progress(total=int( (len(properties)/5) *2) + 10)
 
         self.schedule_id = properties[0].schedule_id if len(properties) > 0 else ""
 

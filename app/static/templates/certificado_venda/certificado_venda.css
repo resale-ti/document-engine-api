@@ -1,0 +1,67 @@
+body{
+
+}
+table{
+    border-collapse: collapse;
+    page-break-inside:avoid;
+    margin: 1px 0;
+    width: 100%;
+}
+.logo-div {
+    height: 50px;
+}
+.logo-img {
+    float: right;
+    margin-right: 10px;
+    height: auto;
+    width: 52px;
+}
+.title-text {
+    text-align: center;
+    font-weight: bold;
+}
+.document-title {
+    font-size: 16px !important;
+}
+.layer-title{
+    font-size: 14px !important;
+    padding: 6px;
+    border: 1px solid black;
+    font-weight: bold;
+}
+.layer-column{
+    border: 1.3px solid black;
+    font-size: 14px;
+    padding: 6px;
+    margin: 0;
+}
+.layer-column-title{
+    font-weight: bold;
+    font-size: 12px !important;
+}
+
+.document-footer-date {
+    text-align: right;
+}
+
+.table-imovel {
+    margin: 30px 0;
+}
+
+.log_info{
+    font-weight: bold;
+    font-size: 11px;
+    color: grey;
+    padding-right: 36px;
+}
+
+.log_desc{
+    font-size: 12px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.grid-parent {
+    display: grid;
+    grid-template-columns: 1fr 1fr
+}

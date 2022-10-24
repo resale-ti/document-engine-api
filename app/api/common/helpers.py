@@ -1,9 +1,11 @@
 from utils.pagimovel_integrations.service import PagimovelIntegration
+import locale
 from celery import current_task
 
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
-def get_property_valor_venda(property, wallet_id):
-    return PagimovelIntegration().get_values(carteira_id=wallet_id, imovel_id=property.get("imovel_id"))
+def get_property_valor_venda(property_id, wallet_id):
+    return PagimovelIntegration().get_values(carteira_id=wallet_id, imovel_id=property_id)
 
 def transform_dict(list_of_tuples: list):
     return [dict(tuplas) for tuplas in list_of_tuples]
@@ -18,6 +20,9 @@ def number_format(number, decimal_places=2) -> str:
         number = int(number)
 
     return str(number).replace(".", ",")
+
+def parse_to_money(number) -> str:
+    return locale.currency(number, grouping=True, symbol=None)
 
 def update_task_progress(current: int, total: int):
     if current_task:
