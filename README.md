@@ -5,6 +5,9 @@
 ### a) Funcionamento do código
 - Apresentaremos duas formas de rodar o código, tanto pelo FastAPI como pelo Celery. É de sua **obrigação**, ao dar manutenção no código, garantir que esteja funcionando para as duas formas! Então lembre-se sempre de testar tanto pelo FastAPI como pelo Celery também.
 
+### b) Nome das pastas dos contratos
+- As pastas onde serão desenvolvidas as coisas relativas ao contrato (Builder, Facade...) deverá obrigatoriamente possuir o nome do contract_type. Exemplo: ```contract_type="regulamento_concorrencia``` -> nome da pasta então deverá ser: **regulamento_concorrencia** no path: ```app/api/contract/```.
+
 -------------------------------------------------------
 ## 1. Variáveis de Ambiente
 Para configurar as ENVS bastar ir na raiz do projeto e criar um arquivo nomeado de `.env`. Em seguida, vá no arquivo `.env.example` pegue as variáveis e preencha.

@@ -25,10 +25,10 @@ class CertificadoVendaBuilder(ContractBuilderBase):
         self.property_id = data.get("property_id")
 
     def build(self) -> None:
-        wallet, property, key = self._generate_property_sale_certificate()
+        wallet, property_obj, key = self._generate_property_sale_certificate()
         TaskProgress.update_task_progress()
 
-        data = self.__get_data(wallet, property, key)
+        data = self.__get_data(wallet, property_obj, key)
 
         documents_objects = self.__get_documents_objects_list(data)
         TaskProgress.update_task_progress()
@@ -43,17 +43,17 @@ class CertificadoVendaBuilder(ContractBuilderBase):
         if len(wallet) == 0:
             raise Exception("[ERROR]: Missing wallet_id")
 
-        property = PropertyRepository().get_property_detail_by_wallet(
+        property_obj = PropertyRepository().get_property_detail_by_wallet(
             imovel_id=self.property_id, wallet_id=self.wallet_id)
 
-        if len(property) == 0:
+        if len(property_obj) == 0:
             raise Exception("Imóvel não encontrado")
 
         key = CertificadoVendaLibrary.generate_new_key(wallet=wallet)
 
-        self._generate_property_log(wallet, property)
+        self._generate_property_log(wallet, property_obj)
 
-        return wallet, property, key
+        return wallet, property_obj, key
 
     def _handle_with_admin(self, file_bytes_b64, wallet, key):
         doc_data = self.__mount_data_admin_document(
@@ -88,7 +88,7 @@ class CertificadoVendaBuilder(ContractBuilderBase):
                     data.get('regulamento_url')),
                 CertificadoVendaLogsLayer(self.wallet_id, data)]
 
-    def __get_data(self, wallet, property, key):
+    def __get_data(self, wallet, property_obj, key):
 
         schedule = SchedulesRepository().get_cronograma_carteira(self.wallet_id)
 
@@ -97,22 +97,22 @@ class CertificadoVendaBuilder(ContractBuilderBase):
         logs = SalesCertificateRepository().get_log(self.wallet_id, self.property_id)
 
         certificado_venda_facade = CertificadoVendaFacade(
-            wallet, schedule, property, regulamento_db, logs, key
+            wallet, schedule, property_obj, regulamento_db, logs, key
         )
 
         return certificado_venda_facade.parse()
 
-    def _generate_property_log(self, wallet, property):
-        values = get_property_valor_venda(property_id=property.imovel_id, wallet_id=wallet.id)
-        # values = {"valor_avaliacao": 10000.32, "valor_venda": 30000.54} - MOCK
+    def _generate_property_log(self, wallet, property_obj):
+        values = get_property_valor_venda(property_id=property_obj.imovel_id, wallet_id=wallet.id)
+        # values = {"valor_avaliacao": 10000.32, "valor_venda": 30000.54} # MOCK
 
         valor_avaliado = values.get("valor_avaliacao")
         valor_venda = values.get("valor_venda")
 
         condicoes_pagamento_texto = CarteirasIntegration(
-        ).get_condicoes_pagamentos(property.imovel_id)
+        ).get_condicoes_pagamentos(property_obj.imovel_id)
 
-        numero_grupo = property.lote
+        numero_grupo = property_obj.lote
 
         schedule = SchedulesRepository().get_cronograma_carteira(self.wallet_id)
 
@@ -122,8 +122,8 @@ class CertificadoVendaBuilder(ContractBuilderBase):
          * status da venda X, % comissão, % taxa pgi, % taxa gerenciamento
          */
         """
-        data_mp = property.data_limite.strftime("%d/%m/%Y")
-        hora_mp = property.data_limite.strftime("%H:%m")
+        data_mp = property_obj.data_limite.strftime("%d/%m/%Y")
+        hora_mp = property_obj.data_limite.strftime("%H:%m")
 
         schedule_data_inicio = schedule.data_inicio.strftime("%d/%m/%Y")
         schedule_data_final = schedule.data_final.strftime("%d/%m/%Y")
@@ -144,7 +144,7 @@ class CertificadoVendaBuilder(ContractBuilderBase):
         # // Snapshot
         data = {"data_criacao": datetime.now().strftime("%Y-%m-%d %H:%m:%S"),
                 "carteira_id": wallet.id,
-                "imovel_id": property.imovel_id,
+                "imovel_id": property_obj.imovel_id,
                 "descricao": description}
 
         SalesCertificateRepository().add_log(data)

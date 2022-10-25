@@ -4,10 +4,10 @@ from datetime import datetime
 
 class CertificadoVendaFacade(ContractFacadeInterface):
 
-    def __init__(self, wallet, schedule, property, regulamento, logs, sale_certificate_number):
+    def __init__(self, wallet, schedule, property_obj, regulamento, logs, sale_certificate_number):
         self.wallet = wallet
         self.schedule  = schedule
-        self.property = property
+        self.property_obj = property_obj
         self.regulamento = regulamento
         self.logs = logs
         self.sale_certificate_number = sale_certificate_number
@@ -20,8 +20,8 @@ class CertificadoVendaFacade(ContractFacadeInterface):
         return data
 
     def __get_base_data(self):
-        data_final = datetime.strftime(self.property.data_limite, "%d/%m/%Y")
-        hora_final = datetime.strftime(self.property.data_limite, "%H:%M")
+        data_final = datetime.strftime(self.property_obj.data_limite, "%d/%m/%Y")
+        hora_final = datetime.strftime(self.property_obj.data_limite, "%H:%M")
 
         return {
             'regulamento_url' : self.__get_regulamento_url(),
