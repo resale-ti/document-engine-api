@@ -13,7 +13,7 @@ class ContractFactoryTestCase(unittest.TestCase):
         self.factory = ContractFactory()
         self.data = {"property_id": 1, "wallet_id": 1, "id_obj": 1}
         self.switch = {"certificado_venda": CertificadoVendaBuilder(data=self.data),
-                       "regulamento_concorrencia": RegulamentoConcorrenciaBuilder(data=self.data)}
+                       "regulamento_concorrencia": RegulamentoConcorrenciaBuilder(data=self.data),}
 
     def test_contract_factory_instace_by_folder(self):
         """
