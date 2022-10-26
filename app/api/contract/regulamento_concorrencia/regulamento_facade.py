@@ -104,10 +104,10 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
         data_fim = self.regulamento_dates.get("data_fim")
 
         return {
-            "DATA_INICIO": (data_inicio - timedelta(hours=gmt_hours)).strftime('%d/%m/%Y'),
-            "HORA_INICIO": (data_inicio - timedelta(hours=gmt_hours)).strftime('%H:%m'),
+            "DATA_INICIO": (data_inicio - timedelta(hours=3)).strftime('%d/%m/%Y'),
+            "HORA_INICIO": (data_inicio - timedelta(hours=3)).strftime('%H:%M'),
             "DATA_FIM": (data_fim - timedelta(hours=gmt_hours)).strftime('%d/%m/%Y'),
-            "HORA_FIM": (data_fim - timedelta(hours=gmt_hours)).strftime('%H:%m'),
+            "HORA_FIM": (data_fim - timedelta(hours=gmt_hours)).strftime('%H:%M'),
         }
 
     def _get_imoveis_data(self) -> list:
