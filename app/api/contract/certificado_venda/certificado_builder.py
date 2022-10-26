@@ -26,12 +26,10 @@ class CertificadoVendaBuilder(ContractBuilderBase):
 
     def build(self) -> None:
         wallet, property_obj, key = self._generate_property_sale_certificate()
-        TaskProgress.update_task_progress()
 
         data = self.__get_data(wallet, property_obj, key)
 
         documents_objects = self.__get_documents_objects_list(data)
-        TaskProgress.update_task_progress()
 
         file_bytes_b64 = self._generate_documents(documents_objects)
 

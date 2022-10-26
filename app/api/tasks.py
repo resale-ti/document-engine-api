@@ -47,9 +47,11 @@ def generate_document(task_request: dict) -> str:
 
     for idx, prop in enumerate(properties):
         data = {"id_obj": carteira_id, "property_id": prop.imovel_id}
+        print(f"Gerando CV p/ idx: {idx} - Imovel: {prop.imovel_id}")
         Contract.generate_contract(contract_type="certificado_venda", data=data)
 
         if idx % 5 == 0:
+            print(f"Updated Task Progress p/ o idx {idx}")
             TaskProgress.update_task_progress()
 
 
