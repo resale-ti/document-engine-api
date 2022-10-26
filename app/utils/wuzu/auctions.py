@@ -105,5 +105,5 @@ class Auctions:
         is_prod = os.environ.get("STAGE")
         gmt_hours = 5 if is_prod == "PROD" else 3
 
-        self.start_time = (task_requests.get('data_inicio') + timedelta(hours=gmt_hours)).strftime("%Y-%m-%d %H:%M")
+        self.start_time = (task_requests.get('data_inicio') + timedelta(hours=3)).strftime("%Y-%m-%d %H:%M")
         self.end_time = (properties[0].data_limite + timedelta(hours=gmt_hours)).strftime("%Y-%m-%d %H:%M")

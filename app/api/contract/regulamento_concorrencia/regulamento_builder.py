@@ -2,6 +2,7 @@ from api.contract.contract_builder_base import ContractBuilderBase
 from api.common.repositories.wallet_repository import WalletRepository
 from api.common.repositories.payment_repository import PaymentRepository
 from api.common.repositories.property_repository import PropertyRepository
+from api.common.repositories.property_auction_repository import PropertyAuctionRepository
 from api.common.repositories.qualification_repository import QualificationRepository
 from api.common.repositories.manager_repository import ManagerRepository
 from api.contract.regulamento_concorrencia.regulamento_helpers import set_property_valor
@@ -45,9 +46,9 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         RegulamentoConcorrenciaLibrary().inactive_documents_from_wallet_id(
             wallet_id=self.wallet_id, document_id=document_id)
 
-        RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id, document_id, file_bytes_b64)
+        RegulamentoConcorrenciaLibrary().send_approved_document_email(
+            self.wallet_id, document_id, file_bytes_b64)
         TaskProgress.update_task_progress()
-
 
     def _handle_with_admin(self, file_bytes_b64):
         doc_data = self.mount_data_admin_document(
@@ -104,8 +105,11 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
                 p['installments_db'] = PaymentRepository(
                 ).get_payment_installments(p.get('id'))
 
-        regulamento_dates = {"data_inicio": self.data_inicio_regulamento,
-                             "data_fim": properties[0].get("data_limite")}
+        wuzu_action = PropertyAuctionRepository().get_wuzu_auction_id_by_property_id_from_property_auction(
+            property_id=properties[0].get("imovel_id"), schedule_id=properties[0].get("schedule_id"))
+
+        regulamento_dates = {"data_inicio": wuzu_action.date_start_auction,
+                             "data_fim": wuzu_action.date_finish_auction}
 
         regulamento_facade = RegulamentoConcorrenciaFacade(
             wallet=wallet,
