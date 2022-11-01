@@ -45,7 +45,6 @@ class Auctions:
 
         # Imóveis SEM Disputa aberta.
         if len(properties_without_auction) > 0:
-            # properties_list = [p.imovel_id for p in properties_without_auction]
             self.send_wuzu(properties_without_auction, "send")
 
         # Validação se algum imóvel ficou sem auction.
@@ -55,16 +54,6 @@ class Auctions:
 
     def send_wuzu(self, ids, action):
         wuzu_service = WuzuService()
-
-        # Código comentado enquanto arruma a lambda async.
-        # buffer = []
-        # for idx, id in enumerate(ids):
-        #     buffer.append(id)
-
-        #     # Enviar caso o buffer esteja cheio || Enviar caso seja o último elemento.
-        #     if len(buffer) == 20 or (idx == len(ids) - 1):
-        #         data = self._parse_data(buffer, action)
-        #         response = wuzu_service.call_wuzu(endpoint=f"/auction/{action}", data=data)
 
         for idx, id in enumerate(ids):
             data = self._parse_data(id, action)
@@ -94,14 +83,11 @@ class Auctions:
         return self.__parse_data_open(buffer)
 
     def __parse_data_open(self, buffer):
-        # return {"start_time": self.start_time, "end_time": self.end_time,
-        #         "schedule_id": self.schedule_id, "wallet_id": self.wallet_id, "properties_id": buffer}
         return {"name": f"{buffer.codigo} - {buffer.idr} - {datetime.now().strftime('%Y%m%d%H%M%S')}",
                 "start_time": self.start_time, "end_time": self.end_time,
                 "schedule_id": self.schedule_id, "property_id": buffer.imovel_id}
 
     def __parse_data_update(self, buffer):
-        # return {"auction_ids": buffer, "body": {"start_time": self.start_time, "end_time": self.end_time}} - many
         return {"auction_id": buffer, "body": {"start_time": self.start_time, "end_time": self.end_time}}
 
     def _set_times(self, properties, task_requests) -> None:
