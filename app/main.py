@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from api.routers import wallet, task_control
+from api.routers import document, task_control, developer
 from rollbar.contrib.fastapi import ReporterMiddleware as RollbarMiddleware
 
 from rollbar.contrib.fastapi import LoggerMiddleware
@@ -34,5 +34,15 @@ app.add_middleware(LoggerMiddleware)
 async def health_check():
     return {'status': 'alive'}
 
-app.include_router(wallet.router, prefix='/wallet', tags=['Wallets'])
 app.include_router(task_control.router, prefix='/tasks', tags=['Tasks'])
+app.include_router(document.router, prefix='/documents', tags=['Documents'])
+
+# Router somente para desenvolvimento local, por aqui usamos somente FAST-API - conseguimos debugar.
+if (os.environ.get("STAGE")).upper() == "LOCAL":
+    app.include_router(developer.router, prefix='/local', tags=['Developer'])
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="localhost",
+                port=8004, debug=True, reload=True)
