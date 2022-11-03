@@ -26,7 +26,7 @@ async def generate_celery(payload: RegulamentoSchema, response: Response) -> dic
 async def generate_celery(payload: RegulamentoSchema, response: Response) -> dict:
     try:
         task = TaskControlServices.send_task({
-            'task_name': f'regulamento-concorrencia.generate_document',
+            'task_name': f'regulamento_concorrencia.generate_document',
             'task_state': 'PENDING',
             'task_request': payload
         })
