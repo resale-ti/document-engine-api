@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from api.contract.contract import Contract
-from api.contract.schemas import ContractBaseSchema, RegulamentoSchema
+from api.contract.schemas import RegulamentoSchema, EditalSchema
 from api.contract.contract_enum import EnumContractType
 from utils.wuzu.auctions import Auctions
 import traceback
@@ -14,7 +14,7 @@ router = APIRouter()
 async def generate_fastapi(payload: RegulamentoSchema):
     try:
         auctions = Auctions().handle_auctions(dict(payload))
-        Contract.generate_contract(contract_type="regulamento_concorrencia", data=dict(payload))
+        Contract.generate_contract(contract_type=EnumContractType.REGULAMENTO_CONCORRENCIA, data=dict(payload))
 
         return {"status": 200}
 
@@ -25,9 +25,9 @@ async def generate_fastapi(payload: RegulamentoSchema):
 
 
 @router.post('/edital')
-async def generate_fastapi_edital(payload: RegulamentoSchema):
+async def generate_fastapi_edital(payload: EditalSchema):
     try:
-        Contract.generate_contract(contract_type="edital", data=dict(payload))
+        Contract.generate_contract(contract_type=EnumContractType.EDITAL, data=dict(payload))
         return {"status": 200}
 
     except Exception as err:

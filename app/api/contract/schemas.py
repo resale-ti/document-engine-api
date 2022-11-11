@@ -22,3 +22,6 @@ class RegulamentoSchema(ContractBaseSchema):
             return datetime.datetime.strptime(value, format)
         except ValueError:
             raise ValueError("A data_inicio deve conter a seguinte formatação: {%d-%m-%Y %H:%M}")
+        
+class EditalSchema(RegulamentoSchema):
+    pass

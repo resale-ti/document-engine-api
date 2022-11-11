@@ -15,11 +15,11 @@ class RegulamentoConcorrenciaRodapeDefault(ContractBuilderInterface):
     def instance_layers(self) -> None:
         current_layer = []
 
-        current_layer.append(RegulamentoConcorrenciaRodapeTituloDefault())
+        current_layer.append(EditalRodapeTituloDefault())
 
         for imovel in self.data.get('imoveis'):
             current_layer.append(
-                RegulamentoConcorrenciaRodapeImovelDefault(imovel))
+                EditalRodapeImovelDefault(imovel))
 
         return current_layer
 

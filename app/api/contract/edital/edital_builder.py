@@ -18,29 +18,24 @@ class EditalBuilder(ContractBuilderBase):
         self.requester_id = data.get("requester_id")
         self.data_inicio_regulamento = data.get("data_inicio")
         
-    # def build(self) -> None:
-    #     soma = 1+1
-    #     print(soma)
-    #     return soma
-    
-    
+        
     def build(self) -> None:
         # update_task_progress(current=1, total=5)
         data = self.__get_contract_data()
-        # documents_objects = self.__get_documents_objects_list(data)
+        documents_objects = self.__get_documents_objects_list(data)
 
         # update_task_progress(current=2, total=5)
-        # file_bytes_b64 = self._generate_documents(documents_objects)
+        file_bytes_b64 = self._generate_documents(documents_objects)
 
         # update_task_progress(current=3, total=5)
-        # doc_data = self._handle_with_admin(file_bytes_b64=file_bytes_b64)
-        # document_id = doc_data.get("document_id")
+        doc_data = self._handle_with_admin(file_bytes_b64=file_bytes_b64)
+        document_id = doc_data.get("document_id")
 
         # update_task_progress(current=4, total=5)
         # RegulamentoConcorrenciaLibrary().inactive_documents_from_wallet_id(
         #     wallet_id=self.wallet_id, document_id=document_id)
 
-        # RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id, document_id, file_bytes_b64)
+        #RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id, document_id, file_bytes_b64)
         # update_task_progress(current=5, total=5)
         
         
