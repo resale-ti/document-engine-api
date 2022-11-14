@@ -1,6 +1,6 @@
 from api.contract.regulamento_concorrencia.regulamento_layers import MLP002Capa, MLP002Miolo, MLP002Rodape
 
-class RegulamentoDocumentsFactory:
+class EditalFactory:
 
     def get_instance(self, wallet_id, data):
         edital = data.get("edital")

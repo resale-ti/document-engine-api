@@ -3,7 +3,7 @@ from datetime import date, datetime
 from utils.mail import Mail
 
 
-class RegulamentoConcorrenciaLibrary:
+class EditalLibrary:
 
     def inactive_documents_from_wallet_id(self, wallet_id, document_id):
         regulamentos = DocumentRepository().get_wallet_regulamento(wallet_id=wallet_id)
