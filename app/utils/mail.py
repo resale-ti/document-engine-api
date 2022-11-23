@@ -55,7 +55,7 @@ class Mail(object):
         @param copy_recipient:
         @return: str com
         """
-        return os.environ.get("DEV_EMAIL") if os.environ.get("STAGE") == "DEV" else copy_recipient
+        return os.environ.get("DEV_EMAIL") if os.environ.get("STAGE").upper() == "DEV" else copy_recipient
 
     @staticmethod
     def get_subject_by_stage(subject):
@@ -64,7 +64,7 @@ class Mail(object):
         @param subject:
         @return:
         """
-        return f"HOMOLOG:{subject}" if os.environ.get("STAGE") == "DEV" else subject
+        return f"HOMOLOG:{subject}" if os.environ.get("STAGE").upper() == "DEV" else subject
 
     @staticmethod
     def get_recipient_by_stage(recipient: str) -> list:
@@ -73,4 +73,4 @@ class Mail(object):
         @param recipient: str com os dados caso não esteja em dev.
         @return: list com o e-mail de envio.
         """
-        return [{"email": "dev.homologacao@resale.com.br"}, recipient] if os.environ.get("STAGE") == "dev" else recipient
+        return [{"email": "dev.homologacao@resale.com.br"}, recipient] if os.environ.get("STAGE").upper() == "DEV" else recipient
