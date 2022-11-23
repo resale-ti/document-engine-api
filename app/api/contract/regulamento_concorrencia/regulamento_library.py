@@ -34,7 +34,7 @@ class RegulamentoConcorrenciaLibrary:
         template_name = "PGI0032 - Regulamento ativo"
         subject = f"Regulamento Ativo - Melhor Proposta - {regulamento.disputa_id} - {regulamento.manager_name} - {date.today().strftime('%d/%m/%Y')}"
 
-        if os.environ.get("STAGE") == "PROD":
+        if os.environ.get("STAGE").upper() == "PROD":
             to = [{'email': 'concorrencia@pagimovel.com.br'},
                   {'email': 'carteiras@pagimovel.com.br'}, {'email': 'homologacao@resale.com.br'}]
         else:

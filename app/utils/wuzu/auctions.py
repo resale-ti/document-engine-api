@@ -91,7 +91,7 @@ class Auctions:
         return {"auction_id": buffer, "body": {"start_time": self.start_time, "end_time": self.end_time}}
 
     def _set_times(self, properties, task_requests) -> None:
-        is_prod = os.environ.get("STAGE")
+        is_prod = os.environ.get("STAGE").upper()
         gmt_hours = 5 if is_prod == "PROD" else 3
 
         self.start_time = (task_requests.get('data_inicio') + timedelta(hours=3)).strftime("%Y-%m-%d %H:%M")

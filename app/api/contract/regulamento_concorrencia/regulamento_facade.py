@@ -97,7 +97,7 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
         }
 
     def _get_datas_concorrencia(self) -> dict:
-        is_prod = os.environ.get("STAGE")
+        is_prod = os.environ.get("STAGE").upper()
         gmt_hours = 5 if is_prod == "PROD" else 3
 
         data_inicio = self.regulamento_dates.get("data_inicio")
