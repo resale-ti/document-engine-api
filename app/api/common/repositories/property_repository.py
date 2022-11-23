@@ -71,7 +71,9 @@ class PropertyRepository(DBSessionContext):
                 Schedule.id.label('schedule_id'),
                 Property.idr_imovel.label('idr'),
                 Wallet.codigo,
-                DisputaWuzu.wuzu_disputa_id) \
+                DisputaWuzu.wuzu_disputa_id,
+                DisputaWuzu.data_inicio_disputa,
+                DisputaWuzu.data_final_disputa) \
                 .select_from(Wallet) \
                 .join(WalletProperty, Wallet.id == WalletProperty.carteira_id) \
                 .join(Property, WalletProperty.imovel_id == Property.id) \

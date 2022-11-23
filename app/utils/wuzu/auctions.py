@@ -26,18 +26,18 @@ class Auctions:
         - Vezes 2, pois rodamos tanto aqui para a Wuzu, como para o Certificado de Venda, por Imóvel.
         - +5, são passos a mais que existem dentro da geração dos Contratos. Sendo 7 no Regulamento.
         """
-        TaskProgress.update_task_progress(total=int( (len(properties)/5) *2) + 7)
+        TaskProgress.update_task_progress(total=int((len(properties)/5) *2) + 7)
         print(f"Total tasks: {int((len(properties)/5) *2) + 10}")
 
         self.schedule_id = properties[0].schedule_id if len(properties) > 0 else ""
 
-        properties_with_auction = [p.wuzu_disputa_id for p in properties if p.wuzu_disputa_id != None]
+        self._set_times(properties, task_requests)
+
+        properties_with_auction = self._get_and_validate_properties_auction(properties=properties)
         properties_without_auction = [p for p in properties if p.wuzu_disputa_id == None]
 
         print(f"properties_with_auction: {properties_with_auction}")
         print(f"properties_without_auction: {properties_without_auction}")
-
-        self._set_times(properties, task_requests)
 
         # Imóveis COM Disputa aberta.
         if len(properties_with_auction) > 0:
@@ -96,3 +96,16 @@ class Auctions:
 
         self.start_time = (task_requests.get('data_inicio') + timedelta(hours=3)).strftime("%Y-%m-%d %H:%M")
         self.end_time = (properties[0].data_limite + timedelta(hours=gmt_hours)).strftime("%Y-%m-%d %H:%M")
+
+    def _get_and_validate_properties_auction(self, properties):
+        properties_with_auction = [p for p in properties if p.wuzu_disputa_id != None]
+
+        for p in properties_with_auction.copy():
+            # Verificação para saber se a data que está vindo no Payload é a mesma que já está na tabela DisputaWuzu.
+            same_date = (self.start_time == p.data_inicio_disputa.strftime("%Y-%m-%d %H:%M")) \
+                            and (self.end_time == p.data_final_disputa.strftime("%Y-%m-%d %H:%M"))
+
+            if same_date:
+                properties_with_auction.remove(p)
+
+        return [p.wuzu_disputa_id for p in properties_with_auction]
