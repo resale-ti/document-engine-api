@@ -46,8 +46,9 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         RegulamentoConcorrenciaLibrary().inactive_documents_from_wallet_id(
             wallet_id=self.wallet_id, document_id=document_id)
 
-        RegulamentoConcorrenciaLibrary().send_approved_document_email(
-            self.wallet_id, document_id, file_bytes_b64)
+        RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id,
+                                                                      document_id,
+                                                                      file_bytes_b64)
         TaskProgress.update_task_progress()
 
     def _handle_with_admin(self, file_bytes_b64):
@@ -92,24 +93,22 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
         properties = PropertyRepository().get_properties_wallet_with_disputa(self.wallet_id)
 
+        if not properties:
+            raise Exception(f"Não foi encontrado imóvel com Disputa para a carteira com ID: {self.wallet_id}")
+
         properties = [set_property_valor(dict(property_obj), self.wallet_id) for property_obj in properties]
         properties = sorted(properties, key=lambda p: int(p['lote']) if p['lote'] else "")
 
-        payment_methods = PaymentRepository().get_payment_method(
-            payment_form_id=wallet.forma_pagamento_id)
-        qualification = QualificationRepository(
-        ).fetch_qualifications_of_manager(manager=self.manager.id)
+        payment_methods = PaymentRepository().get_payment_method(payment_form_id=wallet.forma_pagamento_id)
+        qualification = QualificationRepository().fetch_qualifications_of_manager(manager=self.manager.id)
 
         for p in payment_methods:
             if (p.get('tipo_condicao') == 'parcelado'):
                 p['installments_db'] = PaymentRepository(
                 ).get_payment_installments(p.get('id'))
 
-        wuzu_action = PropertyAuctionRepository().get_wuzu_auction_id_by_property_id_from_property_auction(
-            property_id=properties[0].get("imovel_id"), schedule_id=properties[0].get("schedule_id"))
-
-        regulamento_dates = {"data_inicio": wuzu_action.date_start_auction,
-                             "data_fim": wuzu_action.date_finish_auction}
+        regulamento_dates = {"data_inicio": self.data_inicio_regulamento,
+                             "data_fim": properties[0].get("data_limite")}
 
         regulamento_facade = RegulamentoConcorrenciaFacade(
             wallet=wallet,

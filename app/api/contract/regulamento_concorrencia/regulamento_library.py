@@ -18,15 +18,11 @@ class RegulamentoConcorrenciaLibrary:
             DocumentRepository().inactive_many_documents(tuple(docs))
 
     def send_approved_document_email(self, wallet_id, document_id, doc_stream):
-        document_revision = DocumentRepository(
-        ).get_document_revision(document_id=document_id)
-
         regulamento = DocumentRepository().get_wallet_regulamento_approved(
             wallet_id=wallet_id, document_id=document_id)
 
         data_email = self._get_data_email(regulamento, doc_stream)
 
-        # send mail propriamente dito - adaptar tudo isso ai
         mail = Mail(**data_email)
         mail.send_template_mail()
 
@@ -39,8 +35,7 @@ class RegulamentoConcorrenciaLibrary:
                   {'email': 'carteiras@pagimovel.com.br'}, {'email': 'homologacao@resale.com.br'}]
         else:
             # DEV OU LOCAL
-            to = [{'email': 'wesley.gurgel@resale.com.br'},
-                  {'email': 'dev.homologacao@resale.com.br'}]
+            to = [{'email': 'dev.homologacao@resale.com.br'}]
 
         variables = [
             {"name": "NOME_GESTOR", "content": regulamento.manager_name},
