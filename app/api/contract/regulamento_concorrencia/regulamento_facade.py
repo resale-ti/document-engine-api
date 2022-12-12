@@ -1,7 +1,7 @@
 import os
 from api.common.helpers import number_format
 from api.contract.contract_builder_interface import ContractFacadeInterface
-from datetime import date, timedelta
+from datetime import date
 
 today = date.today()
 
@@ -104,10 +104,10 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
         data_fim = self.regulamento_dates.get("data_fim")
 
         return {
-            "DATA_INICIO": (data_inicio - timedelta(hours=3)).strftime('%d/%m/%Y'),
-            "HORA_INICIO": (data_inicio - timedelta(hours=3)).strftime('%H:%M'),
-            "DATA_FIM": (data_fim - timedelta(hours=gmt_hours)).strftime('%d/%m/%Y'),
-            "HORA_FIM": (data_fim - timedelta(hours=gmt_hours)).strftime('%H:%M'),
+            "DATA_INICIO": data_inicio.strftime('%d/%m/%Y'),
+            "HORA_INICIO": data_inicio.strftime('%H:%M'),
+            "DATA_FIM": data_fim.strftime('%d/%m/%Y'),
+            "HORA_FIM": data_fim.strftime('%H:%M'),
         }
 
     def _get_imoveis_data(self) -> list:
