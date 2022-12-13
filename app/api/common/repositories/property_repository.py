@@ -1,6 +1,8 @@
 from api.common.database_common import DBSessionContext
-from api.common.models import Wallet, Property, Manager, Schedule, DisputaWuzu, WalletProperty, WalletSchedule, WalletManager
-from sqlalchemy import func, and_, or_
+from api.common.models import Wallet, Property, Manager, Schedule, DisputaWuzu, WalletProperty, WalletSchedule, \
+    WalletManager, City, Address, PropertyAddress
+from api.common.repositories.history_repository import HistoryRepository
+from sqlalchemy import func, and_, or_, update
 
 
 class PropertyRepository(DBSessionContext):
@@ -27,7 +29,8 @@ class PropertyRepository(DBSessionContext):
                 Property.consideracoes_importantes,
                 Property.valor_proposto,
                 Property.valor_minimo,
-                (Property.valor_proposto * (Wallet.tx_servico / 100)).label('pgi_amount'),
+                (Property.valor_proposto *
+                 (Wallet.tx_servico / 100)).label('pgi_amount'),
                 Property.imovel_origem,
                 Property.data_limite,
                 Property.data_primeiro_leilao_data,
@@ -56,7 +59,8 @@ class PropertyRepository(DBSessionContext):
                                         Schedule.id == DisputaWuzu.cronograma_id,
                                         DisputaWuzu.wuzu_status != 'canceled'), isouter=True) \
                 .filter(Wallet.id == wallet_id,
-                        and_(Schedule.data_inicio <= func.current_date(), Schedule.data_final >= func.current_date()),
+                        and_(Schedule.data_inicio <= func.current_date(),
+                             Schedule.data_final >= func.current_date()),
                         or_(DisputaWuzu.wuzu_status == None, DisputaWuzu.wuzu_status.not_in(['canceled', 'closed']))) \
                 .group_by(Property.id) \
                 .order_by(Property.lote).all()
@@ -85,3 +89,37 @@ class PropertyRepository(DBSessionContext):
                 .filter(Wallet.id == wallet_id).all()
 
             return properties
+
+    def get_properties_order_by_address(self, wallet_id: str):
+        with self.get_session_scope() as session:
+            properties = session.query(
+                Property.id.label('imovel_id'),
+                Property.idr_imovel.label('idr'),
+                Property.nome,
+                Property.data_limite,
+                Property.lote,
+                Wallet.codigo,
+                City.nome,
+                City.estado,
+                Address.bairro) \
+                .select_from(Property) \
+                .join(WalletProperty, Property.id == WalletProperty.imovel_id) \
+                .join(Wallet, WalletProperty.carteira_id == Wallet.id) \
+                .join(PropertyAddress, Property.id == PropertyAddress.imovel_id) \
+                .join(Address, PropertyAddress.endereco_id == Address.id) \
+                .join(City, Address.cidade_id == City.id) \
+                .filter(Wallet.id == wallet_id).all()
+
+            return properties
+
+    def update_property(self, property_id: str, data: dict, history_data=None, insert_history=False):
+        with self.get_session_scope() as session:
+            session.query(Property).\
+                filter(Property.id == property_id).\
+                update(data)
+
+            if insert_history:
+                HistoryRepository().insert_property_history(
+                    session=session, imovel_id=property_id, fields=history_data)
+
+        session.commit()
