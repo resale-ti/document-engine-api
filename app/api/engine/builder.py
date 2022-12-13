@@ -6,6 +6,8 @@ import requests
 from pathlib import Path
 from jinja2 import Environment, BaseLoader
 from api.engine.document_interfaces import HTMLDocument, PDFDocument, PDFLinkDocument
+from celery import current_task
+
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -16,6 +18,7 @@ class BuilderEngine:
 
     def __init__(self) -> None:
         self.pdfWriter = PyPDF2.PdfFileWriter()
+        self.file_name = current_task.request.id if current_task else 'MergedFiles'
 
     def _handle_file_bytes(self, file_bytes):
         pypdf_obj = PyPDF2.PdfFileReader(stream=io.BytesIO(initial_bytes=file_bytes))
@@ -23,7 +26,7 @@ class BuilderEngine:
         self._handle_with_pages(pypdf_obj)
 
     def _generate_pdf_file(self):
-        pdfOutputFile = open('MergedFiles.pdf', 'wb')
+        pdfOutputFile = open(f'{self.file_name}.pdf', 'wb')
         self.pdfWriter.write(pdfOutputFile)
         pdfOutputFile.close()
 
@@ -82,7 +85,7 @@ class BuilderEngine:
         # Se for LOCAL arquivo será criado na pasta app
         erase_file = False if (os.environ.get("STAGE")).upper() == "LOCAL" else True
 
-        pdfOutputFile = open('MergedFiles.pdf', 'wb')
+        pdfOutputFile = open(f'{self.file_name}.pdf', 'wb')
         self.pdfWriter.write(pdfOutputFile)
 
         pathOutputFile = os.path.realpath(pdfOutputFile.name)
