@@ -27,4 +27,4 @@ Usuario = Base.classes.usuario
 
 CertificadoVendaLogs = Base.classes.certificados_venda_logs
 
-PropertyHistory = Base.classes.imovel_history
+PropertyHistory, WalletHistory = Base.classes.imovel_history, Base.classes.carteira_history

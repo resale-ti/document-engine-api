@@ -1,5 +1,6 @@
 from abc import ABC
 import datetime
+import os
 
 from celery import current_task, Task
 from core.celery import celery_app
@@ -10,6 +11,8 @@ from api.common.repositories.property_repository import PropertyRepository
 
 from api.task_control.repositories import TaskControlRepository
 from api.task_control.progressbar import TaskProgress
+
+from api.common.rollback.admin_rollback import AdminRollback
 
 from utils.wuzu.auctions import Auctions
 
@@ -22,6 +25,10 @@ class CallbackTask(Task, ABC):
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         task_control_repository = TaskControlRepository()
         task_control_repository.update_task_state(task_id, 'FAILURE')
+
+        adm = AdminRollback(task_payload=kwargs)
+        adm.document_handler()
+
         extra_data = {"task_id": task_id, "args": args, "kwargs": kwargs}
         rollbar_celery.report_exc_info(extra_data=extra_data)
 
@@ -31,16 +38,23 @@ class CallbackTask(Task, ABC):
     base=CallbackTask,
 )
 def generate_document(task_request: dict) -> str:
+    print(f"Iniciando Task p/ geração de Regulamento com payload: {task_request}")
+
+    os.environ["REQUESTER_ID"] = task_request.get('requester_id')
+
     current_task.update_state(state='STARTED', meta={'current': 0, 'total': 0})
-    contract_type = "regulamento_concorrencia"
-    task_request["data_inicio"] = datetime.datetime.strptime(task_request["data_inicio"], "%Y-%m-%dT%H:%M:%S")
+
+    task_request["data_inicio"] = datetime.datetime.strptime(task_request.get("data_inicio"), "%Y-%m-%dT%H:%M:%S")
+    task_request["data_fim"] = datetime.datetime.strptime(task_request.get("data_fim"), "%Y-%m-%dT%H:%M:%S")
+
     carteira_id = task_request.get("id_obj")
+    print(f"Iniciando geração de Auctions - Carteira: {carteira_id}")
 
     # Handled das auctions na Wuzu.
     Auctions().handle_auctions(task_request)
 
     # # Geração do Regulamento
-    Contract.generate_contract(contract_type=contract_type, data=task_request)
+    Contract.generate_contract(contract_type="regulamento_concorrencia", data=task_request)
 
     # # Geração do Certificado Venda
     properties = PropertyRepository().get_properties_wallet_with_disputa(wallet_id=carteira_id)

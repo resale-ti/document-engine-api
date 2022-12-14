@@ -119,7 +119,6 @@ class PropertyRepository(DBSessionContext):
                 update(data)
 
             if insert_history:
-                HistoryRepository().insert_property_history(
-                    session=session, imovel_id=property_id, fields=history_data)
+                HistoryRepository().insert_property_history(imovel_id=property_id, fields=history_data)
 
         session.commit()

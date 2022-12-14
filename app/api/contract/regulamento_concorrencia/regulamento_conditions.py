@@ -25,7 +25,7 @@ class ConditionsRegulamento:
                 "new": update_data.get("data_limite")
             },
             "lote": {
-                "old": int(prop.lote),
+                "old": int(prop.lote) if prop.lote else "",
                 "new": update_data.get("lote")
             },
             "description": f"Geração de Regulamento p/ Carteira {prop.codigo}"
