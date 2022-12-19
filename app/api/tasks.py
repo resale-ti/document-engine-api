@@ -12,7 +12,9 @@ from api.common.repositories.property_repository import PropertyRepository
 from api.task_control.repositories import TaskControlRepository
 from api.task_control.progressbar import TaskProgress
 
-from api.common.rollback.admin_rollback import AdminRollback
+from api.common.rollback.rollback_factory import RollbackFactory
+
+from api.contract.regulamento_concorrencia.regulamento_conditions import ConditionsRegulamento
 
 from utils.wuzu.auctions import Auctions
 
@@ -26,8 +28,17 @@ class CallbackTask(Task, ABC):
         task_control_repository = TaskControlRepository()
         task_control_repository.update_task_state(task_id, 'FAILURE')
 
-        adm = AdminRollback(task_payload=kwargs)
-        adm.document_handler()
+        print(f"kwargs: {kwargs}")
+
+        contract_type = kwargs.get("task_request").get("contract_type")
+        print(f"contract_type: {contract_type}")
+
+        rb = RollbackFactory().get_instance(contract_type=contract_type, data=kwargs.get("task_request"))
+        rb.handler()
+
+        # 1. Data Limite e Lote
+        # 2. Historicos
+        # Imovel aparece no portal se Regulamento estiver Inativo?
 
         extra_data = {"task_id": task_id, "args": args, "kwargs": kwargs}
         rollbar_celery.report_exc_info(extra_data=extra_data)
@@ -39,8 +50,11 @@ class CallbackTask(Task, ABC):
 )
 def generate_document(task_request: dict) -> str:
     print(f"Iniciando Task p/ geração de Regulamento com payload: {task_request}")
+    cond_regulamento = ConditionsRegulamento(payload=task_request)
+    cond_regulamento.execute_pre_conditions()
 
     os.environ["REQUESTER_ID"] = task_request.get('requester_id')
+    os.environ["DOCUMENT_ID_RC"] = ""
 
     current_task.update_state(state='STARTED', meta={'current': 0, 'total': 0})
 
@@ -67,6 +81,8 @@ def generate_document(task_request: dict) -> str:
         if idx % 5 == 0:
             print(f"Updated Task Progress p/ o idx {idx}")
             TaskProgress.update_task_progress()
+
+    os.environ["DOCUMENT_ID_RC"] = ""
 
 
 @celery_app.task(

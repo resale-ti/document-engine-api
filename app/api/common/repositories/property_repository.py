@@ -55,13 +55,9 @@ class PropertyRepository(DBSessionContext):
                 .join(Manager, WalletManager.gestor_id == Manager.id) \
                 .join(WalletSchedule, Wallet.id == WalletSchedule.carteira_id) \
                 .join(Schedule, WalletSchedule.cronograma_id == Schedule.id) \
-                .join(DisputaWuzu, and_(DisputaWuzu.imovel_id == Property.id,
-                                        Schedule.id == DisputaWuzu.cronograma_id,
-                                        DisputaWuzu.wuzu_status != 'canceled'), isouter=True) \
                 .filter(Wallet.id == wallet_id,
                         and_(Schedule.data_inicio <= func.current_date(),
-                             Schedule.data_final >= func.current_date()),
-                        or_(DisputaWuzu.wuzu_status == None, DisputaWuzu.wuzu_status.not_in(['canceled', 'closed']))) \
+                             Schedule.data_final >= func.current_date())) \
                 .group_by(Property.id) \
                 .order_by(Property.lote).all()
 

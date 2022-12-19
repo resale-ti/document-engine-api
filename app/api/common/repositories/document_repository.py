@@ -32,6 +32,12 @@ class DocumentRepository(DBSessionContext):
                                        where(Document.id.in_(docs)).
                                        values(documento_status='inactive'))
 
+    def failed_regulamento(self, document_id: str) -> None:
+        with self.get_session_scope() as session:
+            failed = session.execute(update(Document).
+                                       where(Document.id == document_id).
+                                       values(documento_status='failed'))
+
 
     def get_document_revision(self, document_id):
         with self.get_session_scope() as session:
