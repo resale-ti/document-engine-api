@@ -28,6 +28,9 @@ class CallbackTask(Task, ABC):
         task_control_repository = TaskControlRepository()
         task_control_repository.update_task_state(task_id, 'FAILURE')
 
+        extra_data = {"task_id": task_id, "args": args, "kwargs": kwargs}
+        rollbar_celery.report_exc_info(extra_data=extra_data)
+
         print(f"kwargs: {kwargs}")
 
         contract_type = kwargs.get("task_request").get("contract_type")
@@ -36,13 +39,6 @@ class CallbackTask(Task, ABC):
         rb = RollbackFactory().get_instance(contract_type=contract_type, data=kwargs.get("task_request"))
         rb.handler()
 
-        # 1. Data Limite e Lote
-        # 2. Historicos
-        # Imovel aparece no portal se Regulamento estiver Inativo?
-
-        extra_data = {"task_id": task_id, "args": args, "kwargs": kwargs}
-        rollbar_celery.report_exc_info(extra_data=extra_data)
-
 
 @celery_app.task(
     name='regulamento_concorrencia_completo.generate_document',
@@ -50,11 +46,11 @@ class CallbackTask(Task, ABC):
 )
 def generate_document(task_request: dict) -> str:
     print(f"Iniciando Task p/ geração de Regulamento com payload: {task_request}")
-    cond_regulamento = ConditionsRegulamento(payload=task_request)
-    cond_regulamento.execute_pre_conditions()
-
     os.environ["REQUESTER_ID"] = task_request.get('requester_id')
     os.environ["DOCUMENT_ID_RC"] = ""
+
+    cond_regulamento = ConditionsRegulamento(payload=task_request)
+    cond_regulamento.execute_pre_conditions()
 
     current_task.update_state(state='STARTED', meta={'current': 0, 'total': 0})
 
@@ -71,7 +67,7 @@ def generate_document(task_request: dict) -> str:
     Contract.generate_contract(contract_type="regulamento_concorrencia", data=task_request)
 
     # # Geração do Certificado Venda
-    properties = PropertyRepository().get_properties_wallet_with_disputa(wallet_id=carteira_id)
+    properties = PropertyRepository().get_properties_wallet_with_schedule(wallet_id=carteira_id)
 
     for idx, prop in enumerate(properties):
         data = {"id_obj": carteira_id, "property_id": prop.imovel_id}

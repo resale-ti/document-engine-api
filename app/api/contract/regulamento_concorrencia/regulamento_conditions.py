@@ -16,7 +16,7 @@ class ConditionsRegulamento:
             update_data = {"data_limite": self.data_fim, "lote": idx+1}
             history_data = self.__mount_history(prop, update_data)
             PropertyRepository().update_property(property_id=prop.imovel_id, data=update_data,
-                                                 history_data=history_data, insert_history=True)
+                                                 history_data=history_data)
 
     def __mount_history(self, prop, update_data):
         history_data = {

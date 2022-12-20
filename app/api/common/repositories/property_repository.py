@@ -20,7 +20,7 @@ class PropertyRepository(DBSessionContext):
 
             return property_obj
 
-    def get_properties_wallet_with_disputa(self, wallet_id: str):
+    def get_properties_wallet_with_schedule(self, wallet_id: str):
         with self.get_session_scope() as session:
             properties = session.query(
                 Property.lote,
@@ -40,14 +40,11 @@ class PropertyRepository(DBSessionContext):
                 Property.id.label('imovel_id'),
                 Property.nome,
                 Property.idr_imovel,
+                Wallet.codigo,
                 Manager.id.label('manager_id'),
                 Manager.nome.label('manager_name'),
                 Manager.url_whitelabel.label('gestor_url'),
-                Schedule.id.label('schedule_id'),
-                DisputaWuzu.status,
-                DisputaWuzu.wuzu_disputa_id.label('auction_id'),
-                DisputaWuzu.wuzu_status,
-                DisputaWuzu.data_inicio_disputa) \
+                Schedule.id.label('schedule_id')) \
                 .select_from(Wallet) \
                 .join(WalletProperty, Wallet.id == WalletProperty.carteira_id) \
                 .join(Property, WalletProperty.imovel_id == Property.id) \
@@ -108,13 +105,13 @@ class PropertyRepository(DBSessionContext):
 
             return properties
 
-    def update_property(self, property_id: str, data: dict, history_data=None, insert_history=False):
+    def update_property(self, property_id: str, data: dict, history_data=None):
         with self.get_session_scope() as session:
             session.query(Property).\
                 filter(Property.id == property_id).\
                 update(data)
 
-            if insert_history:
+            if history_data:
                 HistoryRepository().insert_property_history(imovel_id=property_id, fields=history_data)
 
         session.commit()

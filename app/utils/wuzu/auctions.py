@@ -36,8 +36,8 @@ class Auctions:
         properties_with_auction = self._get_and_validate_properties_auction(properties=properties)
         properties_without_auction = [p for p in properties if p.wuzu_disputa_id == None]
 
-        print(f"properties_with_auction: {properties_with_auction}")
-        print(f"properties_without_auction: {properties_without_auction}")
+        print(f"properties_with_auction: {len(properties_with_auction)}")
+        print(f"properties_without_auction: {len(properties_without_auction)}")
 
         # Imóveis COM Disputa aberta.
         if len(properties_with_auction) > 0:
@@ -88,7 +88,8 @@ class Auctions:
                 "schedule_id": self.schedule_id, "property_id": buffer.imovel_id}
 
     def __parse_data_update(self, buffer):
-        return {"auction_id": buffer, "body": {"start_time": self.start_time, "end_time": self.end_time}}
+        return {"auction_id": buffer.wuzu_disputa_id, "body": {"start_time": self.start_time, "end_time": self.end_time},
+                "property_id": buffer.imovel_id}
 
     def _set_times(self, task_requests) -> None:
         is_prod = os.environ.get("STAGE").upper()
@@ -108,4 +109,4 @@ class Auctions:
             if same_date:
                 properties_with_auction.remove(p)
 
-        return [p.wuzu_disputa_id for p in properties_with_auction]
+        return properties_with_auction

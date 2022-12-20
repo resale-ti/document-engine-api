@@ -96,7 +96,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
         wallet = WalletRepository().get_wallet_details(self.wallet_id)
 
-        properties = PropertyRepository().get_properties_wallet_with_disputa(self.wallet_id)
+        properties = PropertyRepository().get_properties_wallet_with_schedule(self.wallet_id)
 
         if not properties:
             raise Exception(f"Não foi encontrado imóvel com Disputa para a carteira com ID: {self.wallet_id}")
