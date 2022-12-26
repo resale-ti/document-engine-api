@@ -58,10 +58,8 @@ class RegulamentoRollback:
         return history_data
 
     def __send_message_rollbar(self):
-        data_inicio = datetime.strptime(
-            self.payload.get("data_inicio"), "%Y-%m-%dT%H:%M:%S")
-        data_fim = datetime.strptime(
-            self.payload.get("data_fim"), "%Y-%m-%dT%H:%M:%S")
+        data_inicio = self.payload.get("data_inicio")
+        data_fim = self.payload.get("data_fim")
 
         user = UserRepository().get_user_detail(
             user_id=self.payload.get("requester_id"))
