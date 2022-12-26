@@ -13,15 +13,16 @@ class ContractBaseSchema(BaseModel):
 
 class RegulamentoSchema(ContractBaseSchema):
     data_inicio: str
+    data_fim: str
 
-    @validator("data_inicio")
+    @validator("data_inicio", "data_fim")
     @classmethod
-    def check_data_inicio(cls, value):
+    def check_data_inicio(cls, field_value, values, field, config):
         format = "%d-%m-%Y %H:%M"
         try:
-            return datetime.datetime.strptime(value, format)
+            return datetime.datetime.strptime(field_value, format)
         except ValueError:
-            raise ValueError("A data_inicio deve conter a seguinte formatação: {%d-%m-%Y %H:%M}")
+            raise ValueError(f"A {field.name} deve conter a seguinte formatação: {format}")
 
 class CertificadoVendaSchema(ContractBaseSchema):
     property_id: str

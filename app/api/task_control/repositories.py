@@ -26,6 +26,7 @@ class TaskControlRepository(DBSessionContext):
             situacao=attrs.get('task_state'),
             item_origem_id=attrs.get('item_origem_id'),
             gestor_id=attrs.get('manager_id'),
+            payload=attrs.get('payload'),
             data_criacao=now,
             data_modificacao=now
         )
