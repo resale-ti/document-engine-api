@@ -21,6 +21,9 @@ class RegulamentoRollback:
         if doc_id:
             self.__document_handler(doc_id)
 
+        HistoryRepository().insert_wallet_history(fields={
+            "documento_status": {"new": "failed"},
+            "description": "Documento FAILED (Falha na geração do Regulamento)"}, wallet_id=self.wallet_id)
         self.__handle_properties()
 
     def __document_handler(self, doc_id):
@@ -29,9 +32,6 @@ class RegulamentoRollback:
         print(f"Failed Regulamento p/ Carteira: {self.wallet_id}")
 
         DocumentRepository().failed_regulamento(doc_id)
-        HistoryRepository().insert_wallet_history(fields={
-            "documento_status": {"new": "failed"},
-            "description": "Documento FAILED (Falha na geração do Regulamento)"}, wallet_id=self.wallet_id)
 
     def __handle_properties(self):
         properties = PropertyRepository().get_properties_wallet_with_schedule(
