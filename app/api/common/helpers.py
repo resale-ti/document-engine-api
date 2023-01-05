@@ -1,10 +1,14 @@
 from utils.pagimovel_integrations.service import PagimovelIntegration
 import locale
 from celery import current_task
+import os
 
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 def get_property_valor_venda(property_id, wallet_id):
+    if (os.environ.get("STAGE")).upper() == "LOCAL":
+        return {"valor_avaliacao": 10000.32, "valor_venda": 30000.54} # MOCK
+
     return PagimovelIntegration().get_values(carteira_id=wallet_id, imovel_id=property_id)
 
 def transform_dict(list_of_tuples: list):
