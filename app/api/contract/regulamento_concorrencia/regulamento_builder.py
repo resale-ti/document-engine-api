@@ -82,8 +82,10 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
             "file": file_bytes_b64.decode('utf-8'),
             "tipo_exibicao": "publico",
             "usuario_responsavel_id": self.requester_id,
-            "documento_status": "approved"
-        }
+            "documento_status": "approved",
+            "data_inicio_documento" : self.data_inicio_regulamento.strftime("%Y-%m-%d %H:%M"),
+            "data_fim_documento" : self.data_fim_regulamento.strftime("%Y-%m-%d %H:%M")
+            }
 
     def __get_documents_objects_list(self, data):
         regulamento_documents_factory = RegulamentoDocumentsFactory(
