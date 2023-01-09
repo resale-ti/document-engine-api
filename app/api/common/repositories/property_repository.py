@@ -4,7 +4,21 @@ from sqlalchemy import func, and_, or_
 
 
 class PropertyRepository(DBSessionContext):
-    def get_properties_wallet(self, wallet_id: str):
+
+    def get_property_detail_by_wallet(self, imovel_id, wallet_id):
+        with self.get_session_scope() as session:
+            property_obj = session.query(
+                Property.id.label('imovel_id'),
+                Property.data_limite,
+                Property.lote) \
+                .select_from(Wallet) \
+                .join(WalletProperty, Wallet.id == WalletProperty.carteira_id) \
+                .join(Property, WalletProperty.imovel_id == Property.id) \
+                .filter(Wallet.id == wallet_id, Property.id == imovel_id).one()
+
+            return property_obj
+
+    def get_properties_wallet_with_disputa(self, wallet_id: str):
         with self.get_session_scope() as session:
             properties = session.query(
                 Property.lote,
@@ -54,12 +68,20 @@ class PropertyRepository(DBSessionContext):
             properties = session.query(
                 Property.id.label('imovel_id'),
                 Property.data_limite,
-                Schedule.id.label('schedule_id')) \
+                Schedule.id.label('schedule_id'),
+                Property.idr_imovel.label('idr'),
+                Wallet.codigo,
+                DisputaWuzu.wuzu_disputa_id,
+                DisputaWuzu.data_inicio_disputa,
+                DisputaWuzu.data_final_disputa) \
                 .select_from(Wallet) \
                 .join(WalletProperty, Wallet.id == WalletProperty.carteira_id) \
                 .join(Property, WalletProperty.imovel_id == Property.id) \
                 .join(WalletSchedule, Wallet.id == WalletSchedule.carteira_id) \
                 .join(Schedule, WalletSchedule.cronograma_id == Schedule.id) \
+                .join(DisputaWuzu, and_(DisputaWuzu.imovel_id == Property.id,
+                                        Schedule.id == DisputaWuzu.cronograma_id,
+                                        DisputaWuzu.wuzu_status != 'canceled'), isouter=True) \
                 .filter(Wallet.id == wallet_id).all()
 
             return properties

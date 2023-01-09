@@ -1,6 +1,7 @@
 from api.common.repositories.document_repository import DocumentRepository
 from datetime import date, datetime
 from utils.mail import Mail
+import os
 
 
 class RegulamentoConcorrenciaLibrary:
@@ -17,22 +18,25 @@ class RegulamentoConcorrenciaLibrary:
             DocumentRepository().inactive_many_documents(tuple(docs))
 
     def send_approved_document_email(self, wallet_id, document_id, doc_stream):
-        document_revision = DocumentRepository(
-        ).get_document_revision(document_id=document_id)
-
         regulamento = DocumentRepository().get_wallet_regulamento_approved(
             wallet_id=wallet_id, document_id=document_id)
 
         data_email = self._get_data_email(regulamento, doc_stream)
 
-        # send mail propriamente dito - adaptar tudo isso ai
         mail = Mail(**data_email)
         mail.send_template_mail()
 
     def _get_data_email(self, regulamento, doc_stream) -> dict:
         template_name = "PGI0032 - Regulamento ativo"
         subject = f"Regulamento Ativo - Melhor Proposta - {regulamento.disputa_id} - {regulamento.manager_name} - {date.today().strftime('%d/%m/%Y')}"
-        to = [{'email': 'wesley.gurgel@resale.com.br'}]
+
+        if os.environ.get("STAGE").upper() == "PROD":
+            to = [{'email': 'concorrencia@pagimovel.com.br'},
+                  {'email': 'carteiras@pagimovel.com.br'}, {'email': 'homologacao@resale.com.br'}]
+        else:
+            # DEV OU LOCAL
+            to = [{'email': 'dev.homologacao@resale.com.br'}]
+
         variables = [
             {"name": "NOME_GESTOR", "content": regulamento.manager_name},
             {"name": "ID_CARTEIRA", "content": regulamento.codigo},

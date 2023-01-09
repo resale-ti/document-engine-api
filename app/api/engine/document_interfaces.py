@@ -7,3 +7,7 @@ class HTMLDocument(ABC):
 
 class PDFDocument(ABC):
     pass
+
+
+class PDFLinkDocument(ABC):
+    pass

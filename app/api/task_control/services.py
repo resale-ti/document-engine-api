@@ -16,9 +16,9 @@ class TaskControlServices:
         info = task.info
 
         if task.state not in ['FAILURE', 'PENDING', 'REVOKED', 'SUCCESS']:
-            current = task.info.get('current', 0)
-            total = task.info.get('total', 1)
-            progression = (int(current) / int(total)) * 100
+            current = int(task.info.get('current', 0))
+            total = int(task.info.get('total', 1))
+            progression = (current/total) * 100 if total > 0 else 0
             progression = progression - 1 if progression == 100 else progression
 
         if task.state == 'REVOKED':
@@ -40,6 +40,7 @@ class TaskControlServices:
 
     def get_last_task_by_item_origem_application_origin(self, item_origem_id, origin_application):
         task = self.task_control_repository.get_last_task(item_origem_id, origin_application)
+        date_done = None
 
         if task is not None:
             user = self.task_control_repository.get_usuario(task['task_id'])
@@ -51,7 +52,7 @@ class TaskControlServices:
             task['state'] = result.state
             task['result'] = result.result
 
-        date_done = result.date_done
+            date_done = result.date_done
 
         if date_done is not None:
             task['date'] = (date_done - timedelta(hours=3)).strftime('%d/%m/%Y %H:%M')

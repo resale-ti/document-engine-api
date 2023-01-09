@@ -1,9 +1,9 @@
 from api.contract.contract_builder_base import ContractBuilderBase
 from api.common.repositories.wallet_repository import WalletRepository
-from api.common.repositories.seller_repository import SellerRepository
+from api.common.repositories.payment_repository import PaymentRepository
 from api.common.repositories.property_repository import PropertyRepository
-from api.common.repositories.qualification_repository import QualificationRepository
 from api.common.repositories.property_auction_repository import PropertyAuctionRepository
+from api.common.repositories.qualification_repository import QualificationRepository
 from api.common.repositories.manager_repository import ManagerRepository
 from api.contract.regulamento_concorrencia.regulamento_helpers import set_property_valor
 from api.contract.regulamento_concorrencia.regulamento_facade import RegulamentoConcorrenciaFacade
@@ -11,8 +11,7 @@ from api.contract.regulamento_concorrencia.regulamento_factory import Regulament
 from api.contract.regulamento_concorrencia.regulamento_library import RegulamentoConcorrenciaLibrary
 from utils.admin_integrations.documents import AdminAPIDocuments
 from utils.admin_integrations.wallets import AdminAPIWallets
-from api.common.helpers import update_task_progress
-import time
+from api.task_control.progressbar import TaskProgress
 from datetime import date
 
 
@@ -32,24 +31,25 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         self.data_inicio_regulamento = data.get("data_inicio")
 
     def build(self) -> None:
-        update_task_progress(current=1, total=5)
+        TaskProgress.update_task_progress()
         data = self.__get_contract_data()
         documents_objects = self.__get_documents_objects_list(data)
 
-        update_task_progress(current=2, total=5)
+        TaskProgress.update_task_progress()
         file_bytes_b64 = self._generate_documents(documents_objects)
 
-        update_task_progress(current=3, total=5)
+        TaskProgress.update_task_progress()
         doc_data = self._handle_with_admin(file_bytes_b64=file_bytes_b64)
         document_id = doc_data.get("document_id")
 
-        update_task_progress(current=4, total=5)
+        TaskProgress.update_task_progress()
         RegulamentoConcorrenciaLibrary().inactive_documents_from_wallet_id(
             wallet_id=self.wallet_id, document_id=document_id)
 
-        RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id, document_id, file_bytes_b64)
-        update_task_progress(current=5, total=5)
-
+        RegulamentoConcorrenciaLibrary().send_approved_document_email(self.wallet_id,
+                                                                      document_id,
+                                                                      file_bytes_b64)
+        TaskProgress.update_task_progress()
 
     def _handle_with_admin(self, file_bytes_b64):
         doc_data = self.mount_data_admin_document(
@@ -91,20 +91,20 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
         wallet = WalletRepository().get_wallet_details(self.wallet_id)
 
-        properties = PropertyRepository().get_properties_wallet(self.wallet_id)
-        properties = [set_property_valor(
-            dict(property), self.wallet_id) for property in properties]
-        properties = sorted(
-            properties, key=lambda p: p['lote'] if p['lote'] else "", reverse=True)
+        properties = PropertyRepository().get_properties_wallet_with_disputa(self.wallet_id)
 
-        payment_methods = SellerRepository().get_payment_method(
-            payment_form_id=wallet.forma_pagamento_id)
-        qualification = QualificationRepository(
-        ).fetch_qualifications_of_manager(manager=self.manager.id)
+        if not properties:
+            raise Exception(f"Não foi encontrado imóvel com Disputa para a carteira com ID: {self.wallet_id}")
+
+        properties = [set_property_valor(dict(property_obj), self.wallet_id) for property_obj in properties]
+        properties = sorted(properties, key=lambda p: int(p['lote']) if p['lote'] else "")
+
+        payment_methods = PaymentRepository().get_payment_method(payment_form_id=wallet.forma_pagamento_id)
+        qualification = QualificationRepository().fetch_qualifications_of_manager(manager=self.manager.id)
 
         for p in payment_methods:
             if (p.get('tipo_condicao') == 'parcelado'):
-                p['installments_db'] = SellerRepository(
+                p['installments_db'] = PaymentRepository(
                 ).get_payment_installments(p.get('id'))
 
         regulamento_dates = {"data_inicio": self.data_inicio_regulamento,

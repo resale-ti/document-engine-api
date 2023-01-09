@@ -1,7 +1,7 @@
 import os
 from api.common.helpers import number_format
 from api.contract.contract_builder_interface import ContractFacadeInterface
-from datetime import date, timedelta
+from datetime import date
 
 today = date.today()
 
@@ -16,27 +16,27 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
         self.regulamento_dates = regulamento_dates
 
     def parse(self) -> dict:
-        base_data = self.__get_base_data()
-        datas_concorrencia = self.__get_datas_concorrencia()
-        payment_methods = self.__get_payment_methods()
-        imoveis = self.__get_imoveis_data()
+        base_data = self._get_base_data()
+        datas_concorrencia = self._get_datas_concorrencia()
+        payment_methods = self._get_payment_methods()
+        imoveis = self._get_imoveis_data()
 
         return dict(**base_data, **datas_concorrencia, **payment_methods, **imoveis)
 
-    def __get_payment_methods(self):
+    def _get_payment_methods(self):
         payment_methods = self.payment_methods
         payment_desc_vista = ""
         payment_desc_parcelado = ""
 
         for method in payment_methods:
-            if method.get("tipo_condicao") == "vistaa":
+            if method.get("tipo_condicao") == "vista":
                 condicao_vista = "X"
                 conector_v = "; " if payment_desc_vista else ""
-                payment_desc_vista += conector_v + self.__get_payment_desc_vista(method=method)
+                payment_desc_vista += conector_v + self._get_payment_desc_vista(method=method)
             elif method.get("tipo_condicao") == "parcelado":
                 condicao_parcelado = "X"
                 conector_p = "; " if payment_desc_parcelado else ""
-                payment_desc_parcelado += conector_p + self.__get_payment_desc_parcelado(method=method)
+                payment_desc_parcelado += conector_p + self._get_payment_desc_parcelado(method=method)
             else:
                 pass
 
@@ -47,7 +47,7 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
             "CONDICOES_PAGAMENTO_PARCELADO": payment_desc_parcelado
         }
 
-    def __get_payment_desc_parcelado(self, method):
+    def _get_payment_desc_parcelado(self, method):
         description = ""
         installments_db = method.get("installments_db")
 
@@ -65,7 +65,7 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
 
         return description
 
-    def __get_payment_desc_vista(self, method):
+    def _get_payment_desc_vista(self, method):
         description = ""
 
         if int(method.get("porcentagem_sinal")) > 0:
@@ -85,7 +85,7 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
 
         return description
 
-    def __get_base_data(self) -> dict:
+    def _get_base_data(self) -> dict:
         return {
             "regulamento": self.wallet.modelo_regulamento if self.wallet.modelo_regulamento else "MLP_002",
             "N_REGULAMENTO": self.wallet.disputa_id,
@@ -96,31 +96,31 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
             "DATA_ATUAL": today.strftime('%d/%m/%Y')
         }
 
-    def __get_datas_concorrencia(self) -> dict:
-        is_prod = os.environ.get("STAGE")
+    def _get_datas_concorrencia(self) -> dict:
+        is_prod = os.environ.get("STAGE").upper()
         gmt_hours = 5 if is_prod == "PROD" else 3
 
         data_inicio = self.regulamento_dates.get("data_inicio")
         data_fim = self.regulamento_dates.get("data_fim")
 
         return {
-            "DATA_INICIO": (data_inicio - timedelta(hours=gmt_hours)).strftime('%d/%m/%Y'),
-            "HORA_INICIO": (data_inicio - timedelta(hours=gmt_hours)).strftime('%H:%m'),
-            "DATA_FIM": (data_fim - timedelta(hours=gmt_hours)).strftime('%d/%m/%Y'),
-            "HORA_FIM": (data_fim - timedelta(hours=gmt_hours)).strftime('%H:%m'),
+            "DATA_INICIO": data_inicio.strftime('%d/%m/%Y'),
+            "HORA_INICIO": data_inicio.strftime('%H:%M'),
+            "DATA_FIM": data_fim.strftime('%d/%m/%Y'),
+            "HORA_FIM": data_fim.strftime('%H:%M'),
         }
 
-    def __get_imoveis_data(self) -> list:
+    def _get_imoveis_data(self) -> list:
         return {"imoveis": list(map(self.parse_imoveis, self.properties))}
 
     @staticmethod
-    def parse_imoveis(property: dict) -> dict:
-        lance_minimo = number_format(property.get("valor_proposto")) if property.get("valor_proposto") else "0,00"
+    def parse_imoveis(property_obj: dict) -> dict:
+        lance_minimo = number_format(property_obj.get("valor_proposto")) if property_obj.get("valor_proposto") else "0,00"
 
         return {
-            "LOTE" : property.get("lote") if property.get("lote") else "-",
-            "ID_BANCO" : property.get("id_no_banco"),
-            "DESCRICAO_LEGAL" : property.get("descricao_legal_description"),
-            "CONSIDERACOES_IMPORTANTES" : property.get("consideracoes_importantes"),
+            "LOTE" : property_obj.get("lote") if property_obj.get("lote") else "-",
+            "ID_BANCO" : property_obj.get("id_no_banco"),
+            "DESCRICAO_LEGAL" : property_obj.get("descricao_legal_description"),
+            "CONSIDERACOES_IMPORTANTES" : property_obj.get("consideracoes_importantes"),
             "LANCE_MINIMO" : f"R$ {lance_minimo}"
         }

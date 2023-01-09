@@ -1,12 +1,15 @@
 from abc import ABC
-from celery import current_task, Task
-
-from core.celery import celery_app
 import datetime
 
-from api.contract.contract import Contract
-from api.task_control.repositories import TaskControlRepository
+from celery import current_task, Task
+from core.celery import celery_app
 from core.rollbar_celery import rollbar_celery
+
+from api.contract.contract import Contract
+from api.common.repositories.property_repository import PropertyRepository
+
+from api.task_control.repositories import TaskControlRepository
+from api.task_control.progressbar import TaskProgress
 
 from utils.wuzu.auctions import Auctions
 
@@ -28,17 +31,29 @@ class CallbackTask(Task, ABC):
     base=CallbackTask,
 )
 def generate_document(task_request: dict) -> str:
-    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 1})
+    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 0})
     contract_type = "regulamento_concorrencia"
     task_request["data_inicio"] = datetime.datetime.strptime(task_request["data_inicio"], "%Y-%m-%dT%H:%M:%S")
+    carteira_id = task_request.get("id_obj")
 
     # Handled das auctions na Wuzu.
-    auctions = Auctions().handle_auctions(task_request)
+    Auctions().handle_auctions(task_request)
 
-    # Geração do Regulamento
+    # # Geração do Regulamento
     Contract.generate_contract(contract_type=contract_type, data=task_request)
 
-    # regulamento_cv(classe) vai ser chamado aqui passando a carteira e ele se vira pra lá
+    # # Geração do Certificado Venda
+    properties = PropertyRepository().get_properties_wallet_with_disputa(wallet_id=carteira_id)
+
+    for idx, prop in enumerate(properties):
+        data = {"id_obj": carteira_id, "property_id": prop.imovel_id}
+        print(f"Gerando CV p/ idx: {idx} - Imovel: {prop.imovel_id}")
+        Contract.generate_contract(contract_type="certificado_venda", data=data)
+
+        if idx % 5 == 0:
+            print(f"Updated Task Progress p/ o idx {idx}")
+            TaskProgress.update_task_progress()
+
 
 @celery_app.task(
     name='regulamento_concorrencia.generate_document',
