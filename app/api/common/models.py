@@ -7,6 +7,9 @@ CeleryTask = Base.classes.tarefas_celery
 Property, WalletProperty, Wallet = Base.classes.imovel, Base.classes.carteira_imovel, \
     Base.classes.carteira
 
+PropertyAddress, Address = Base.classes.imovel_endereco, Base.classes.endereco
+City = Base.classes.cidade
+
 WalletSchedule, Schedule = Base.classes.carteira_cronograma, Base.classes.cronograma
 
 WalletManager, Manager = Base.classes.carteira_gestor, Base.classes.gestor
@@ -23,3 +26,5 @@ Document, DocumentRevision, WalletDocument = Base.classes.documento, Base.classe
 Usuario = Base.classes.usuario
 
 CertificadoVendaLogs = Base.classes.certificados_venda_logs
+
+PropertyHistory, WalletHistory = Base.classes.imovel_history, Base.classes.carteira_history
