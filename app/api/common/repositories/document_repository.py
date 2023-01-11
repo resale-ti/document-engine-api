@@ -19,7 +19,7 @@ class DocumentRepository(DBSessionContext):
                 .join(Wallet, WalletDocument.carteira_id == Wallet.id) \
                 .join(WalletManager, Wallet.id == WalletManager.carteira_id) \
                 .join(Manager, WalletManager.gestor_id == Manager.id) \
-                .filter(or_(Document.documento_status == None, Document.documento_status != "deleted"),
+                .filter(Document.documento_status.not_in(("failed", "deleted")),
                         Wallet.id == wallet_id,
                         Document.categoria_id == "regulamento") \
                 .order_by(Document.data.desc()).all()
@@ -31,6 +31,12 @@ class DocumentRepository(DBSessionContext):
             inactive = session.execute(update(Document).
                                        where(Document.id.in_(docs)).
                                        values(documento_status='inactive'))
+
+    def failed_regulamento(self, document_id: str) -> None:
+        with self.get_session_scope() as session:
+            failed = session.execute(update(Document).
+                                       where(Document.id == document_id).
+                                       values(documento_status='failed'))
 
 
     def get_document_revision(self, document_id):

@@ -2,6 +2,7 @@ from celery import Task
 from core.celery import celery_app
 from api.task_control.repositories import TaskControlRepository
 from datetime import timedelta
+import json
 
 
 class TaskControlServices:
@@ -82,6 +83,7 @@ class TaskControlServices:
                                           requester_id=task_request.requester_id,
                                           origin_application=task_request.origin_application,
                                           item_origem_id=task_request.id_obj,
-                                          manager_id=task_request.manager_id)
+                                          manager_id=task_request.manager_id,
+                                          payload=json.dumps(dict(task_request), indent=4, sort_keys=True, default=str))
 
         return task
