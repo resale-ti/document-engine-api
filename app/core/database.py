@@ -19,7 +19,7 @@ metadata = MetaData()
 # such as 'only' to limit what tables we look at...
 metadata.reflect(engine, only=['imovel', 'carteira_imovel', 'qualificacao', 'carteira', 'carteira_cronograma', 'cronograma',
                                'tarefas_celery', 'carteira_gestor', 'gestor', 'disputa_wuzu', 'carteira_formas_pagamento',
-                               'carteira_condicoes_pagamento', 'carteira_parcelas', 'documento',
-                               'documento_revisao', 'carteira_documento', 'usuario', 'certificados_venda_logs'])
+                               'carteira_condicoes_pagamento', 'carteira_parcelas', 'documento', 'gerenciador',
+                               'documento_revisao', 'carteira_documento', 'usuario', 'certificados_venda_logs', 'cronograma_canal_venda'])
 
 Base = automap_base(metadata=metadata)

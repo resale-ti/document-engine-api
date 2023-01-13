@@ -9,8 +9,7 @@ class ContractBaseSchema(BaseModel):
     requester_id: str
     origin_application: str
     manager_id: Optional[str] = None
-
-
+    
 class RegulamentoSchema(ContractBaseSchema):
     data_inicio: str
 
@@ -24,4 +23,8 @@ class RegulamentoSchema(ContractBaseSchema):
             raise ValueError("A data_inicio deve conter a seguinte formatação: {%d-%m-%Y %H:%M}")
 
 class CertificadoVendaSchema(ContractBaseSchema):
+    property_id: str
+    
+    
+class EditalSchema(ContractBaseSchema):
     property_id: str

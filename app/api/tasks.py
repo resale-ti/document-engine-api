@@ -79,3 +79,14 @@ def generate_document(task_request: dict) -> str:
     Contract.generate_contract(contract_type=contract_type, data=task_request)
 
     # regulamento_cv vai ser chamado aqui passando a carteira e ele se vira pra lá
+    
+@celery_app.task(
+    name='edital.generate_document',
+    base=CallbackTask,
+)
+def generate_document(task_request: dict) -> str:
+    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 1})
+
+    contract_type = "edital"
+
+    Contract.generate_contract(contract_type=contract_type, data=task_request)
