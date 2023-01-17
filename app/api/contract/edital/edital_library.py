@@ -1,4 +1,5 @@
 from api.common.repositories.document_repository import DocumentRepository
+from api.common.repositories.manager_repository import ManagerRepository
 from datetime import date, datetime
 from utils.mail import Mail
 
@@ -6,50 +7,28 @@ from utils.mail import Mail
 class EditalLibrary:
 
     def inactive_documents_from_wallet_id(self, wallet_id, document_id):
-        regulamentos = DocumentRepository().get_wallet_regulamento(wallet_id=wallet_id)
-
-        docs = []
-        for regulamento in regulamentos:
-            if regulamento.id != document_id:
-                docs.append(regulamento.id)
-
-        if len(docs) >= 1:
-            DocumentRepository().inactive_many_documents(tuple(docs))
+        return
 
     def send_approved_document_email(self, wallet_id, document_id, doc_stream):
-        document_revision = DocumentRepository(
-        ).get_document_revision(document_id=document_id)
-
-        regulamento = DocumentRepository().get_wallet_regulamento_approved(
-            wallet_id=wallet_id, document_id=document_id)
-
-        data_email = self._get_data_email(regulamento, doc_stream)
-
-        # send mail propriamente dito - adaptar tudo isso ai
-        mail = Mail(**data_email)
-        mail.send_template_mail()
+        return
 
     def _get_data_email(self, regulamento, doc_stream) -> dict:
-        template_name = "PGI0032 - Regulamento ativo"
-        subject = f"Regulamento Ativo - Melhor Proposta - {regulamento.disputa_id} - {regulamento.manager_name} - {date.today().strftime('%d/%m/%Y')}"
-        to = [{'email': 'wesley.gurgel@resale.com.br'}]
-        variables = [
-            {"name": "NOME_GESTOR", "content": regulamento.manager_name},
-            {"name": "ID_CARTEIRA", "content": regulamento.codigo},
-            {"name": "NOME_CARTEIRA", "content": regulamento.wallet_name},
-            {"name": "N_DISPUTA", "content": regulamento.disputa_id},
-            {"name": "DATA_HORA", "content": datetime.now().strftime('%d/%m/%Y %H:%M:%S')}]
+        return
+        
+    @staticmethod
+    def _get_tx_servico_min_max(imovel):
+        is_cat_venda_tx_servico = (imovel.cat_venda_tx_servico_min and imovel.cat_venda_tx_servico_max)
+        taxa_servico_minima = imovel.gestor_tx_servico_min if imovel.gestor_tx_servico_min else 0
 
-        attachments = [{"type": "application/pdf",
-                        "name": regulamento.documento_nome,
-                        "content": doc_stream.decode('utf-8')}]
+        tx_servico_min = imovel.cat_venda_tx_servico_min if is_cat_venda_tx_servico else taxa_servico_minima
+        tx_servico_max = imovel.cat_venda_tx_servico_max if is_cat_venda_tx_servico else 0
 
         return {
-            "template_name": template_name,
-            "to": to,
-            "subject": subject,
-            "variables": variables,
-            "from_name": 'Pagimovel',
-            "from_email": 'contato@pagimovel.com.br',
-            "attachments": attachments
+            "tx_servico_min": tx_servico_min,
+            "tx_servico_max": tx_servico_max
         }
+    
+    @staticmethod
+    def define_tx_servico_min_max(imovel_id):
+        return EditalLibrary._get_tx_servico_min_max(ManagerRepository().get_taxa_servico())
+

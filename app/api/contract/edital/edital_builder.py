@@ -165,9 +165,9 @@ class EditalBuilder(ContractBuilderBase):
                 if indexador:
                     installments_payment_desc = installments_payment_desc + f" + {indexador}"
         
-        # arr_imovel_txs_servico_min_max = propertysalescategory_library->definetxServicoMinMax(properties[0].get('imovel_id'))
-        # taxa_minima = helper.number_format_money(arr_imovel_txs_servico_min_max["tx_servico_min"]);
-        # taxa_maxima = helper.number_format_money(arr_imovel_txs_servico_min_max["tx_servico_max"]);            
+        dict_tx_servico = EditalLibrary.define_tx_servico_min_max(properties[0].get('imovel_id'))
+        taxa_minima = helper.number_format_money(dict_tx_servico.get("tx_servico_min"))
+        taxa_maxima = helper.number_format_money(dict_tx_servico.get("tx_servico_max"))            
                     
 
         edital_facade = EditalFacade(
