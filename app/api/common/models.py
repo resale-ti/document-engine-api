@@ -13,6 +13,9 @@ WalletManager, Manager = Base.classes.carteira_gestor, Base.classes.gestor
 
 ScheduleSalesChannel, SalesChannel = Base.classes.cronograma_canal_venda, Base.classes.canal_venda
 
+ManagerSalesCategory = Base.classes.gestor_categoria_venda
+ManagerProperty = Base.classes.imovel_gestor
+
 Management = Base.classes.gerenciador
 
 DisputaWuzu = Base.classes.disputa_wuzu

@@ -1,11 +1,11 @@
 from api.contract.contract_builder_base import ContractBuilderBase
 from api.common.repositories.wallet_repository import WalletRepository
-from api.common.repositories.seller_repository import SellerRepository
+from api.common.repositories.payment_repository import PaymentRepository
 from api.common.repositories.property_repository import PropertyRepository
 from api.common.repositories.qualification_repository import QualificationRepository
 from api.common.repositories.property_auction_repository import PropertyAuctionRepository
 from api.common.repositories.manager_repository import ManagerRepository
-from api.contract.edital.edital_helpers import set_property_valor
+import api.contract.edital.edital_helpers as helper
 from api.contract.edital.edital_facade import EditalFacade
 from api.contract.edital.edital_factory import EditalFactory
 from api.contract.edital.edital_library import EditalLibrary
@@ -23,13 +23,12 @@ class EditalBuilder(ContractBuilderBase):
     def __init__(self, data: dict) -> None:
         super().__init__()
 
-        if not "id_obj" in data:
+        if "id_obj" in data:
             raise Exception("[ERROR]: Missing wallet_id")
 
-        self.wallet_id = data.get("id_obj")
+        self.wallet_id = data.id_obj
         self.manager = ()
-        self.requester_id = data.get("requester_id")
-        self.data_inicio_regulamento = data.get("data_inicio")
+        self.requester_id = data.requester_id
 
     def build(self) -> None:
         #update_task_progress(current=1, total=5)
@@ -72,7 +71,7 @@ class EditalBuilder(ContractBuilderBase):
         return {
             "nome_doc": doc_name,
             "documento_nome": doc_name + ".pdf",
-            "categoria_id": "regulamento",
+            "categoria_id": "edital",
             "file_mime_type": "application/pdf",
             "file": file_bytes_b64.decode('utf-8'),
             "tipo_exibicao": "publico",
@@ -81,40 +80,100 @@ class EditalBuilder(ContractBuilderBase):
         }
 
     def __get_documents_objects_list(self, data):
-        regulamento_documents_factory = EditalFactory(
+        edital_documents_factory = EditalFactory(
         ).get_instance(self.wallet_id, data)
 
-        return regulamento_documents_factory
+        return edital_documents_factory
 
     def __get_contract_data(self):
         self.manager = ManagerRepository().get_manager_by_wallet_id(self.wallet_id)
-
         wallet = WalletRepository().get_wallet_details(self.wallet_id)
+        
+        wallet_schedule = WalletRepository().get_schedule_by_wallet(self.wallet_id)
 
-        properties = PropertyRepository().get_properties_wallet(self.wallet_id)
-        properties = [set_property_valor(
-            dict(property), self.wallet_id) for property in properties]
-        properties = sorted(
-            properties, key=lambda p: p['lote'] if p['lote'] else "", reverse=True)
+        properties = PropertyRepository().get_properties_wallet_to_leilao(self.wallet_id)
 
-        payment_methods = SellerRepository().get_payment_method(
+        payment_methods = PaymentRepository().get_payment_method(
             payment_form_id=wallet.forma_pagamento_id)
-        qualification = QualificationRepository(
-        ).fetch_qualifications_of_manager(manager=self.manager.id)
-
+        
+        in_cash_payment_desc = ''
         for p in payment_methods:
             if (p.get('tipo_condicao') == 'parcelado'):
-                p['installments_db'] = SellerRepository(
-                ).get_payment_installments(p.get('id'))
+                cash_payment_text = f" {p.get('a_vista_complemento_texto')}" if p.get('a_vista_complemento_texto') else ''
+                parceled_payment_text = f"  {p.get('parcelado_complemento_texto')}" if p.get('parcelado_complemento_texto') else ''
+                financing_payment_text = f"  {p.get('financiamento_complemento_texto')}" if p.get('financiamento_complemento_texto') else ''
 
-        regulamento_dates = {"data_inicio": self.data_inicio_regulamento,
-                             "data_fim": properties[0].get("data_limite")}
+            if  p.get('tipo_condicao') == 'vista':
+                condition_type_in_cash = 'X'
+
+                if p.get('porcentagem_sinal', 0) > 0: 
+                    in_cash_payment_desc = in_cash_payment_desc + helper.number_format(p.get('porcentagem_sinal', '0')) + \
+                    r'% de entrada, '
+                
+                if  p.get('porcentagem_ccv', 0) > 0:
+                    in_cash_payment_desc = in_cash_payment_desc + helper.number_format(p.get('porcentagem_ccv', '0')) + \
+                    r'% do pagamento na emissão do CCV (Contrato de Compra e Venda)'
+                
+                if  p.get('porcentagem_escritura', 0) > 0:
+                    in_cash_payment_desc = in_cash_payment_desc + ', ' + helper.number_format(p.get('porcentagem_escritura', '0')) + \
+                        r'% na escritura'
+                
+                if  p.get('a_vista_desconto', 0) > 0:
+                    in_cash_payment_desc = in_cash_payment_desc + ', c/ ' + helper.number_format(p.get('a_vista_desconto', '0')) + \
+                        r'% de desconto sobre o valor do lance vencedor'
+
+            if p.get('tipo_condicao') == 'financiado': 
+                condition_type_financiado = 'X'
+
+                if  p.get('porcentagem_entrada_financiamento', 0) > 0:
+                    financing_payment_text = helper.number_format(p.get('porcentagem_entrada_financiamento')) + r'% de entrada'    
+            
+
+            if p.get('tipo_condicao') == 'parcelado': 
+                condition_type_installments = 'X'
+                payment_installments = PaymentRepository().get_payment_installments(payment_condition_id=p.get('id'))
+
+                if payment_installments[0].get('qtd_fixa'):
+                    sorted(payment_installments, key=lambda x: x.get('qtd_fixa'), reverse=True)
+                else:
+                    sorted(payment_installments, key=lambda x: x.get('qtd_maxima'), reverse=True)
+                    
+                payment_installments = payment_installments[0]
+
+                entry_percent = payment_installments.get('porcentagem_entrada', '0')
+
+                installments_payment_desc = helper.number_format(entry_percent) + r'% de entrada e '
+
+                interest_period = payment_installments.get('periodo_juros') if payment_installments.get('periodo_juros') else 'a.m.'
+                interest_rate = ((payment_installments.get('tx_juros') if payment_installments.get('tx_juros') else 0) * 100) / 100
+
+                correction_period = payment_installments.get('periodo_correcao') if payment_installments.get('periodo_correcao') else 'a.m.'
+                correction_rate = ((payment_installments.get('tx_correcao') if payment_installments.get('tx_correcao') else 0 ) * 100) / 100
+
+                indexador = helper.normalize_payment_method(payment_installments.get('indexador'))
+
+                if payment_installments.get('qtd_fixa') > 0:
+                    installments_payment_desc = f"{installments_payment_desc}saldo em até {payment_installments.get('qtd_fixa')} " 
+                    f"parcelas com juros de {helper.number_format(interest_rate)}% {interest_period}"
+                else:
+                    installments_payment_desc = f"{installments_payment_desc}saldo em até {payment_installments.get('qtd_maxima')} "  
+                    f"parcelas com juros de {helper.number_format(interest_rate)}% {interest_period}"
+
+                if correction_rate:
+                    installments_payment_desc = installments_payment_desc + f" + correção de {helper.number_format(correction_rate)}% {correction_period}"
+                
+                if indexador:
+                    installments_payment_desc = installments_payment_desc + f" + {indexador}"
+        
+        # arr_imovel_txs_servico_min_max = propertysalescategory_library->definetxServicoMinMax(properties[0].get('imovel_id'))
+        # taxa_minima = helper.number_format_money(arr_imovel_txs_servico_min_max["tx_servico_min"]);
+        # taxa_maxima = helper.number_format_money(arr_imovel_txs_servico_min_max["tx_servico_max"]);            
+                    
 
         edital_facade = EditalFacade(
             wallet=wallet,
             payment_methods=payment_methods,
             properties=properties,
-            regulamento_dates=regulamento_dates,
-            qualificacao=qualification)
+            cronograma=wallet_schedule)
 
         return edital_facade.parse()
