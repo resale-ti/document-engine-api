@@ -30,5 +30,5 @@ class EditalLibrary:
     
     @staticmethod
     def define_tx_servico_min_max(imovel_id):
-        return EditalLibrary._get_tx_servico_min_max(ManagerRepository().get_taxa_servico())
+        return EditalLibrary._get_tx_servico_min_max(ManagerRepository().get_taxa_servico(imovel_id))
 

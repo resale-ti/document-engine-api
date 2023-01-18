@@ -8,12 +8,14 @@ today = date.today()
 
 class EditalFacade(ContractFacadeInterface):
 
-    def __init__(self, wallet, payment_methods, cronograma, properties, proponente):
+    def __init__(self, wallet, payment_methods, cronograma, properties, proponente, aux, manager_responsible):
         self.wallet = wallet
         self.payment_methods = payment_methods
         self.properties = properties
         self.cronograma = cronograma
         self.proponente = proponente
+        self.aux = aux
+        self.manager_responsible = manager_responsible
 
     def parse(self) -> dict:
         base_data = self.__get_base_data()

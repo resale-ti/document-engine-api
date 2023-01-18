@@ -27,4 +27,5 @@ class CertificadoVendaSchema(ContractBaseSchema):
     
     
 class EditalSchema(ContractBaseSchema):
-    property_id: str
+    contact_id: str
+    manager_charge_id: str

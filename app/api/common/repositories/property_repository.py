@@ -1,6 +1,7 @@
 from api.common.database_common import DBSessionContext
 from api.common.models import Wallet, Property, Manager, Schedule, DisputaWuzu, WalletProperty, WalletSchedule, WalletManager
 from sqlalchemy import func, and_, or_
+from api.common.helpers import transform_dict
 
 
 class PropertyRepository(DBSessionContext):
@@ -120,4 +121,4 @@ class PropertyRepository(DBSessionContext):
                         and_(Schedule.data_inicio <= func.current_date(), Schedule.data_final >= func.current_date())) \
                 .group_by(Property.id) 
 
-            return properties
+            return transform_dict(properties)
