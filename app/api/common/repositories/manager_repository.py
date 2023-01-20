@@ -44,12 +44,8 @@ class ManagerRepository(DBSessionContext):
     def get_responsible_manager(self, manager_id, manager_responsible_id):
         with self.get_session_scope() as session:
             manager = session.query(
-                ResponsibleManager.
-                Manager.nome,
-                Manager.slug,
-                Manager.url_whitelabel
-            ).select_from(ResponsibleManager) \
-                .filter(ResponsibleManager.gestor_id == manager_id, 
-                        and_(ResponsibleManager.in_charge_id == manager_responsible_id)).one()
-
+                ResponsibleManager.nome
+            ).filter(ResponsibleManager.gestor_id == manager_id,
+                     ResponsibleManager.id == manager_responsible_id).one()
+            
             return manager

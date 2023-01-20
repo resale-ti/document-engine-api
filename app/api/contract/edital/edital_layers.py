@@ -1,5 +1,5 @@
 from api.engine.document_interfaces import HTMLDocument, PDFDocument
-from api.contract.edital.edital_templates import DTBB001, EditalRodapeTituloDefault
+from api.contract.edital.edital_templates import DTBB001, EditalRodapeDefault
 
 
 #####################################################################################
@@ -17,7 +17,7 @@ class DTBB001Miolo(DTBB001, PDFDocument):
     current_layer = "miolo.pdf"
 
 
-class DTBB001Rodape(EditalRodapeTituloDefault):
+class DTBB001Rodape(EditalRodapeDefault):
 
     document_name = "DTBB001 - RODAPÉ"
     stylesheets = "edital.css"

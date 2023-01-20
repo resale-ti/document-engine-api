@@ -78,6 +78,7 @@ class WalletRepository(DBSessionContext):
                                        SalesChannel.nome.label('canal_venda_id'),
                                        #Responsável Nome
                                        SalesChannel.responsavel_nome,
+                                       SalesChannel.responsavel_email,
                                        SalesChannel.responsavel_cpf,
                                        SalesChannel.responsavel_telefone.label('canal_responsavel_telefone'),
                                        SalesChannel.uf_jucesp,

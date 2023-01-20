@@ -1,23 +1,16 @@
 from api.engine.document_interfaces import HTMLDocument
 from api.contract.edital import PATH_EDITAL_FOLDER
 
+class EditalRodapeImovelTituloDefault(HTMLDocument):
 
-#####################################################################################
-# ---------------------------------- DEFAULTS --------------------------------------#
-class EditalRodapeTituloDefault(HTMLDocument):
-
-    current_layer = "anexo-titulo.html"
-    folder = "utils"
+    folder = "DTBB001"
     template_path = PATH_EDITAL_FOLDER
-
-
+    current_layer = "imovel-titulo.html"
 class EditalRodapeImovelDefault(HTMLDocument):
 
-    folder = "utils"
+    folder = "DTBB001"
     template_path = PATH_EDITAL_FOLDER
 
     def __init__(self, imovel) -> None:
-        self.current_layer = "anexo-imovel.html"
+        self.current_layer = "imovel.html"
         self.data = imovel
-# ---------------------------------- DEFAULTS --------------------------------------#
-#####################################################################################

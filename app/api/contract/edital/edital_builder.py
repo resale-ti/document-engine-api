@@ -38,10 +38,14 @@ class EditalBuilder(ContractBuilderBase):
 
         #update_task_progress(current=2, total=5)
         file_bytes_b64 = self._generate_documents(documents_objects)
+        
+        return self.mount_data_admin_document(file_bytes_b64)
 
         #update_task_progress(current=3, total=5)
-        doc_data = self._handle_with_admin(file_bytes_b64=file_bytes_b64)
-        document_id = doc_data.get("document_id")
+        # doc_data = self._handle_with_admin(file_bytes_b64=file_bytes_b64)
+        # document_id = doc_data.get("document_id")
+        
+        
 
         #update_task_progress(current=4, total=5)
         #RegulamentoConcorrenciaLibrary().inactive_documents_from_wallet_id(
@@ -81,10 +85,7 @@ class EditalBuilder(ContractBuilderBase):
         }
 
     def __get_documents_objects_list(self, data):
-        edital_documents_factory = EditalFactory(
-        ).get_instance(self.wallet_id, data)
-
-        return edital_documents_factory
+        return EditalFactory().get_instance(self.wallet_id, data)
 
     def __get_contract_data(self):
         self.manager = ManagerRepository().get_manager_by_wallet_id(self.wallet_id)

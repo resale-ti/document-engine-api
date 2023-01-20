@@ -1,10 +1,10 @@
 import os
 from api.contract.edital import PATH_EDITAL_FOLDER
 from api.contract.contract_builder_interface import ContractBuilderInterface
-from api.contract.edital.edital_layers_default import EditalRodapeTituloDefault, EditalRodapeImovelDefault
+from api.contract.edital.edital_layers_default import EditalRodapeImovelDefault, EditalRodapeImovelTituloDefault
 
 
-class RegulamentoConcorrenciaRodapeDefault(ContractBuilderInterface):
+class EditalRodapeDefault(ContractBuilderInterface):
 
     template_path = PATH_EDITAL_FOLDER
 
@@ -15,8 +15,8 @@ class RegulamentoConcorrenciaRodapeDefault(ContractBuilderInterface):
     def instance_layers(self) -> None:
         current_layer = []
 
-        current_layer.append(EditalRodapeTituloDefault())
-
+        current_layer.append(EditalRodapeImovelTituloDefault())
+        
         for imovel in self.data.get('imoveis'):
             current_layer.append(
                 EditalRodapeImovelDefault(imovel))
