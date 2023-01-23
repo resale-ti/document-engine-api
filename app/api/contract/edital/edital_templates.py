@@ -48,3 +48,25 @@ class DTBB001(ContractBuilderInterface):
     def build(self, engine):
         file_bytes = engine._handle_with_instances(self)
         return file_bytes
+
+
+class DTBB002(DTBB001):
+    folder = "DTBB002"
+
+
+class DTBB003(DTBB001):
+    folder = "DTBB003"
+    
+
+class DTBB004(DTBB001):
+    folder = "DTBB004"
+    
+
+class DTBB005(DTBB001):
+    folder = "DTBB005"
+    
+
+class DTBB006(DTBB001):
+    folder = "DTBB006"
+    
+    

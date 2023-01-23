@@ -6,16 +6,16 @@ class EditalFactory:
         edital = data.get("edital")
 
         if edital == "DTBB001":
-            return [layer.DTBB001Capa(wallet_id, data), layer.DTBB001Miolo(wallet_id, data), layer.DTBB001Rodape()]
-        elif edital == "DTBB002":
             return [layer.DTBB001Capa(wallet_id, data), layer.DTBB001Miolo(wallet_id, data), layer.DTBB001Rodape(wallet_id, data)]
+        elif edital == "DTBB002":
+            return [layer.DTBB002Capa(wallet_id, data), layer.DTBB002Miolo(wallet_id, data), layer.DTBB002Rodape(wallet_id, data)]
         elif edital == "DTBB003":
-            return [layer.DTBB001Capa(wallet_id, data), layer.DTBB001Miolo(wallet_id, data), layer.DTBB001Rodape()]
+            return [layer.DTBB003Capa(wallet_id, data), layer.DTBB003Miolo(wallet_id, data), layer.DTBB003Rodape(wallet_id, data)]
         elif edital == "DTBB004":
-            return [layer.DTBB001Capa(wallet_id, data), layer.DTBB001Miolo(wallet_id, data), layer.DTBB001Rodape()]
+            return [layer.DTBB004Capa(wallet_id, data), layer.DTBB004Miolo(wallet_id, data), layer.DTBB004Rodape(wallet_id, data)]
         elif edital == "DTBB005":
-            return [layer.DTBB001Capa(wallet_id, data), layer.DTBB001Miolo(wallet_id, data), layer.DTBB001Rodape()]
+            return [layer.DTBB005Capa(wallet_id, data), layer.DTBB005Rodape(wallet_id, data)]
         elif edital == "DTBB006":
-            return [layer.DTBB001Capa(wallet_id, data), layer.DTBB001Miolo(wallet_id, data), layer.DTBB001Rodape()]
+            return [layer.DTBB006Capa(wallet_id, data), layer.DTBB006Miolo(wallet_id, data), layer.DTBB006Rodape(wallet_id, data)]
 
         return ""
