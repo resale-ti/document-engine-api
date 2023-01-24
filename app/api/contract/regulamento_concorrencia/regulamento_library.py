@@ -40,8 +40,7 @@ class RegulamentoConcorrenciaLibrary:
         variables = [
             {"name": "NOME_GESTOR", "content": regulamento.manager_name},
             {"name": "ID_CARTEIRA", "content": regulamento.codigo},
-            {"name": "NOME_disputaA", "content": regulamento.wallet_name},
-            {"name": "N_DISPUTA", "content": regulamento.disputa_id},
+            {"name": "NOME_disputa", "content": regulamento.wallet_name},
             {"name": "DATA_HORA", "content": datetime.now().strftime('%d/%m/%Y %H:%M:%S')}]
 
         attachments = [{"type": "application/pdf",
