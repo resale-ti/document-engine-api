@@ -27,7 +27,7 @@ class RegulamentoConcorrenciaLibrary:
         mail.send_template_mail()
 
     def _get_data_email(self, regulamento, doc_stream) -> dict:
-        template_name = "PGI0025"
+        template_name = "PGI-0025"
         subject = f"Regulamento Ativo - Melhor Proposta - {regulamento.disputa_id} - {regulamento.manager_name} - {date.today().strftime('%d/%m/%Y')}"
 
         if os.environ.get("STAGE").upper() == "PROD":
