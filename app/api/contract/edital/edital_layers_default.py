@@ -7,6 +7,9 @@ class EditalDTBB001RodapeTituloDefault(HTMLDocument):
     current_layer = "imovel-titulo.html"
     folder = "DTBB001"
     template_path = PATH_EDITAL_FOLDER
+    
+    def __init__(self, imovel) -> None:
+        self.data = imovel
 
 
 class EditalDTBB001RodapeImovelDefault(HTMLDocument):
@@ -23,6 +26,9 @@ class EditalDTBB002RodapeTituloDefault(HTMLDocument):
     current_layer = "imovel-titulo.html"
     folder = "DTBB002"
     template_path = PATH_EDITAL_FOLDER
+    
+    def __init__(self, imovel) -> None:
+        self.data = imovel
 
 
 class EditalDTBB002RodapeImovelDefault(HTMLDocument):
@@ -39,6 +45,9 @@ class EditalDTBB003RodapeTituloDefault(HTMLDocument):
     current_layer = "imovel-titulo.html"
     folder = "DTBB003"
     template_path = PATH_EDITAL_FOLDER
+    
+    def __init__(self, imovel) -> None:
+        self.data = imovel
 
 
 class EditalDTBB003RodapeImovelDefault(HTMLDocument):
@@ -56,6 +65,9 @@ class EditalDTBB004RodapeTituloDefault(HTMLDocument):
     current_layer = "imovel-titulo.html"
     folder = "DTBB004"
     template_path = PATH_EDITAL_FOLDER
+    
+    def __init__(self, imovel) -> None:
+        self.data = imovel
 
 
 class EditalDTBB004RodapeImovelDefault(HTMLDocument):
@@ -73,6 +85,9 @@ class EditalDTBB005RodapeTituloDefault(HTMLDocument):
     current_layer = "imovel-titulo.html"
     folder = "DTBB005"
     template_path = PATH_EDITAL_FOLDER
+    
+    def __init__(self, imovel) -> None:
+        self.data = imovel
 
 
 class EditalDTBB005RodapeImovelDefault(HTMLDocument):
@@ -90,6 +105,9 @@ class EditalDTBB006RodapeTituloDefault(HTMLDocument):
     current_layer = "imovel-titulo.html"
     folder = "DTBB006"
     template_path = PATH_EDITAL_FOLDER
+    
+    def __init__(self, imovel) -> None:
+        self.data = imovel
 
 
 class EditalDTBB006RodapeImovelDefault(HTMLDocument):

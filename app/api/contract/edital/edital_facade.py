@@ -33,7 +33,7 @@ class EditalFacade(ContractFacadeInterface):
             'nome_leiloeiro_oficial_c': self.cronograma.canal_venda_id,
             'numero_leilao_c': self.wallet.numero_leilao,
             'person_in_charge': self.manager_responsible.nome if self.manager_responsible else "",
-            'date': self.properties[0].get('data_limite').strftime("%m/%d/%Y") if self.properties[0].get('data_limite') else self.properties[0].get('data_primeiro_leilao_data').strftime("%m/%d/%Y"),
+            'date': self.properties[0].get('data_limite').strftime("%d/%m/%Y") if self.properties[0].get('data_limite') else self.properties[0].get('data_primeiro_leilao_data').strftime("%d/%m/%Y"),
             'time': self.properties[0].get('data_limite').strftime("%H:%M") if self.properties[0].get('data_limite') else self.properties[0].get('data_primeiro_leilao_data').strftime("%H:%M"),
             'site_c': self.cronograma.site,
             'nome_leiloeiro_oficial_c': self.cronograma.responsavel_nome,

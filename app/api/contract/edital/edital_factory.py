@@ -8,7 +8,7 @@ class EditalFactory:
         if edital == "DTBB001":
             return [layer.DTBB001Capa(wallet_id, data), layer.DTBB001Miolo(wallet_id, data), layer.DTBB001Rodape(wallet_id, data)]
         elif edital == "DTBB002":
-            return [layer.DTBB003Capa(wallet_id, data), layer.DTBB003Miolo(wallet_id, data), layer.DTBB003Rodape(wallet_id, data)]
+            return [layer.DTBB004Capa(wallet_id, data), layer.DTBB004Miolo(wallet_id, data), layer.DTBB004Rodape(wallet_id, data)]
         elif edital == "DTBB003":
             return [layer.DTBB003Capa(wallet_id, data), layer.DTBB003Miolo(wallet_id, data), layer.DTBB003Rodape(wallet_id, data)]
         elif edital == "DTBB004":
