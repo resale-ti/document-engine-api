@@ -1,10 +1,10 @@
 import os
 from api.contract.edital import PATH_EDITAL_FOLDER
 from api.contract.contract_builder_interface import ContractBuilderInterface
-from api.contract.edital.edital_layers_default import EditalRodapeImovelDefault, EditalRodapeImovelTituloDefault
+import api.contract.edital.edital_layers_default as ly
 
 
-class EditalRodapeDefault(ContractBuilderInterface):
+class EditalDTBB001RodapeDefault(ContractBuilderInterface):
 
     template_path = PATH_EDITAL_FOLDER
 
@@ -15,11 +15,11 @@ class EditalRodapeDefault(ContractBuilderInterface):
     def instance_layers(self) -> None:
         current_layer = []
 
-        current_layer.append(EditalRodapeImovelTituloDefault())
+        current_layer.append(ly.EditalDTBB001RodapeTituloDefault())
         
         for imovel in self.data.get('imoveis'):
             current_layer.append(
-                EditalRodapeImovelDefault(imovel))
+                ly.EditalDTBB001RodapeImovelDefault(imovel))
 
         return current_layer
 
@@ -33,6 +33,71 @@ class EditalRodapeDefault(ContractBuilderInterface):
         default_style = os.path.join(self.template_path, self.stylesheets)
 
         return engine.generate_pdf_byte(html=html, default_style=default_style)
+    
+class EditalDTBB002RodapeDefault(EditalDTBB001RodapeDefault):
+
+    def instance_layers(self) -> None:
+        current_layer = []
+
+        current_layer.append(ly.EditalDTBB002RodapeTituloDefault())
+        
+        for imovel in self.data.get('imoveis'):
+            current_layer.append(
+                ly.EditalDTBB002RodapeImovelDefault(imovel))
+
+        return current_layer
+    
+class EditalDTBB003RodapeDefault(EditalDTBB001RodapeDefault):
+
+    def instance_layers(self) -> None:
+        current_layer = []
+
+        current_layer.append(ly.EditalDTBB003RodapeTituloDefault())
+        
+        for imovel in self.data.get('imoveis'):
+            current_layer.append(
+                ly.EditalDTBB003RodapeImovelDefault(imovel))
+
+        return current_layer
+    
+class EditalDTBB004RodapeDefault(EditalDTBB001RodapeDefault):
+
+    def instance_layers(self) -> None:
+        current_layer = []
+
+        current_layer.append(ly.EditalDTBB004RodapeTituloDefault())
+        
+        for imovel in self.data.get('imoveis'):
+            current_layer.append(
+                ly.EditalDTBB004RodapeImovelDefault(imovel))
+
+        return current_layer
+    
+class EditalDTBB005RodapeDefault(EditalDTBB001RodapeDefault):
+
+    def instance_layers(self) -> None:
+        current_layer = []
+
+        current_layer.append(ly.EditalDTBB005RodapeTituloDefault())
+        
+        for imovel in self.data.get('imoveis'):
+            current_layer.append(
+                ly.EditalDTBB005RodapeImovelDefault(imovel))
+
+        return current_layer
+    
+class EditalDTBB006RodapeDefault(EditalDTBB001RodapeDefault):
+
+    def instance_layers(self) -> None:
+        current_layer = []
+
+        current_layer.append(ly.EditalDTBB006RodapeTituloDefault())
+        
+        for imovel in self.data.get('imoveis'):
+            current_layer.append(
+                ly.EditalDTBB006RodapeImovelDefault(imovel))
+
+        return current_layer
 
 
 class DTBB001(ContractBuilderInterface):

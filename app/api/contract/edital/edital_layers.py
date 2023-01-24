@@ -1,23 +1,23 @@
 from api.engine.document_interfaces import HTMLDocument, PDFDocument
-from api.contract.edital.edital_templates import DTBB001, DTBB002, DTBB003, DTBB004, DTBB005, DTBB006, EditalRodapeDefault
+import api.contract.edital.edital_templates as tp
 
 
 #####################################################################################
 # ------------------------------------- DTBB001 -------------------------------------#
 
-class DTBB001Capa(DTBB001, HTMLDocument):
+class DTBB001Capa(tp.DTBB001, HTMLDocument):
 
     document_name = "DTBB001 - CAPA"
     current_layer = "capa.html"
 
 
-class DTBB001Miolo(DTBB001, PDFDocument):
+class DTBB001Miolo(tp.DTBB001, PDFDocument):
 
     document_name = "DTBB001 - MIOLO"
     current_layer = "miolo.pdf"
 
 
-class DTBB001Rodape(EditalRodapeDefault):
+class DTBB001Rodape(tp.EditalDTBB001RodapeDefault):
 
     document_name = "DTBB001 - RODAPÉ"
     stylesheets = "edital.css"
@@ -30,19 +30,19 @@ class DTBB001Rodape(EditalRodapeDefault):
 #####################################################################################
 # ------------------------------------- DTBB002 -------------------------------------#
 
-class DTBB002Capa(DTBB002, HTMLDocument):
+class DTBB002Capa(tp.DTBB002, HTMLDocument):
 
     document_name = "DTBB002 - CAPA"
     current_layer = "capa.html"
 
 
-class DTBB002Miolo(DTBB001, PDFDocument):
+class DTBB002Miolo(tp.DTBB001, PDFDocument):
 
     document_name = "DTBB002 - MIOLO"
     current_layer = "miolo.pdf"
 
 
-class DTBB002Rodape(EditalRodapeDefault):
+class DTBB002Rodape(tp.EditalDTBB002RodapeDefault):
 
     document_name = "DTBB002 - RODAPÉ"
     stylesheets = "edital.css"
@@ -55,19 +55,19 @@ class DTBB002Rodape(EditalRodapeDefault):
 #####################################################################################
 # ------------------------------------- DTBB003 -------------------------------------#
 
-class DTBB003Capa(DTBB003, HTMLDocument):
+class DTBB003Capa(tp.DTBB003, HTMLDocument):
 
     document_name = "DTBB003 - CAPA"
     current_layer = "capa.html"
 
 
-class DTBB003Miolo(DTBB003, PDFDocument):
+class DTBB003Miolo(tp.DTBB003, PDFDocument):
 
     document_name = "DTBB003 - MIOLO"
     current_layer = "miolo.pdf"
 
 
-class DTBB003Rodape(EditalRodapeDefault):
+class DTBB003Rodape(tp.EditalDTBB003RodapeDefault):
 
     document_name = "DTBB003 - RODAPÉ"
     stylesheets = "edital.css"
@@ -80,19 +80,19 @@ class DTBB003Rodape(EditalRodapeDefault):
 #####################################################################################
 # ------------------------------------- DTBB004 -------------------------------------#
 
-class DTBB004Capa(DTBB004, HTMLDocument):
+class DTBB004Capa(tp.DTBB004, HTMLDocument):
 
     document_name = "DTBB004 - CAPA"
     current_layer = "capa.html"
 
 
-class DTBB004Miolo(DTBB004, PDFDocument):
+class DTBB004Miolo(tp.DTBB004, PDFDocument):
 
     document_name = "DTBB004 - MIOLO"
     current_layer = "miolo.pdf"
 
 
-class DTBB004Rodape(EditalRodapeDefault):
+class DTBB004Rodape(tp.EditalDTBB004RodapeDefault):
 
     document_name = "DTBB004 - RODAPÉ"
     stylesheets = "edital.css"
@@ -105,13 +105,13 @@ class DTBB004Rodape(EditalRodapeDefault):
 #####################################################################################
 # ------------------------------------- DTBB005 -------------------------------------#
 
-class DTBB005Capa(DTBB005, HTMLDocument):
+class DTBB005Capa(tp.DTBB005, HTMLDocument):
 
     document_name = "DTBB005 - CAPA"
     current_layer = "capa.html"
 
 
-class DTBB005Rodape(EditalRodapeDefault):
+class DTBB005Rodape(tp.EditalDTBB005RodapeDefault):
 
     document_name = "DTBB005 - RODAPÉ"
     stylesheets = "edital.css"
@@ -124,19 +124,19 @@ class DTBB005Rodape(EditalRodapeDefault):
 #####################################################################################
 # ------------------------------------- DTBB006 -------------------------------------#
 
-class DTBB006Capa(DTBB006, HTMLDocument):
+class DTBB006Capa(tp.DTBB006, HTMLDocument):
 
     document_name = "DTBB006 - CAPA"
     current_layer = "capa.html"
 
 
-class DTBB006Miolo(DTBB006, PDFDocument):
+class DTBB006Miolo(tp.DTBB006, PDFDocument):
 
     document_name = "DTBB001 - MIOLO"
     current_layer = "miolo.pdf"
 
 
-class DTBB006Rodape(EditalRodapeDefault):
+class DTBB006Rodape(tp.EditalDTBB006RodapeDefault):
 
     document_name = "DTBB006 - RODAPÉ"
     stylesheets = "edital.css"

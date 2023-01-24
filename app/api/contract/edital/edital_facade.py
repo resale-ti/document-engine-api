@@ -1,5 +1,6 @@
 import os
-from api.common.helpers import number_format
+from api.common.helpers import get_property_valor_venda
+from api.contract.edital.edital_helpers import number_format_money
 from api.contract.contract_builder_interface import ContractFacadeInterface
 from datetime import datetime
 
@@ -69,10 +70,12 @@ class EditalFacade(ContractFacadeInterface):
         for property in self.properties:
             data.append({
                 "lote_c": property.get("lote") if property.get("lote") else "-",
-                "id_banco_c": property.get("id_banco"),
-                "legal_description_c": property.get("legal_description"),
+                "id_banco_c": property.get("id_no_banco") if property.get("id_no_banco") else "",
+                "legal_description_c": property.get("descricao_legal_description") if property.get("descricao_legal_description") else "",
                 "consideracoes_importantes_c": property.get("consideracoes_importantes"),
-                "valor_venda": f"R$ {property.get('valor_venda')}"
+                "valor_venda": self.__return_sell_value(property),
+                "primeiro_leilao_valor_c": number_format_money(property.get('valor_primeiro_leilao_valor', 0)),
+                "segundo_leilao_valor_c": number_format_money(property.get('valor_segundo_leilao_valor', 0))
             })
         return data
 
@@ -83,6 +86,17 @@ class EditalFacade(ContractFacadeInterface):
 
         return ''
 
+    def __return_sell_value(self, property):
+        value = 0
+        dict_value = get_property_valor_venda(property.get('imovel_id'), self.wallet.id)
+        if dict_value:
+            value = dict_value.get('valor_venda')
+        
+        if value:
+            value = property.get('valor_proposto')
+            
+        return number_format_money(value)
+        
     @staticmethod
     def __month_in_full(month):
         if month:
