@@ -79,3 +79,15 @@ class PagimovelIntegration(object):
             "valor_venda_campanha": response_data.get("valor_venda_campanha"),
             "valor_avaliacao": response_data.get("valor_avaliacao")
         }
+    
+    def get_considerations(self, carteira_id: str, imovel_id: str) -> dict:
+        """
+        Obtem os valores com base no ID da carteira e o ID  do imóvel.
+        @param carteira_id: str com o ID da carteira.
+        @param imovel_id: str com o ID do imóvel.
+        @return: dict com os valores obtidos.
+        """
+        response_data = self.__get_data(carteira_id, imovel_id, "considerations")
+
+        return response_data.get('data', {}).get("considerations_full", "") if 'data' in response_data else ""
+        

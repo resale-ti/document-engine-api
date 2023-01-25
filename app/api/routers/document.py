@@ -62,7 +62,7 @@ async def generate_celery(payload: EditalSchema, response: Response) -> dict:
         #  })
 
         # return {'task': task.id, 'message': 'Solicitação recebida com sucesso!'}
-        return EditalBuilder(data=payload).build().get('file')
+        return EditalBuilder(data=payload).build()
     except Exception as err:
         return response_rollbar_handler(err, response)
     

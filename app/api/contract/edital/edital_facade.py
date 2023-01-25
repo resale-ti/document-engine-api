@@ -1,5 +1,5 @@
 import os
-from api.common.helpers import get_property_valor_venda
+from api.common.helpers import get_property_valor_venda, get_property_considerations_full
 from api.contract.edital.edital_helpers import number_format_money
 from api.contract.contract_builder_interface import ContractFacadeInterface
 from datetime import datetime
@@ -68,14 +68,18 @@ class EditalFacade(ContractFacadeInterface):
     def __get_imoveis_data(self) -> dict:
         data = []
         for property in self.properties:
+            considerations = get_property_considerations_full(property.get('imovel_id'), self.wallet.id)
             data.append({
                 "lote_c": property.get("lote") if property.get("lote") else "-",
                 "id_banco_c": property.get("id_no_banco") if property.get("id_no_banco") else "",
                 "legal_description_c": property.get("descricao_legal_description") if property.get("descricao_legal_description") else "",
-                "consideracoes_importantes_c": property.get("consideracoes_importantes"),
+                "consideracoes_importantes_c": considerations if considerations else property.get("consideracoes_importantes"),
                 "valor_venda": self.__return_sell_value(property),
                 "primeiro_leilao_valor_c": number_format_money(property.get('valor_primeiro_leilao_valor', 0)),
-                "segundo_leilao_valor_c": number_format_money(property.get('valor_segundo_leilao_valor', 0))
+                "segundo_leilao_valor_c": number_format_money(property.get('valor_segundo_leilao_valor', 0)),
+                "valor_proposto_c": self.__return_sell_value(property),
+	            "pgi_amount": number_format_money(property.get('pgi_amount', 0)),
+	            "valor_minimo_c": number_format_money(property.get('valor_proposto', 0) + property.get('pgi_amount', 0))
             })
         return data
 

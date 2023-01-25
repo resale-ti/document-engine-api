@@ -128,7 +128,7 @@ class DTBB006Capa(tp.DTBB006, HTMLDocument):
 
     document_name = "DTBB006 - CAPA"
     current_layer = "capa.html"
-
+    
 
 class DTBB006Miolo(tp.DTBB006, PDFDocument):
 

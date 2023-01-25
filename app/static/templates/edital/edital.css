@@ -368,6 +368,29 @@ html, body {
     p {
         font-size: 12px;
     }
+    .table_2 {
+        transform: scale(1.0); 
+        font-size: 11px;
+        border-bottom-color: #000;
+        border-bottom-style: solid;
+        border-bottom-width: 1pt;
+        border-collapse: collapse;
+        border-left-color: #000;
+        border-left-style: solid;
+        border-left-width: 1pt;
+        border-right-color: #000;
+        border-right-style: solid;
+        border-right-width: 1pt;
+        border-spacing: 2px;
+        border-top-color: #000;
+        border-top-style: solid;
+        border-top-width: 1pt;
+        text-indent: 0;
+    }
+    table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
 }
 
 
