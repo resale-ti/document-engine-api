@@ -21,17 +21,16 @@ class EditalBuilder(ContractBuilderBase):
 
     def __init__(self, data: dict) -> None:
         super().__init__()
-
-        if "id_obj" in data:
+        if "id_obj" not in data:
             raise Exception("[ERROR]: Missing wallet_id")
 
-        self.wallet_id = data.id_obj
+        self.wallet_id = data.get('id_obj', '0')
         self.manager = ()
         self.contacts = {}
         self.wallet = ()
-        self.requester_id = data.requester_id
-        self.contact_id = data.contact_id
-        self.manager_change_id = data.manager_charge_id
+        self.requester_id = data.get('requester_id', '0')
+        self.contact_id = data.get('contact_id', '0')
+        self.manager_change_id = data.get('manager_charge_id', '0')
 
     def build(self) -> None:
         TaskProgress.update_task_progress()

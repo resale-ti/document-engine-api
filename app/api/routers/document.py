@@ -1,7 +1,6 @@
 from fastapi import APIRouter, status, Response
 from api.contract.schemas import ContractBaseSchema, RegulamentoSchema, EditalSchema
 from api.task_control.services import TaskControlServices
-from api.contract.edital.edital_builder import EditalBuilder
 
 from utils.rollbar_handler import response_rollbar_handler
 
