@@ -1,19 +1,7 @@
-from api.common.repositories.document_repository import DocumentRepository
 from api.common.repositories.manager_repository import ManagerRepository
-from datetime import date, datetime
-from utils.mail import Mail
 
 
 class EditalLibrary:
-
-    def inactive_documents_from_wallet_id(self, wallet_id, document_id):
-        return
-
-    def send_approved_document_email(self, wallet_id, document_id, doc_stream):
-        return
-
-    def _get_data_email(self, regulamento, doc_stream) -> dict:
-        return
         
     @staticmethod
     def _get_tx_servico_min_max(imovel):

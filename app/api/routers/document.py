@@ -55,14 +55,13 @@ async def generate_celery(payload: ContractBaseSchema, response: Response) -> di
 @router.post("/edital", status_code=status.HTTP_200_OK)
 async def generate_celery(payload: EditalSchema, response: Response) -> dict:
     try:
-        # task = TaskControlServices.send_task({
-        #      'task_name': f'edital.generate_document',
-        #      'task_state': 'PENDING',
-        #      'task_request': payload
-        #  })
+        task = TaskControlServices.send_task({
+            'task_name': f'edital.generate_document',
+            'task_state': 'PENDING',
+            'task_request': payload
+        })
 
-        # return {'task': task.id, 'message': 'Solicitação recebida com sucesso!'}
-        return EditalBuilder(data=payload).build()
+        return {'task': task.task_id, 'message': 'Solicitação recebida com sucesso!'}
     except Exception as err:
         return response_rollbar_handler(err, response)
     

@@ -11,14 +11,13 @@ from api.contract.edital.edital_library import EditalLibrary
 from utils.admin_integrations.documents import AdminAPIDocuments
 from utils.admin_integrations.wallets import AdminAPIWallets
 from utils.admin_integrations.contacts import AdminAPIContacts
-from api.common.helpers import update_task_progress
-import time
+from api.task_control.progressbar import TaskProgress
 from datetime import date
 
 
 class EditalBuilder(ContractBuilderBase):
 
-    doc_name = "Edital"
+    doc_name = "Edital Leilão"
 
     def __init__(self, data: dict) -> None:
         super().__init__()
@@ -29,24 +28,25 @@ class EditalBuilder(ContractBuilderBase):
         self.wallet_id = data.id_obj
         self.manager = ()
         self.contacts = {}
+        self.wallet = ()
         self.requester_id = data.requester_id
         self.contact_id = data.contact_id
         self.manager_change_id = data.manager_charge_id
 
     def build(self) -> None:
-        #update_task_progress(current=1, total=5)
+        TaskProgress.update_task_progress()
         data = self.__get_contract_data()
+        
+        TaskProgress.update_task_progress()
         documents_objects = self.__get_documents_objects_list(data)
 
-        #update_task_progress(current=2, total=5)
+        TaskProgress.update_task_progress()
         file_bytes_b64 = self._generate_documents(documents_objects)
 
-        doc_data = self._handle_with_admin(file_bytes_b64=file_bytes_b64)
-        document_id = doc_data.get("document_id")
-
-        EditalLibrary().inactive_documents_from_wallet_id(
-            wallet_id=self.wallet_id, document_id=document_id)
-
+        TaskProgress.update_task_progress()
+        self._handle_with_admin(file_bytes_b64=file_bytes_b64)
+        
+        TaskProgress.update_task_progress()
 
     def _handle_with_admin(self, file_bytes_b64):
         doc_data = self.mount_data_admin_document(
@@ -69,7 +69,7 @@ class EditalBuilder(ContractBuilderBase):
         return doc_data
 
     def mount_data_admin_document(self, file_bytes_b64):
-        doc_name = f"{self.doc_name} - {self.manager.nome} - {date.today().strftime('%Y%m%d')}"
+        doc_name = f"{self.doc_name} - {self.wallet.numero_leilao} - {self.manager.nome} - {date.today().strftime('%m%Y')}"
 
         return {
             "nome_doc": doc_name,
@@ -77,7 +77,9 @@ class EditalBuilder(ContractBuilderBase):
             "categoria_id": "edital",
             "file_mime_type": "application/pdf",
             "file": file_bytes_b64.decode('utf-8'),
-            "usuario_responsavel_id": self.requester_id
+            "usuario_responsavel_id": self.requester_id,
+            "responsavel_gestor_id": self.manager_change_id,
+            "tipo_exibicao": "publico"
         }
 
     def __get_documents_objects_list(self, data):
@@ -88,11 +90,11 @@ class EditalBuilder(ContractBuilderBase):
         manager_responsible = ManagerRepository().get_responsible_manager(
             self.manager.id, self.manager_change_id)
         self.contacts = ContactRepository().get_contact_detail(self.contact_id)
-        wallet = WalletRepository().get_wallet_details(self.wallet_id)
+        self.wallet = WalletRepository().get_wallet_details(self.wallet_id)
         wallet_schedule = WalletRepository().get_schedule_by_wallet(self.wallet_id)
         properties = PropertyRepository().get_properties_wallet_to_leilao(self.wallet_id)
         payment_methods = PaymentRepository().get_payment_method(
-            payment_form_id=wallet.forma_pagamento_id)
+            payment_form_id=self.wallet.forma_pagamento_id)
         dict_aux = {}
 
         for p in payment_methods:
@@ -187,7 +189,7 @@ class EditalBuilder(ContractBuilderBase):
             dict_tx_servico.get("tx_servico_max"))
 
         edital_facade = EditalFacade(
-            wallet=wallet,
+            wallet=self.wallet,
             payment_methods=payment_methods,
             properties=properties,
             cronograma=wallet_schedule,

@@ -1,4 +1,3 @@
-import os
 from api.common.helpers import get_property_valor_venda, get_property_considerations_full
 from api.contract.edital.edital_helpers import number_format_money
 from api.contract.contract_builder_interface import ContractFacadeInterface

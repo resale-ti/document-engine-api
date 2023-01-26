@@ -1,9 +1,3 @@
-from api.common.helpers import get_property_valor_venda
-
-
-def set_property_valor(property, wallet_id):
-    return property
-
 def number_format(number):
     if number:
         return (str(round(number, 2))).replace(',', '').replace('.', ',')
@@ -13,29 +7,27 @@ def number_format_money(number):
     if number:
         return f'R$ {number_format(number)}'
     return 'R$ 0,00'
-    
-
 
 def normalize_payment_method(field):
-    if 'sim':
+    if field =='sim':
         return 'Sim'
-    elif 'nao':
+    elif field == 'nao':
         return 'Não'
-    elif 'price':
+    elif field == 'price':
         return 'PRICE'
-    elif 'sac':
+    elif field == 'sac':
         return 'SAC'
-    elif 'igpm':
+    elif field == 'igpm':
         return 'IGP-M'
-    elif 'ipca':
+    elif field == 'ipca':
         return 'IPCA'
-    elif 'tr':
+    elif field == 'tr':
         return 'TR'
-    elif 'outro':
+    elif field == 'outro':
         return 'Outro'
-    elif 'sacre':
+    elif field == 'sacre':
         return 'SACRE'
-    elif 'incc':
+    elif field == 'incc':
         return 'INCC'
     else:
         return ''
