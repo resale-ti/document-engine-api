@@ -36,7 +36,7 @@ class DTBB002Capa(tp.DTBB002, HTMLDocument):
     current_layer = "capa.html"
 
 
-class DTBB002Miolo(tp.DTBB001, PDFDocument):
+class DTBB002Miolo(tp.DTBB002, PDFDocument):
 
     document_name = "DTBB002 - MIOLO"
     current_layer = "miolo.pdf"
@@ -128,7 +128,7 @@ class DTBB006Capa(tp.DTBB006, HTMLDocument):
 
     document_name = "DTBB006 - CAPA"
     current_layer = "capa.html"
-    
+
 
 class DTBB006Miolo(tp.DTBB006, PDFDocument):
 

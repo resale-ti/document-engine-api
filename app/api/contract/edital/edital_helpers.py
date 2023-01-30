@@ -8,26 +8,18 @@ def number_format_money(number):
         return f'R$ {number_format(number)}'
     return 'R$ 0,00'
 
-def normalize_payment_method(field):
-    if field =='sim':
-        return 'Sim'
-    elif field == 'nao':
-        return 'Não'
-    elif field == 'price':
-        return 'PRICE'
-    elif field == 'sac':
-        return 'SAC'
-    elif field == 'igpm':
-        return 'IGP-M'
-    elif field == 'ipca':
-        return 'IPCA'
-    elif field == 'tr':
-        return 'TR'
-    elif field == 'outro':
-        return 'Outro'
-    elif field == 'sacre':
-        return 'SACRE'
-    elif field == 'incc':
-        return 'INCC'
-    else:
-        return ''
+def normalize_payment_method(field: str):
+    payment_methods = {
+        'sim': 'Sim',
+        'nao': 'Não',
+        'price': 'PRICE',
+        'sac': 'SAC',
+        'igpm': 'IGP-M',
+        'ipca': 'IPCA',
+        'tr':'TR',
+        'outro':'Outro',
+        'sacre':'SACRE',
+        'incc':'INCC'
+    }
+
+    return payment_methods.get(field, '')

@@ -94,38 +94,27 @@ class EditalFacade(ContractFacadeInterface):
         dict_value = get_property_valor_venda(property.get('imovel_id'), self.wallet.id)
         if dict_value:
             value = dict_value.get('valor_venda')
-        
+
         if value:
             value = property.get('valor_proposto')
-            
-        return number_format_money(value)
-        
-    @staticmethod
-    def __month_in_full(month):
-        if month:
-            if month == "01":
-                return 'Janeiro'
-            elif month == "02":
-                return 'Fevereiro'
-            elif month == "03":
-                return 'Março'
-            elif month == "04":
-                return 'Abril'
-            elif month == "05":
-                return 'Maio'
-            elif month == "06":
-                return 'Junho'
-            elif month == "07":
-                return 'Julho'
-            elif month == "08":
-                return 'Agosto'
-            elif month == "09":
-                return 'Setembro'
-            elif month == "10":
-                return 'Outubro'
-            elif month == "11":
-                return 'Novembro'
-            elif month == "12":
-                return 'Dezembro'
 
-        return ''
+        return number_format_money(value)
+
+    @staticmethod
+    def __month_in_full(month: str):
+        months = {
+            "01": 'Janeiro',
+            "02": 'Fevereiro',
+            "03": 'Março',
+            "04": 'Abril',
+            "05": 'Maio',
+            "06": 'Junho',
+            "07": 'Julho',
+            "08": 'Agosto',
+            "09": 'Setembro',
+            "10": 'Outubro',
+            "11": 'Novembro',
+            "12": 'Dezembro'
+        }
+
+        return months.get(month, '')

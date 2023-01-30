@@ -16,7 +16,7 @@ class EditalDTBB001RodapeDefault(ContractBuilderInterface):
         current_layer = []
 
         current_layer.append(ly.EditalDTBB001RodapeTituloDefault(self.data))
-        
+
         for imovel in self.data.get('imoveis'):
             current_layer.append(
                 ly.EditalDTBB001RodapeImovelDefault(imovel))
@@ -33,66 +33,66 @@ class EditalDTBB001RodapeDefault(ContractBuilderInterface):
         default_style = os.path.join(self.template_path, self.stylesheets)
 
         return engine.generate_pdf_byte(html=html, default_style=default_style)
-    
+
 class EditalDTBB002RodapeDefault(EditalDTBB001RodapeDefault):
 
     def instance_layers(self) -> None:
         current_layer = []
 
         current_layer.append(ly.EditalDTBB002RodapeTituloDefault(self.data))
-        
+
         for imovel in self.data.get('imoveis'):
             current_layer.append(
                 ly.EditalDTBB002RodapeImovelDefault(imovel))
 
         return current_layer
-    
+
 class EditalDTBB003RodapeDefault(EditalDTBB001RodapeDefault):
 
     def instance_layers(self) -> None:
         current_layer = []
 
         current_layer.append(ly.EditalDTBB003RodapeTituloDefault(self.data))
-        
+
         for imovel in self.data.get('imoveis'):
             current_layer.append(
                 ly.EditalDTBB003RodapeImovelDefault(imovel))
 
         return current_layer
-    
+
 class EditalDTBB004RodapeDefault(EditalDTBB001RodapeDefault):
 
     def instance_layers(self) -> None:
         current_layer = []
 
         current_layer.append(ly.EditalDTBB004RodapeTituloDefault(self.data))
-        
+
         for imovel in self.data.get('imoveis'):
             current_layer.append(
                 ly.EditalDTBB004RodapeImovelDefault(imovel))
 
         return current_layer
-    
+
 class EditalDTBB005RodapeDefault(EditalDTBB001RodapeDefault):
 
     def instance_layers(self) -> None:
         current_layer = []
 
         current_layer.append(ly.EditalDTBB005RodapeTituloDefault(self.data))
-        
+
         for imovel in self.data.get('imoveis'):
             current_layer.append(
                 ly.EditalDTBB005RodapeImovelDefault(imovel))
 
         return current_layer
-    
+
 class EditalDTBB006RodapeDefault(EditalDTBB001RodapeDefault):
 
     def instance_layers(self) -> None:
         current_layer = []
 
         current_layer.append(ly.EditalDTBB006RodapeTituloDefault(self.data))
-        
+
         for imovel in self.data.get('imoveis'):
             current_layer.append(
                 ly.EditalDTBB006RodapeImovelDefault(imovel))
@@ -121,17 +121,17 @@ class DTBB002(DTBB001):
 
 class DTBB003(DTBB001):
     folder = "DTBB003"
-    
+
 
 class DTBB004(DTBB001):
     folder = "DTBB004"
-    
+
 
 class DTBB005(DTBB001):
     folder = "DTBB005"
-    
+
 
 class DTBB006(DTBB001):
     folder = "DTBB006"
-    
-    
+
+

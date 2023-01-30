@@ -1,9 +1,10 @@
-from operator import and_
+from sqlalchemy import and_
 from api.common.database_common import DBSessionContext
 from api.common.models import Manager, WalletManager, ManagerProperty, ManagerSalesCategory, Property, ResponsibleManager
 
+
 class ManagerRepository(DBSessionContext):
-    def get_manager_by_wallet_id(self, wallet_id):
+    def get_manager_by_wallet_id(self, wallet_id: str):
         with self.get_session_scope() as session:
             manager = session.query(
                 Manager.id,
@@ -18,8 +19,10 @@ class ManagerRepository(DBSessionContext):
     def get_taxa_servico(self, property_id: str):
         with self.get_session_scope() as session:
             fee = session.query(
-                ManagerSalesCategory.taxa_servico_minima.label('cat_venda_tx_servico_min'),
-                ManagerSalesCategory.taxa_servico_maxima.label('cat_venda_tx_servico_max'),
+                ManagerSalesCategory.taxa_servico_minima.label(
+                    'cat_venda_tx_servico_min'),
+                ManagerSalesCategory.taxa_servico_maxima.label(
+                    'cat_venda_tx_servico_max'),
                 Manager.taxa_servico_minima.label('gestor_tx_servico_min'),
             ).select_from(Manager) \
                 .join(ManagerProperty, Manager.id == ManagerProperty.gestor_id) \
@@ -27,9 +30,10 @@ class ManagerRepository(DBSessionContext):
                 .join(ManagerSalesCategory, and_(ManagerSalesCategory.gestor_id == Manager.id,
                                                  ManagerSalesCategory.categoria_venda == Property.categoria_venda), isouter=True)\
                 .filter(ManagerProperty.imovel_id == property_id).one()
-        return fee
-    
-    def get_manager_by_wallet_id(self, wallet_id):
+
+            return fee
+
+    def get_manager_by_wallet_id(self, wallet_id: str):
         with self.get_session_scope() as session:
             manager = session.query(
                 Manager.id,
@@ -40,12 +44,12 @@ class ManagerRepository(DBSessionContext):
                 .filter(WalletManager.carteira_id == wallet_id).one()
 
             return manager
-        
-    def get_responsible_manager(self, manager_id, manager_responsible_id):
+
+    def get_responsible_manager(self, manager_id: str, manager_responsible_id: str):
         with self.get_session_scope() as session:
             manager = session.query(
                 ResponsibleManager.nome
             ).filter(ResponsibleManager.gestor_id == manager_id,
                      ResponsibleManager.id == manager_responsible_id).one()
-            
+
             return manager
