@@ -35,7 +35,7 @@ class EditalBuilder(ContractBuilderBase):
     def build(self) -> None:
         TaskProgress.update_task_progress()
         data = self.__get_contract_data()
-        
+
         TaskProgress.update_task_progress()
         documents_objects = self.__get_documents_objects_list(data)
 
@@ -44,7 +44,7 @@ class EditalBuilder(ContractBuilderBase):
 
         TaskProgress.update_task_progress()
         self._handle_with_admin(file_bytes_b64=file_bytes_b64)
-        
+
         TaskProgress.update_task_progress()
 
     def _handle_with_admin(self, file_bytes_b64):
@@ -96,7 +96,6 @@ class EditalBuilder(ContractBuilderBase):
             payment_form_id=self.wallet.forma_pagamento_id)
         dict_ = {}
 
-        
         dict_tx_servico = EditalLibrary.define_tx_servico_min_max(
             properties[0].get('imovel_id'))
         dict_['taxa_minima'] = helper.number_format_money(
@@ -114,18 +113,10 @@ class EditalBuilder(ContractBuilderBase):
             manager_responsible=manager_responsible)
 
         return edital_facade.parse()
-    
-    def mount_text_payments(payment_methods):
-        dict_= {}
-        for p in payment_methods:
-            if (p.get('tipo_condicao') == 'parcelado'):
-                dict_['cash_payment_text'] = f" {p.get('a_vista_complemento_texto')}" if p.get(
-                    'a_vista_complemento_texto') else ''
-                dict_['parceled_payment_text'] = f"  {p.get('parcelado_complemento_texto')}" if p.get(
-                    'parcelado_complemento_texto') else ''
-                dict_['financing_payment_text'] = f"  {p.get('financiamento_complemento_texto')}" if p.get(
-                    'financiamento_complemento_texto') else ''
 
+    def mount_text_payments(payment_methods):
+        dict_ = {}
+        for p in payment_methods:
             if p.get('tipo_condicao') == 'vista':
                 dict_['condition_type_in_cash'] = 'X'
 
@@ -153,6 +144,13 @@ class EditalBuilder(ContractBuilderBase):
                         p.get('porcentagem_entrada_financiamento')) + r'% de entrada'
 
             if p.get('tipo_condicao') == 'parcelado':
+                dict_['cash_payment_text'] = f" {p.get('a_vista_complemento_texto')}" if p.get(
+                    'a_vista_complemento_texto') else ''
+                dict_['parceled_payment_text'] = f"  {p.get('parcelado_complemento_texto')}" if p.get(
+                    'parcelado_complemento_texto') else ''
+                dict_['financing_payment_text'] = f"  {p.get('financiamento_complemento_texto')}" if p.get(
+                    'financiamento_complemento_texto') else ''
+
                 dict_['condition_type_installments'] = 'X'
                 payment_installments = PaymentRepository().get_payment_installments(
                     payment_condition_id=p.get('id'))
@@ -186,10 +184,12 @@ class EditalBuilder(ContractBuilderBase):
                     payment_installments.get('indexador'))
 
                 if payment_installments.get('qtd_fixa') > 0:
-                    dict_['installments_payment_desc'] = f"{dict_.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_fixa')} "
+                    dict_[
+                        'installments_payment_desc'] = f"{dict_.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_fixa')} "
                     f"parcelas com juros de {helper.number_format(dict_.get('interest_rate', ''))}% {dict_.get('interest_period', '')}"
                 else:
-                    dict_['installments_payment_desc'] = f"{dict_.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_maxima')} "
+                    dict_[
+                        'installments_payment_desc'] = f"{dict_.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_maxima')} "
                     f"parcelas com juros de {helper.number_format(dict_.get('interest_rate', ''))}% {dict_.get('interest_period', '')}"
 
                 if dict_.get('correction_rate'):
@@ -200,6 +200,5 @@ class EditalBuilder(ContractBuilderBase):
                 if dict_.get('indexador'):
                     dict_['installments_payment_desc'] = dict_.get(
                         'installments_payment_desc', '') + f" + {dict_.get('indexador', '')}"
-                    
-        return dict_
 
+        return dict_
