@@ -6,13 +6,13 @@ from datetime import datetime
 
 class EditalFacade(ContractFacadeInterface):
 
-    def __init__(self, wallet, payment_methods, cronograma, properties, proponente, aux, manager_responsible):
+    def __init__(self, wallet, payment_methods, cronograma, properties, proponente, text_payments, manager_responsible):
         self.wallet = wallet
         self.payment_methods = payment_methods
         self.properties = properties
         self.cronograma = cronograma
         self.proponente = proponente
-        self.aux = aux
+        self.text_payments = text_payments
         self.manager_responsible = manager_responsible
 
     def parse(self) -> dict:
@@ -23,45 +23,44 @@ class EditalFacade(ContractFacadeInterface):
 
     def __get_base_data(self) -> dict:
         return {
-            'edital': self.wallet.modelo_edital,
-            'primeiro_leilao_data_c': self.__format_date_leilao(self.properties[0].get('data_primeiro_leilao_data')),
-            'segundo_leilao_data_c': self.__format_date_leilao(self.properties[0].get('data_segundo_leilao_data')),
-            'primeiro_leilao_valor_c': self.properties[0].get('valor_primeiro_leilao_valor', 0),
-            'segundo_leilao_valor_c': self.properties[0].get('valor_segundo_leilao_valor', 0),
-            'canal_venda_name': self.cronograma.canal_venda_id,
-            'nome_leiloeiro_oficial_c': self.cronograma.canal_venda_id,
-            'numero_leilao_c': self.wallet.numero_leilao,
-            'person_in_charge': self.manager_responsible.nome if self.manager_responsible else "",
-            'date': self.properties[0].get('data_limite').strftime("%d/%m/%Y") if self.properties[0].get('data_limite') else self.properties[0].get('data_primeiro_leilao_data').strftime("%d/%m/%Y"),
-            'time': self.properties[0].get('data_limite').strftime("%H:%M") if self.properties[0].get('data_limite') else self.properties[0].get('data_primeiro_leilao_data').strftime("%H:%M"),
-            'site_c': self.cronograma.site,
-            'nome_leiloeiro_oficial_c': self.cronograma.responsavel_nome,
-            'cpf_cnpj_c': self.cronograma.responsavel_cpf,
-            'uf_jucesp_c': self.cronograma.uf_jucesp,
-            'numero_jucesp_c': self.cronograma.numero_jucesp,
-            'responsavel_nome_c': self.proponent[0].get('primeiro_nome') + self.proponent[0].get('ultimo_nome') if self.proponente else "",
-            'signer': self.proponent[0].get('primeiro_nome') + self.proponent[0].get('ultimo_nome') if self.proponente else self.cronograma.responsavel_nome,
-            'responsavel_cpf_c': self.proponent[0].get('cpf_cnpj') if self.proponente else "",
-            'responsavel_telefone_c': self.proponent[0].get('telefone1') if self.proponente else self.cronograma.canal_responsavel_telefone,
-            'responsavel_email_c': self.proponent[0].get('email_address') if self.proponente else self.cronograma.responsavel_email,
-            'street_adress_c': f"{self.cronograma.endereco_rua}, {self.cronograma.endereco_numero}, {self.cronograma.endereco_bairro}",
-            'complement': '',
-            'city_adress_c': f"{self.cronograma.endereco_cidade}/{self.cronograma.endereco_estado}",
-            'postal_code_adress_c': self.cronograma.endereco_cep,
-            'cash_payment': self.aux.get('condition_type_in_cash'),
-            'cash_payment_text': self.aux.get('cash_payment_text'),
-            'installments_payment': self.aux.get('condition_type_installments'),
-            'parceled_payment_text': self.aux.get('parceled_payment_text'),
-            'payment_conditions_cash': self.aux.get('in_cash_payment_desc'),
-            'payment_conditions_installments': self.aux.get('installments_payment_desc'),
-            'financing_payment_text': self.aux.get('financing_payment_text'),
-            'condition_type_financiado': self.aux.get('condition_type_financiado'),
-            'current_day': datetime.now().strftime("%d"),
-            'current_month': self.__month_in_full(datetime.now().strftime("%m")),
-            'current_year': datetime.now().strftime("%Y"),
-            'taxa_pagimovel':  round(self.wallet.tx_servico, 2) if self.wallet.tx_servico else 0,
-            'taxa_minima': self.aux.get('taxa_minima', 0),
-            'taxa_maxima': self.aux.get('taxa_maxima', 0)
+            'EDITAL': self.wallet.modelo_edital,
+            'DATA_PRIMEIRO_LEILAO': self.__format_date_leilao(self.properties[0].get('data_primeiro_leilao_data')),
+            'DATA_SEGUNDO_LEILAO': self.__format_date_leilao(self.properties[0].get('data_segundo_leilao_data')),
+            'VALOR_PRIMEIRO_LEILAO': self.properties[0].get('valor_primeiro_leilao_valor', 0),
+            'VALOR_SEGUNDO_LEILAO': self.properties[0].get('valor_segundo_leilao_valor', 0),
+            'NOME_CANAL_VENDA': self.cronograma.canal_venda_id,
+            'NUMERO_LEILAO': self.wallet.numero_leilao,
+            'PESSOA_ENCARREGADA': self.manager_responsible.nome if self.manager_responsible else "",
+            'DATA': self.properties[0].get('data_limite').strftime("%d/%m/%Y") if self.properties[0].get('data_limite') else self.properties[0].get('data_primeiro_leilao_data').strftime("%d/%m/%Y"),
+            'HORA': self.properties[0].get('data_limite').strftime("%H:%M") if self.properties[0].get('data_limite') else self.properties[0].get('data_primeiro_leilao_data').strftime("%H:%M"),
+            'SITE': self.cronograma.site,
+            'NOME_LEILOEIRO_OFICIAL': self.cronograma.responsavel_nome,
+            'CPF_CNPJ': self.cronograma.responsavel_cpf,
+            'UF_JUCESP': self.cronograma.uf_jucesp,
+            'NUMERO_JUCESP': self.cronograma.numero_jucesp,
+            'NOME_RESPONSAVEL': self.proponent[0].get('primeiro_nome') + self.proponent[0].get('ultimo_nome') if self.proponente else "",
+            'ASSINANTE': self.proponent[0].get('primeiro_nome') + self.proponent[0].get('ultimo_nome') if self.proponente else self.cronograma.responsavel_nome,
+            'CPF_RESPONSAVEL': self.proponent[0].get('cpf_cnpj') if self.proponente else "",
+            'TELEFONE_RESPONSAVEL': self.proponent[0].get('telefone1') if self.proponente else self.cronograma.canal_responsavel_telefone,
+            'EMAIL_RESPONSAVEL': self.proponent[0].get('email_address') if self.proponente else self.cronograma.responsavel_email,
+            'RUA': f"{self.cronograma.endereco_rua}, {self.cronograma.endereco_numero}, {self.cronograma.endereco_bairro}",
+            'COMPLEMENTO': '',
+            'CIDADE': f"{self.cronograma.endereco_cidade}/{self.cronograma.endereco_estado}",
+            'CEP': self.cronograma.endereco_cep,
+            'PAGAMENTO_DINHEIRO': self.text_payments.get('condition_type_in_cash'),
+            'PAGAMENTO_DINHEIRO_TEXTO': self.text_payments.get('cash_payment_text'),
+            'PAGAMENTO_PARCELADO': self.text_payments.get('condition_type_installments'),
+            'PAGAMENTO_PARCELADO_TEXTO': self.text_payments.get('parceled_payment_text'),
+            'CONDICOES_PAGAMENTO_DINHEIRO': self.text_payments.get('in_cash_payment_desc'),
+            'CONDICOES_PAGAMENTO_PARCELADO': self.text_payments.get('installments_payment_desc'),
+            'PAGAMENTO_FINANCIAMENTO_TEXTO': self.text_payments.get('financing_payment_text'),
+            'PAGAMENTO_FINANCIAMENTO': self.text_payments.get('condition_type_financiado'),
+            'DIA_CORRENTE': datetime.now().strftime("%d"),
+            'MES_CORRENTE': self.__month_in_full(datetime.now().strftime("%m")),
+            'ANO_CORRENTE': datetime.now().strftime("%Y"),
+            'TAXA_PAGIMOVEL':  round(self.wallet.tx_servico, 2) if self.wallet.tx_servico else 0,
+            'TAXA_MINIMA': self.text_payments.get('taxa_minima', 0),
+            'TAXA_MAXIMA': self.text_payments.get('taxa_maxima', 0)
         }
 
     def __get_imoveis_data(self) -> dict:
@@ -69,16 +68,16 @@ class EditalFacade(ContractFacadeInterface):
         for property in self.properties:
             considerations = get_property_considerations_full(property.get('imovel_id'), self.wallet.id)
             data.append({
-                "lote_c": property.get("lote") if property.get("lote") else "-",
-                "id_banco_c": property.get("id_no_banco") if property.get("id_no_banco") else "",
-                "legal_description_c": property.get("descricao_legal_description") if property.get("descricao_legal_description") else "",
-                "consideracoes_importantes_c": considerations if considerations else property.get("consideracoes_importantes"),
-                "valor_venda": self.__return_sell_value(property),
-                "primeiro_leilao_valor_c": number_format_money(property.get('valor_primeiro_leilao_valor', 0)),
-                "segundo_leilao_valor_c": number_format_money(property.get('valor_segundo_leilao_valor', 0)),
-                "valor_proposto_c": self.__return_sell_value(property),
-	            "pgi_amount": number_format_money(property.get('pgi_amount', 0)),
-	            "valor_minimo_c": number_format_money(property.get('valor_proposto', 0) + property.get('pgi_amount', 0))
+                "LOTE": property.get("lote") if property.get("lote") else "-",
+                "ID_BANCO": property.get("id_no_banco") if property.get("id_no_banco") else "",
+                "DESCRICAO_LEGAL": property.get("descricao_legal_description") if property.get("descricao_legal_description") else "",
+                "CONSIDERACOES_IMPORTANTES": considerations if considerations else property.get("consideracoes_importantes"),
+                "VALOR_VENDA": self.__return_sell_value(property),
+                "VALOR_PRIMEIRO_LEILAO": number_format_money(property.get('valor_primeiro_leilao_valor', 0)),
+                "VALOR_SEGUNDO_LEILAO": number_format_money(property.get('valor_segundo_leilao_valor', 0)),
+                "VALOR_PROPOSTO": self.__return_sell_value(property),
+	            "VALOR_PGI": number_format_money(property.get('pgi_amount', 0)),
+	            "VALOR_PROPOSTO": number_format_money(property.get('valor_proposto', 0) + property.get('pgi_amount', 0))
             })
         return data
 

@@ -94,45 +94,66 @@ class EditalBuilder(ContractBuilderBase):
         properties = PropertyRepository().get_properties_wallet_to_leilao(self.wallet_id)
         payment_methods = PaymentRepository().get_payment_method(
             payment_form_id=self.wallet.forma_pagamento_id)
-        dict_aux = {}
+        dict_ = {}
 
+        
+        dict_tx_servico = EditalLibrary.define_tx_servico_min_max(
+            properties[0].get('imovel_id'))
+        dict_['taxa_minima'] = helper.number_format_money(
+            dict_tx_servico.get("tx_servico_min"))
+        dict_['taxa_maxima'] = helper.number_format_money(
+            dict_tx_servico.get("tx_servico_max"))
+
+        edital_facade = EditalFacade(
+            wallet=self.wallet,
+            payment_methods=payment_methods,
+            properties=properties,
+            cronograma=wallet_schedule,
+            text_payments=self.mount_text_payments(payment_methods),
+            proponente=self.contacts,
+            manager_responsible=manager_responsible)
+
+        return edital_facade.parse()
+    
+    def mount_text_payments(payment_methods):
+        dict_= {}
         for p in payment_methods:
             if (p.get('tipo_condicao') == 'parcelado'):
-                dict_aux['cash_payment_text'] = f" {p.get('a_vista_complemento_texto')}" if p.get(
+                dict_['cash_payment_text'] = f" {p.get('a_vista_complemento_texto')}" if p.get(
                     'a_vista_complemento_texto') else ''
-                dict_aux['parceled_payment_text'] = f"  {p.get('parcelado_complemento_texto')}" if p.get(
+                dict_['parceled_payment_text'] = f"  {p.get('parcelado_complemento_texto')}" if p.get(
                     'parcelado_complemento_texto') else ''
-                dict_aux['financing_payment_text'] = f"  {p.get('financiamento_complemento_texto')}" if p.get(
+                dict_['financing_payment_text'] = f"  {p.get('financiamento_complemento_texto')}" if p.get(
                     'financiamento_complemento_texto') else ''
 
             if p.get('tipo_condicao') == 'vista':
-                dict_aux['condition_type_in_cash'] = 'X'
+                dict_['condition_type_in_cash'] = 'X'
 
                 if p.get('porcentagem_sinal', 0) > 0:
-                    dict_aux['in_cash_payment_desc'] = dict_aux.get('in_cash_payment_desc', '') + helper.number_format(p.get('porcentagem_sinal', '0')) + \
+                    dict_['in_cash_payment_desc'] = dict_.get('in_cash_payment_desc', '') + helper.number_format(p.get('porcentagem_sinal', '0')) + \
                         r'% de entrada, '
 
                 if p.get('porcentagem_ccv', 0) > 0:
-                    dict_aux['in_cash_payment_desc'] = dict_aux.get('in_cash_payment_desc', '') + helper.number_format(p.get('porcentagem_ccv', '0')) + \
+                    dict_['in_cash_payment_desc'] = dict_.get('in_cash_payment_desc', '') + helper.number_format(p.get('porcentagem_ccv', '0')) + \
                         r'% do pagamento na emissão do CCV (Contrato de Compra e Venda)'
 
                 if p.get('porcentagem_escritura', 0) > 0:
-                    dict_aux['in_cash_payment_desc'] = dict_aux.get('in_cash_payment_desc', '') + ', ' + helper.number_format(p.get('porcentagem_escritura', '0')) + \
+                    dict_['in_cash_payment_desc'] = dict_.get('in_cash_payment_desc', '') + ', ' + helper.number_format(p.get('porcentagem_escritura', '0')) + \
                         r'% na escritura'
 
                 if p.get('a_vista_desconto', 0) > 0:
-                    dict_aux['in_cash_payment_desc'] = dict_aux.get('in_cash_payment_desc', '') + ', c/ ' + helper.number_format(p.get('a_vista_desconto', '0')) + \
+                    dict_['in_cash_payment_desc'] = dict_.get('in_cash_payment_desc', '') + ', c/ ' + helper.number_format(p.get('a_vista_desconto', '0')) + \
                         r'% de desconto sobre o valor do lance vencedor'
 
             if p.get('tipo_condicao') == 'financiado':
-                dict_aux['condition_type_financiado'] = 'X'
+                dict_['condition_type_financiado'] = 'X'
 
                 if p.get('porcentagem_entrada_financiamento', 0) > 0:
-                    dict_aux['financing_payment_text'] = helper.number_format(
+                    dict_['financing_payment_text'] = helper.number_format(
                         p.get('porcentagem_entrada_financiamento')) + r'% de entrada'
 
             if p.get('tipo_condicao') == 'parcelado':
-                dict_aux['condition_type_installments'] = 'X'
+                dict_['condition_type_installments'] = 'X'
                 payment_installments = PaymentRepository().get_payment_installments(
                     payment_condition_id=p.get('id'))
 
@@ -145,55 +166,40 @@ class EditalBuilder(ContractBuilderBase):
 
                 payment_installments = payment_installments[0]
 
-                dict_aux['entry_percent'] = payment_installments.get(
+                dict_['entry_percent'] = payment_installments.get(
                     'porcentagem_entrada', '0')
 
-                dict_aux['installments_payment_desc'] = helper.number_format(
-                    dict_aux.get('entry_percent')) + r'% de entrada e '
+                dict_['installments_payment_desc'] = helper.number_format(
+                    dict_.get('entry_percent')) + r'% de entrada e '
 
-                dict_aux['interest_period'] = payment_installments.get(
+                dict_['interest_period'] = payment_installments.get(
                     'periodo_juros') if payment_installments.get('periodo_juros') else 'a.m.'
-                dict_aux['interest_rate'] = ((payment_installments.get(
+                dict_['interest_rate'] = ((payment_installments.get(
                     'tx_juros') if payment_installments.get('tx_juros') else 0) * 100) / 100
 
-                dict_aux['correction_period'] = payment_installments.get(
+                dict_['correction_period'] = payment_installments.get(
                     'periodo_correcao') if payment_installments.get('periodo_correcao') else 'a.m.'
-                dict_aux['correction_rate'] = ((payment_installments.get(
+                dict_['correction_rate'] = ((payment_installments.get(
                     'tx_correcao') if payment_installments.get('tx_correcao') else 0) * 100) / 100
 
-                dict_aux['indexador'] = helper.normalize_payment_method(
+                dict_['indexador'] = helper.normalize_payment_method(
                     payment_installments.get('indexador'))
 
                 if payment_installments.get('qtd_fixa') > 0:
-                    dict_aux['installments_payment_desc'] = f"{dict_aux.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_fixa')} "
-                    f"parcelas com juros de {helper.number_format(dict_aux.get('interest_rate', ''))}% {dict_aux.get('interest_period', '')}"
+                    dict_['installments_payment_desc'] = f"{dict_.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_fixa')} "
+                    f"parcelas com juros de {helper.number_format(dict_.get('interest_rate', ''))}% {dict_.get('interest_period', '')}"
                 else:
-                    dict_aux['installments_payment_desc'] = f"{dict_aux.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_maxima')} "
-                    f"parcelas com juros de {helper.number_format(dict_aux.get('interest_rate', ''))}% {dict_aux.get('interest_period', '')}"
+                    dict_['installments_payment_desc'] = f"{dict_.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_maxima')} "
+                    f"parcelas com juros de {helper.number_format(dict_.get('interest_rate', ''))}% {dict_.get('interest_period', '')}"
 
-                if dict_aux.get('correction_rate'):
-                    dict_aux['installments_payment_desc'] = dict_aux.get(
+                if dict_.get('correction_rate'):
+                    dict_['installments_payment_desc'] = dict_.get(
                         'installments_payment_desc', '')
-                    f" + correção de {helper.number_format(dict_aux.get('correction_rate', ''))}% {dict_aux.get('correction_period', '')}"
+                    f" + correção de {helper.number_format(dict_.get('correction_rate', ''))}% {dict_.get('correction_period', '')}"
 
-                if dict_aux.get('indexador'):
-                    dict_aux['installments_payment_desc'] = dict_aux.get(
-                        'installments_payment_desc', '') + f" + {dict_aux.get('indexador', '')}"
+                if dict_.get('indexador'):
+                    dict_['installments_payment_desc'] = dict_.get(
+                        'installments_payment_desc', '') + f" + {dict_.get('indexador', '')}"
+                    
+        return dict_
 
-        dict_tx_servico = EditalLibrary.define_tx_servico_min_max(
-            properties[0].get('imovel_id'))
-        dict_aux['taxa_minima'] = helper.number_format_money(
-            dict_tx_servico.get("tx_servico_min"))
-        dict_aux['taxa_maxima'] = helper.number_format_money(
-            dict_tx_servico.get("tx_servico_max"))
-
-        edital_facade = EditalFacade(
-            wallet=self.wallet,
-            payment_methods=payment_methods,
-            properties=properties,
-            cronograma=wallet_schedule,
-            aux=dict_aux,
-            proponente=self.contacts,
-            manager_responsible=manager_responsible)
-
-        return edital_facade.parse()
