@@ -2,153 +2,89 @@ from api.engine.document_interfaces import HTMLDocument
 from api.contract.edital import PATH_EDITAL_FOLDER
 
 
+class EditalRodapeDefault(HTMLDocument):
+
+    current_layer = ""
+    folder = ""
+    template_path = PATH_EDITAL_FOLDER
+
+    def __init__(self, imovel) -> None:
+        self.data = imovel
+        
+class EditalImovelDefault(HTMLDocument):
+
+    folder = ""
+    template_path = PATH_EDITAL_FOLDER
+
+    def __init__(self, imovel) -> None:
+        self.current_layer = "imovel.html"
+        self.data = imovel
+        
 ######################################################################################
 # ------------------------------------- DTBB001 -------------------------------------#
-class EditalDTBB001RodapeTituloDefault(HTMLDocument):
+class EditalDTBB001RodapeTituloDefault(EditalRodapeDefault):
 
     current_layer = "imovel-titulo.html"
     folder = "DTBB001"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.data = imovel
-
-
-class EditalDTBB001RodapeImovelDefault(HTMLDocument):
+class EditalDTBB001RodapeImovelDefault(EditalImovelDefault):
 
     folder = "DTBB001"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.current_layer = "imovel.html"
-        self.data = imovel
-
 # ------------------------------------- DTBB001 -------------------------------------#
 ######################################################################################
 
-
 ######################################################################################
 # ------------------------------------- DTBB002 -------------------------------------#
-class EditalDTBB002RodapeTituloDefault(HTMLDocument):
+class EditalDTBB002RodapeTituloDefault(EditalRodapeDefault):
 
     current_layer = "imovel-titulo.html"
     folder = "DTBB002"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.data = imovel
-
-
-class EditalDTBB002RodapeImovelDefault(HTMLDocument):
+class EditalDTBB002RodapeImovelDefault(EditalImovelDefault):
 
     folder = "DTBB002"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.current_layer = "imovel.html"
-        self.data = imovel
-
 # ------------------------------------- DTBB002 -------------------------------------#
 ######################################################################################
 
-
 ######################################################################################
 # ------------------------------------- DTBB003 -------------------------------------#
-class EditalDTBB003RodapeTituloDefault(HTMLDocument):
+class EditalDTBB003RodapeTituloDefault(EditalRodapeDefault):
 
     current_layer = "imovel-titulo.html"
     folder = "DTBB003"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.data = imovel
-
-
-class EditalDTBB003RodapeImovelDefault(HTMLDocument):
+class EditalDTBB003RodapeImovelDefault(EditalImovelDefault):
 
     folder = "DTBB003"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.current_layer = "imovel.html"
-        self.data = imovel
-
-
 # ------------------------------------- DTBB003 -------------------------------------#
 ######################################################################################
-
-
 ######################################################################################
 # ------------------------------------- DTBB004 -------------------------------------#
-class EditalDTBB004RodapeTituloDefault(HTMLDocument):
+class EditalDTBB004RodapeTituloDefault(EditalRodapeDefault):
 
     current_layer = "imovel-titulo.html"
     folder = "DTBB004"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.data = imovel
-
-
-class EditalDTBB004RodapeImovelDefault(HTMLDocument):
+class EditalDTBB004RodapeImovelDefault(EditalImovelDefault):
 
     folder = "DTBB004"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.current_layer = "imovel.html"
-        self.data = imovel
-
 # ------------------------------------- DTBB004 -------------------------------------#
 ######################################################################################
-
-
 ######################################################################################
 # ------------------------------------- DTBB005 -------------------------------------#
-class EditalDTBB005RodapeTituloDefault(HTMLDocument):
+class EditalDTBB005RodapeTituloDefault(EditalRodapeDefault):
 
     current_layer = "imovel-titulo.html"
     folder = "DTBB005"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.data = imovel
-
-
-class EditalDTBB005RodapeImovelDefault(HTMLDocument):
+class EditalDTBB005RodapeImovelDefault(EditalImovelDefault):
 
     folder = "DTBB005"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.current_layer = "imovel.html"
-        self.data = imovel
-
-
 # ------------------------------------- DTBB005 -------------------------------------#
 ######################################################################################
-
-
 ######################################################################################
 # ------------------------------------- DTBB006 -------------------------------------#
-class EditalDTBB006RodapeTituloDefault(HTMLDocument):
+class EditalDTBB006RodapeTituloDefault(EditalRodapeDefault):
 
     current_layer = "imovel-titulo.html"
     folder = "DTBB006"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.data = imovel
-
-
-class EditalDTBB006RodapeImovelDefault(HTMLDocument):
+class EditalDTBB006RodapeImovelDefault(EditalImovelDefault):
 
     folder = "DTBB006"
-    template_path = PATH_EDITAL_FOLDER
-
-    def __init__(self, imovel) -> None:
-        self.current_layer = "imovel.html"
-        self.data = imovel
-
 # ------------------------------------- DTBB006 -------------------------------------#
 ######################################################################################
