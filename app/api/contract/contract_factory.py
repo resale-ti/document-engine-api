@@ -1,5 +1,6 @@
 from api.contract.regulamento_concorrencia.regulamento_builder import RegulamentoConcorrenciaBuilder
 from api.contract.certificado_venda.certificado_builder import CertificadoVendaBuilder
+from api.contract.edital.edital_builder import EditalBuilder
 from api.contract.contract_enum import EnumContractType
 
 class ContractFactory:
@@ -12,4 +13,6 @@ class ContractFactory:
             contract_builder_class = RegulamentoConcorrenciaBuilder(data=data)
         elif contract_type == EnumContractType.CERTIFICADO_VENDA.value:
             contract_builder_class = CertificadoVendaBuilder(data=data)
+        elif contract_type == EnumContractType.EDITAL.value:
+            contract_builder_class = EditalBuilder(data=data)    
         return contract_builder_class

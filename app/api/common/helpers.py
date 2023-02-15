@@ -11,6 +11,9 @@ def get_property_valor_venda(property_id, wallet_id):
 
     return PagimovelIntegration().get_values(carteira_id=wallet_id, imovel_id=property_id)
 
+def get_property_considerations_full(property_id, wallet_id):
+    return PagimovelIntegration().get_considerations(carteira_id=wallet_id, imovel_id=property_id)
+
 def transform_dict(list_of_tuples: list):
     return [dict(tuplas) for tuplas in list_of_tuples]
 
