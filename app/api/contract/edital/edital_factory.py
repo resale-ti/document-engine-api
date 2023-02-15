@@ -18,5 +18,25 @@ class EditalFactory:
             return [layer.DTBB005Capa(wallet_id, data), layer.DTBB005Rodape(wallet_id, data)]
         elif edital == "DTBB006":
             return [layer.DTBB006Capa(wallet_id, data), layer.DTBB006Miolo(wallet_id, data), layer.DTBB006Rodape(wallet_id, data)]
+        elif edital == "DT003_002":
+            return []
+        elif edital == "DTBNC001_001":
+            return []
+        elif edital == "DTDV001_001":
+            return []
+        elif edital == "DTEM_001":
+            return []
+        elif edital == "DTEMG001":
+            return []
+        elif edital == "DTENF_NPL_001_004":
+            return []
+        elif edital == "DTITPV001_001":
+            return []
+        elif edital == "DTRD001_001":
+            return []
+        elif edital == "DTTRI001_001":
+            return []
+        
+            
 
         return ""

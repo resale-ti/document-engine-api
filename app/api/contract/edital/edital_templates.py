@@ -167,3 +167,22 @@ class DTBB006(TemplateDefault):
     folder = "DTBB006"
 
 
+class DT003_002(TemplateDefault):
+    folder = "DT003_002"
+    
+class DTBNC001_001(TemplateDefault):
+    folder = "DTBNC001_001"
+
+
+class DTDV001_001(TemplateDefault):
+    folder = "DTDV001_001"
+
+
+class DTEM_001(TemplateDefault):
+    folder = "DTEM_001"
+
+
+class DTEMG001(TemplateDefault):
+    folder = "DTEMG001"
+
+
