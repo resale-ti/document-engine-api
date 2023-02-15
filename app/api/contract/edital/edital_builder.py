@@ -114,7 +114,7 @@ class EditalBuilder(ContractBuilderBase):
 
         return edital_facade.parse()
 
-    def mount_text_payments(payment_methods):
+    def mount_text_payments(self, payment_methods):
         dict_ = {}
         for p in payment_methods:
             if p.get('tipo_condicao') == 'vista':
