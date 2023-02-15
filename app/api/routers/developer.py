@@ -17,14 +17,6 @@ router = APIRouter()
 async def generate_regulamento_and_cv(payload: RegulamentoSchema):
     try:
         carteira_id = payload.id_obj
-        os.environ["REQUESTER_ID"] = payload.requester_id
-        os.environ["DOCUMENT_ID_RC"] = ""
-
-        # Handled das auctions na Wuzu.
-        # Auctions().handle_auctions(dict(payload))
-
-        cond_regulamento = ConditionsRegulamento(payload=dict(payload))
-        cond_regulamento.execute_pre_conditions()
 
         # Geração do Regulamento
         Contract.generate_contract(contract_type="regulamento_concorrencia", data=dict(payload))

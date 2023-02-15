@@ -130,6 +130,40 @@ class PropertyRepository(DBSessionContext):
                 .filter(Wallet.id == wallet_id).all()
 
             return properties
+
+    def get_properties_order_by_address(self, wallet_id: str):
+        with self.get_session_scope() as session:
+            properties = session.query(
+                Property.id.label('imovel_id'),
+                Property.idr_imovel.label('idr'),
+                Property.nome,
+                Property.data_limite,
+                Property.lote,
+                Wallet.codigo,
+                City.nome,
+                City.estado,
+                Address.bairro) \
+                .select_from(Property) \
+                .join(WalletProperty, Property.id == WalletProperty.imovel_id) \
+                .join(Wallet, WalletProperty.carteira_id == Wallet.id) \
+                .join(PropertyAddress, Property.id == PropertyAddress.imovel_id) \
+                .join(Address, PropertyAddress.endereco_id == Address.id) \
+                .join(City, Address.cidade_id == City.id) \
+                .filter(Wallet.id == wallet_id).all()
+
+            return properties
+
+    def update_property(self, property_id: str, data: dict, history_data=None):
+        with self.get_session_scope() as session:
+            session.query(Property).\
+                filter(Property.id == property_id).\
+                update(data)
+
+            if history_data:
+                HistoryRepository().insert_property_history(imovel_id=property_id, fields=history_data)
+
+        session.commit()
+
         
     def get_properties_wallet_to_leilao(self, wallet_id: str):
         with self.get_session_scope() as session:
@@ -166,36 +200,3 @@ class PropertyRepository(DBSessionContext):
                 .group_by(Property.id) 
 
             return transform_dict(properties)
-
-    def get_properties_order_by_address(self, wallet_id: str):
-        with self.get_session_scope() as session:
-            properties = session.query(
-                Property.id.label('imovel_id'),
-                Property.idr_imovel.label('idr'),
-                Property.nome,
-                Property.data_limite,
-                Property.lote,
-                Wallet.codigo,
-                City.nome,
-                City.estado,
-                Address.bairro) \
-                .select_from(Property) \
-                .join(WalletProperty, Property.id == WalletProperty.imovel_id) \
-                .join(Wallet, WalletProperty.carteira_id == Wallet.id) \
-                .join(PropertyAddress, Property.id == PropertyAddress.imovel_id) \
-                .join(Address, PropertyAddress.endereco_id == Address.id) \
-                .join(City, Address.cidade_id == City.id) \
-                .filter(Wallet.id == wallet_id).all()
-
-            return properties
-
-    def update_property(self, property_id: str, data: dict, history_data=None):
-        with self.get_session_scope() as session:
-            session.query(Property).\
-                filter(Property.id == property_id).\
-                update(data)
-
-            if history_data:
-                HistoryRepository().insert_property_history(imovel_id=property_id, fields=history_data)
-
-        session.commit()
