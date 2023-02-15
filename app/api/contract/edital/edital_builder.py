@@ -108,97 +108,10 @@ class EditalBuilder(ContractBuilderBase):
             payment_methods=payment_methods,
             properties=properties,
             cronograma=wallet_schedule,
-            text_payments=self.mount_text_payments(payment_methods),
+            text_payments=helper.mount_text_payments(payment_methods),
             proponente=self.contacts,
             manager_responsible=manager_responsible)
 
         return edital_facade.parse()
 
-    def mount_text_payments(self, payment_methods):
-        dict_ = {}
-        for p in payment_methods:
-            if p.get('tipo_condicao') == 'vista':
-                dict_['condition_type_in_cash'] = 'X'
-
-                if p.get('porcentagem_sinal', 0) > 0:
-                    dict_['in_cash_payment_desc'] = dict_.get('in_cash_payment_desc', '') + helper.number_format(p.get('porcentagem_sinal', '0')) + \
-                        r'% de entrada, '
-
-                if p.get('porcentagem_ccv', 0) > 0:
-                    dict_['in_cash_payment_desc'] = dict_.get('in_cash_payment_desc', '') + helper.number_format(p.get('porcentagem_ccv', '0')) + \
-                        r'% do pagamento na emissão do CCV (Contrato de Compra e Venda)'
-
-                if p.get('porcentagem_escritura', 0) > 0:
-                    dict_['in_cash_payment_desc'] = dict_.get('in_cash_payment_desc', '') + ', ' + helper.number_format(p.get('porcentagem_escritura', '0')) + \
-                        r'% na escritura'
-
-                if p.get('a_vista_desconto', 0) > 0:
-                    dict_['in_cash_payment_desc'] = dict_.get('in_cash_payment_desc', '') + ', c/ ' + helper.number_format(p.get('a_vista_desconto', '0')) + \
-                        r'% de desconto sobre o valor do lance vencedor'
-
-            if p.get('tipo_condicao') == 'financiado':
-                dict_['condition_type_financiado'] = 'X'
-
-                if p.get('porcentagem_entrada_financiamento', 0) > 0:
-                    dict_['financing_payment_text'] = helper.number_format(
-                        p.get('porcentagem_entrada_financiamento')) + r'% de entrada'
-
-            if p.get('tipo_condicao') == 'parcelado':
-                dict_['cash_payment_text'] = f" {p.get('a_vista_complemento_texto')}" if p.get(
-                    'a_vista_complemento_texto') else ''
-                dict_['parceled_payment_text'] = f"  {p.get('parcelado_complemento_texto')}" if p.get(
-                    'parcelado_complemento_texto') else ''
-                dict_['financing_payment_text'] = f"  {p.get('financiamento_complemento_texto')}" if p.get(
-                    'financiamento_complemento_texto') else ''
-
-                dict_['condition_type_installments'] = 'X'
-                payment_installments = PaymentRepository().get_payment_installments(
-                    payment_condition_id=p.get('id'))
-
-                if payment_installments[0].get('qtd_fixa'):
-                    sorted(payment_installments, key=lambda x: x.get(
-                        'qtd_fixa'), reverse=True)
-                else:
-                    sorted(payment_installments, key=lambda x: x.get(
-                        'qtd_maxima'), reverse=True)
-
-                payment_installments = payment_installments[0]
-
-                dict_['entry_percent'] = payment_installments.get(
-                    'porcentagem_entrada', '0')
-
-                dict_['installments_payment_desc'] = helper.number_format(
-                    dict_.get('entry_percent')) + r'% de entrada e '
-
-                dict_['interest_period'] = payment_installments.get(
-                    'periodo_juros') if payment_installments.get('periodo_juros') else 'a.m.'
-                dict_['interest_rate'] = ((payment_installments.get(
-                    'tx_juros') if payment_installments.get('tx_juros') else 0) * 100) / 100
-
-                dict_['correction_period'] = payment_installments.get(
-                    'periodo_correcao') if payment_installments.get('periodo_correcao') else 'a.m.'
-                dict_['correction_rate'] = ((payment_installments.get(
-                    'tx_correcao') if payment_installments.get('tx_correcao') else 0) * 100) / 100
-
-                dict_['indexador'] = helper.normalize_payment_method(
-                    payment_installments.get('indexador'))
-
-                if payment_installments.get('qtd_fixa') > 0:
-                    dict_[
-                        'installments_payment_desc'] = f"{dict_.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_fixa')} "
-                    f"parcelas com juros de {helper.number_format(dict_.get('interest_rate', ''))}% {dict_.get('interest_period', '')}"
-                else:
-                    dict_[
-                        'installments_payment_desc'] = f"{dict_.get('installments_payment_desc', '')}saldo em até {payment_installments.get('qtd_maxima')} "
-                    f"parcelas com juros de {helper.number_format(dict_.get('interest_rate', ''))}% {dict_.get('interest_period', '')}"
-
-                if dict_.get('correction_rate'):
-                    dict_['installments_payment_desc'] = dict_.get(
-                        'installments_payment_desc', '')
-                    f" + correção de {helper.number_format(dict_.get('correction_rate', ''))}% {dict_.get('correction_period', '')}"
-
-                if dict_.get('indexador'):
-                    dict_['installments_payment_desc'] = dict_.get(
-                        'installments_payment_desc', '') + f" + {dict_.get('indexador', '')}"
-
-        return dict_
+    
