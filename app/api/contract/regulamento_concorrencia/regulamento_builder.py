@@ -1,3 +1,5 @@
+import os
+
 from api.contract.contract_builder_base import ContractBuilderBase
 from api.common.repositories.wallet_repository import WalletRepository
 from api.common.repositories.payment_repository import PaymentRepository
@@ -29,6 +31,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
         self.manager = ()
         self.requester_id = data.get("requester_id")
         self.data_inicio_regulamento = data.get("data_inicio")
+        self.data_fim_regulamento = data.get("data_fim")
 
     def build(self) -> None:
         TaskProgress.update_task_progress()
@@ -59,6 +62,8 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
         document_id = response.get("id")
 
+        os.environ["DOCUMENT_ID_RC"] = document_id
+
         response_wallet = AdminAPIWallets().post_create_wallet_related_document(
             wallet_id=self.wallet_id, body={"data": [document_id]})
 
@@ -77,8 +82,10 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
             "file": file_bytes_b64.decode('utf-8'),
             "tipo_exibicao": "publico",
             "usuario_responsavel_id": self.requester_id,
-            "documento_status": "approved"
-        }
+            "documento_status": "approved",
+            "data_inicio_documento" : self.data_inicio_regulamento.strftime("%Y-%m-%d %H:%M"),
+            "data_fim_documento" : self.data_fim_regulamento.strftime("%Y-%m-%d %H:%M")
+            }
 
     def __get_documents_objects_list(self, data):
         regulamento_documents_factory = RegulamentoDocumentsFactory(
@@ -91,7 +98,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
 
         wallet = WalletRepository().get_wallet_details(self.wallet_id)
 
-        properties = PropertyRepository().get_properties_wallet_with_disputa(self.wallet_id)
+        properties = PropertyRepository().get_properties_wallet_with_schedule(self.wallet_id)
 
         if not properties:
             raise Exception(f"Não foi encontrado imóvel com Disputa para a carteira com ID: {self.wallet_id}")
@@ -108,7 +115,7 @@ class RegulamentoConcorrenciaBuilder(ContractBuilderBase):
                 ).get_payment_installments(p.get('id'))
 
         regulamento_dates = {"data_inicio": self.data_inicio_regulamento,
-                             "data_fim": properties[0].get("data_limite")}
+                             "data_fim": self.data_fim_regulamento}
 
         regulamento_facade = RegulamentoConcorrenciaFacade(
             wallet=wallet,
