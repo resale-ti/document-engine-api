@@ -1,6 +1,6 @@
 from api.common.database_common import DBSessionContext
-from api.common.models import Wallet, Schedule, WalletSchedule, ScheduleSalesChannel, SalesChannel, Management
-from sqlalchemy import func, and_
+from api.common.models import Wallet, Schedule, WalletSchedule, ScheduleSalesChannel, SalesChannel, Management, WalletManager, Manager
+from sqlalchemy import func, and_, or_
 
 
 class WalletRepository(DBSessionContext):
@@ -59,6 +59,19 @@ class WalletRepository(DBSessionContext):
                 Wallet.data_fim_campanha).filter(Wallet.id == wallet_id).one()
 
             return wallet
+
+    def get_wallet_gestor_detail(self, wallet_id: str):
+        with self.get_session_scope() as session:
+            wallet = session.query(
+                Wallet.codigo,
+                Manager.nome.label('gestor_nome')
+            ).select_from(Wallet) \
+                .join(WalletManager, Wallet.id == WalletManager.carteira_id) \
+                .join(Manager, WalletManager.gestor_id == Manager.id) \
+                .filter(Wallet.id == wallet_id).one()
+
+            return wallet
+
 
     def get_schedule_by_wallet(self, wallet_id: str):
         with self.get_session_scope() as session:

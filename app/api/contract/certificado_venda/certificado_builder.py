@@ -102,7 +102,6 @@ class CertificadoVendaBuilder(ContractBuilderBase):
 
     def _generate_property_log(self, wallet, property_obj):
         values = get_property_valor_venda(property_id=property_obj.imovel_id, wallet_id=wallet.id)
-        # values = {"valor_avaliacao": 10000.32, "valor_venda": 30000.54} # MOCK
 
         valor_avaliado = values.get("valor_avaliacao")
         valor_venda = values.get("valor_venda")

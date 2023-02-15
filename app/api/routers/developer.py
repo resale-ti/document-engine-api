@@ -2,8 +2,12 @@ from fastapi import APIRouter
 from api.contract.contract import Contract
 from api.contract.schemas import RegulamentoSchema, CertificadoVendaSchema, EditalSchema
 from api.common.repositories.property_repository import PropertyRepository
+from utils.wuzu.auctions import Auctions
+from api.contract.regulamento_concorrencia.regulamento_conditions import ConditionsRegulamento
+
 import traceback
 import sys
+import os
 
 
 
@@ -17,7 +21,7 @@ async def generate_regulamento_and_cv(payload: RegulamentoSchema):
         # Geração do Regulamento
         Contract.generate_contract(contract_type="regulamento_concorrencia", data=dict(payload))
 
-        properties = PropertyRepository().get_properties_wallet_with_disputa(wallet_id=carteira_id)
+        properties = PropertyRepository().get_properties_wallet_with_schedule(wallet_id=carteira_id)
 
         for prop in properties:
             data = {"id_obj": carteira_id, "property_id": prop.imovel_id}
