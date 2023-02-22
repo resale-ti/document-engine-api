@@ -144,3 +144,171 @@ class DTBB006Rodape(tp.EditalDTBB006RodapeDefault):
 
 # ------------------------------------- DTBB006 -------------------------------------#
 #####################################################################################
+
+#####################################################################################
+# ------------------------------------- DTBB006 -------------------------------------#
+
+class DT003_002Capa(tp.DT003_002, HTMLDocument):
+
+    document_name = "DT003_002 - CAPA"
+    current_layer = "capa.html"
+
+
+class DT003_002Miolo(tp.DT003_002, PDFDocument):
+
+    document_name = "DT003_002 - MIOLO"
+    current_layer = "miolo.pdf"
+
+
+class DT003_002Rodape(tp.EditalDT003_002RodapeDefault):
+
+    document_name = "DT003_002 - RODAPÉ"
+    stylesheets = "edital.css"
+    current_layer = []
+
+# ------------------------------------- DTBB006 -------------------------------------#
+#####################################################################################
+
+#####################################################################################
+# ------------------------------------- DTBB006 -------------------------------------#
+
+class DTBNC001_001Capa(tp.DTBNC001_001, HTMLDocument):
+
+    document_name = "DTBNC001_001 - CAPA"
+    current_layer = "capa.html"
+
+
+class DTBNC001_001Miolo(tp.DTBNC001_001, PDFDocument):
+
+    document_name = "DTBNC001_001 - MIOLO"
+    current_layer = "miolo.pdf"
+
+
+class DTBNC001_001Rodape(tp.EditalDTBNC001_001RodapeDefault):
+
+    document_name = "DTBNC001_001 - RODAPÉ"
+    stylesheets = "edital.css"
+    current_layer = []
+
+# ------------------------------------- DTBB006 -------------------------------------#
+#####################################################################################
+
+#####################################################################################
+# ------------------------------------- DTBB006 -------------------------------------#
+
+class DTBB006Capa(tp.DTBB006, HTMLDocument):
+
+    document_name = "DTBB006 - CAPA"
+    current_layer = "capa.html"
+
+
+class DTBB006Miolo(tp.DTBB006, PDFDocument):
+
+    document_name = "DTBB001 - MIOLO"
+    current_layer = "miolo.pdf"
+
+
+class DTBB006Rodape(tp.EditalDTBB006RodapeDefault):
+
+    document_name = "DTBB006 - RODAPÉ"
+    stylesheets = "edital.css"
+    current_layer = []
+
+# ------------------------------------- DTBB006 -------------------------------------#
+#####################################################################################
+
+#####################################################################################
+# ------------------------------------- DTBB006 -------------------------------------#
+
+class DTBB006Capa(tp.DTBB006, HTMLDocument):
+
+    document_name = "DTBB006 - CAPA"
+    current_layer = "capa.html"
+
+
+class DTBB006Miolo(tp.DTBB006, PDFDocument):
+
+    document_name = "DTBB001 - MIOLO"
+    current_layer = "miolo.pdf"
+
+
+class DTBB006Rodape(tp.EditalDTBB006RodapeDefault):
+
+    document_name = "DTBB006 - RODAPÉ"
+    stylesheets = "edital.css"
+    current_layer = []
+
+# ------------------------------------- DTBB006 -------------------------------------#
+#####################################################################################
+
+#####################################################################################
+# ------------------------------------- DTBB006 -------------------------------------#
+
+class DTBB006Capa(tp.DTBB006, HTMLDocument):
+
+    document_name = "DTBB006 - CAPA"
+    current_layer = "capa.html"
+
+
+class DTBB006Miolo(tp.DTBB006, PDFDocument):
+
+    document_name = "DTBB001 - MIOLO"
+    current_layer = "miolo.pdf"
+
+
+class DTBB006Rodape(tp.EditalDTBB006RodapeDefault):
+
+    document_name = "DTBB006 - RODAPÉ"
+    stylesheets = "edital.css"
+    current_layer = []
+
+# ------------------------------------- DTBB006 -------------------------------------#
+#####################################################################################
+
+#####################################################################################
+# ------------------------------------- DTBB006 -------------------------------------#
+
+class DTBB006Capa(tp.DTBB006, HTMLDocument):
+
+    document_name = "DTBB006 - CAPA"
+    current_layer = "capa.html"
+
+
+class DTBB006Miolo(tp.DTBB006, PDFDocument):
+
+    document_name = "DTBB001 - MIOLO"
+    current_layer = "miolo.pdf"
+
+
+class DTBB006Rodape(tp.EditalDTBB006RodapeDefault):
+
+    document_name = "DTBB006 - RODAPÉ"
+    stylesheets = "edital.css"
+    current_layer = []
+
+# ------------------------------------- DTBB006 -------------------------------------#
+#####################################################################################
+
+#####################################################################################
+# ------------------------------------- DTBB006 -------------------------------------#
+
+class DTBB006Capa(tp.DTBB006, HTMLDocument):
+
+    document_name = "DTBB006 - CAPA"
+    current_layer = "capa.html"
+
+
+class DTBB006Miolo(tp.DTBB006, PDFDocument):
+
+    document_name = "DTBB001 - MIOLO"
+    current_layer = "miolo.pdf"
+
+
+class DTBB006Rodape(tp.EditalDTBB006RodapeDefault):
+
+    document_name = "DTBB006 - RODAPÉ"
+    stylesheets = "edital.css"
+    current_layer = []
+
+# ------------------------------------- DTBB006 -------------------------------------#
+#####################################################################################
