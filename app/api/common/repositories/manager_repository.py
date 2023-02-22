@@ -50,6 +50,6 @@ class ManagerRepository(DBSessionContext):
             manager = session.query(
                 ResponsibleManager.nome
             ).filter(ResponsibleManager.gestor_id == manager_id,
-                     ResponsibleManager.id == manager_responsible_id).one()
+                     ResponsibleManager.id == manager_responsible_id).one_or_none()
 
             return manager
