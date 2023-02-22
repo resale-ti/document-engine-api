@@ -78,13 +78,94 @@ class EditalDTBB005RodapeImovelDefault(EditalImovelDefault):
 # ------------------------------------- DTBB005 -------------------------------------#
 ######################################################################################
 ######################################################################################
-# ------------------------------------- DTBB006 -------------------------------------#
-class EditalDTBB006RodapeTituloDefault(EditalRodapeDefault):
+# ------------------------------------- EditalDT003_002 -------------------------------------#
+class EditalDT003_002RodapeTituloDefault(EditalRodapeDefault):
 
     current_layer = "imovel-titulo.html"
-    folder = "DTBB006"
-class EditalDTBB006RodapeImovelDefault(EditalImovelDefault):
+    folder = "DT003_002"
+class EditalDT003_002RodapeImovelDefault(EditalImovelDefault):
 
-    folder = "DTBB006"
-# ------------------------------------- DTBB006 -------------------------------------#
+    folder = "DT003_002"
+# ------------------------------------- EditalDT003_002 -------------------------------------#
+######################################################################################
+######################################################################################
+# ------------------------------------- DTBNC001_001 -------------------------------------#
+class EditalDTBNC001_001RodapeTituloDefault(EditalRodapeDefault):
+
+    current_layer = "imovel-titulo.html"
+    folder = "DTBNC001_001"
+class EditalDTBNC001_001RodapeImovelDefault(EditalImovelDefault):
+
+    folder = "DTBNC001_001"
+# ------------------------------------- DTBNC001_001 -------------------------------------#
+############################################################################################################################################################################
+# ------------------------------------- DTDV001_001 -------------------------------------#
+class EditalDTDV001_001RodapeTituloDefault(EditalRodapeDefault):
+
+    current_layer = "imovel-titulo.html"
+    folder = "DTDV001_001"
+class EditalDTDV001_001RodapeImovelDefault(EditalImovelDefault):
+
+    folder = "DTDV001_001"
+# ------------------------------------- DTDV001_001 -------------------------------------#
+############################################################################################################################################################################
+# ------------------------------------- DTEM_001 -------------------------------------#
+class EditalDTEM_001RodapeTituloDefault(EditalRodapeDefault):
+
+    current_layer = "imovel-titulo.html"
+    folder = "DTEM_001"
+class EditalDTEM_001RodapeImovelDefault(EditalImovelDefault):
+
+    folder = "DTEM_001"
+# ------------------------------------- DTEM_001 -------------------------------------#
+############################################################################################################################################################################
+# ------------------------------------- DTEMG001 -------------------------------------#
+class EditalDTEMG001RodapeTituloDefault(EditalRodapeDefault):
+
+    current_layer = "imovel-titulo.html"
+    folder = "DTEMG001"
+class EditalDTEMG001RodapeImovelDefault(EditalImovelDefault):
+
+    folder = "DTEMG001"
+# ------------------------------------- DTEMG001 -------------------------------------#
+############################################################################################################################################################################
+# ------------------------------------- DTENF_NPL_001_004 -------------------------------------#
+class EditalDTENF_NPL_001_004RodapeTituloDefault(EditalRodapeDefault):
+
+    current_layer = "imovel-titulo.html"
+    folder = "DTENF_NPL_001_004"
+class EditalDTENF_NPL_001_004RodapeImovelDefault(EditalImovelDefault):
+
+    folder = "DTENF_NPL_001_004"
+# ------------------------------------- DTENF_NPL_001_004 -------------------------------------#
+############################################################################################################################################################################
+# ------------------------------------- DTITPV001_001 -------------------------------------#
+class EditalDTITPV001_001RodapeTituloDefault(EditalRodapeDefault):
+
+    current_layer = "imovel-titulo.html"
+    folder = "DTITPV001_001"
+class EditalDTITPV001_001RodapeImovelDefault(EditalImovelDefault):
+
+    folder = "DTITPV001_001"
+# ------------------------------------- DTITPV001_001 -------------------------------------#
+######################################################################################
+# ------------------------------------- DTRD001_001 -------------------------------------#
+class EditalDTRD001_001RodapeTituloDefault(EditalRodapeDefault):
+
+    current_layer = "imovel-titulo.html"
+    folder = "DTRD001_001"
+class EditalDTRD001_001RodapeImovelDefault(EditalImovelDefault):
+
+    folder = "DTRD001_001"
+# ------------------------------------- DTRD001_001 -------------------------------------#
+######################################################################################
+# ------------------------------------- DTTRI001_001 -------------------------------------#
+class EditalDTTRI001_001RodapeTituloDefault(EditalRodapeDefault):
+
+    current_layer = "imovel-titulo.html"
+    folder = "DTTRI001_001"
+class EditalDTTRI001_001RodapeImovelDefault(EditalImovelDefault):
+
+    folder = "DTTRI001_001"
+# ------------------------------------- DTTRI001_001 -------------------------------------#
 ######################################################################################
