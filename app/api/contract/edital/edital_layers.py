@@ -132,7 +132,7 @@ class DTBB006Capa(tp.DTBB006, HTMLDocument):
 
 class DTBB006Miolo(tp.DTBB006, PDFDocument):
 
-    document_name = "DTBB001 - MIOLO"
+    document_name = "DTBB006 - MIOLO"
     current_layer = "miolo.pdf"
 
 
