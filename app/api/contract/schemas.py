@@ -29,4 +29,4 @@ class CertificadoVendaSchema(ContractBaseSchema):
     
 class EditalSchema(ContractBaseSchema):
     contact_id: str
-    manager_charge_id: str
+    manager_charge_id: Optional[str] = None
