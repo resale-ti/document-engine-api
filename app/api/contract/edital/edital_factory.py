@@ -19,24 +19,24 @@ class EditalFactory:
         elif edital == "DTBB006":
             return [layer.DTBB006Capa(wallet_id, data), layer.DTBB006Miolo(wallet_id, data), layer.DTBB006Rodape(wallet_id, data)]
         elif edital == "DT003_002":
-            return []
+            return [layer.DT003_002Capa(wallet_id, data), layer.DT003_002Miolo(wallet_id, data), layer.DT003_002Rodape(wallet_id, data)]
         elif edital == "DTBNC001_001":
-            return []
+            return [layer.DTBNC001_001Capa(wallet_id, data), layer.DTBNC001_001Miolo(wallet_id, data), layer.DTBNC001_001Rodape(wallet_id, data)]
         elif edital == "DTDV001_001":
-            return []
+            return [layer.DTDV001_001Capa(wallet_id, data), layer.DTDV001_001Miolo(wallet_id, data), layer.DTDV001_001Rodape(wallet_id, data)]
         elif edital == "DTEM_001":
-            return []
+            return [layer.DTEM_001Capa(wallet_id, data), layer.DTEM_001Miolo(wallet_id, data), layer.DTEM_001Rodape(wallet_id, data)]
         elif edital == "DTEMG001":
-            return []
+            return [layer.DTEMG001Capa(wallet_id, data), layer.DTEMG001Miolo(wallet_id, data), layer.DTEMG001Rodape(wallet_id, data)]
         elif edital == "DTENF_NPL_001_004":
-            return []
+            return [layer.DTENF_NPL_001_004Capa(wallet_id, data), layer.DTENF_NPL_001_004Miolo(wallet_id, data), layer.DTENF_NPL_001_004Rodape(wallet_id, data)]
+        elif edital == "DTPX001_001":
+            return [layer.DTPX001_001Capa(wallet_id, data), layer.DTPX001_001Miolo(wallet_id, data), layer.DTPX001_001Rodape(wallet_id, data)]
         elif edital == "DTITPV001_001":
-            return []
+           return [layer.DTITPV001_001Capa(wallet_id, data), layer.DTITPV001_001Miolo(wallet_id, data), layer.DTITPV001_001Rodape(wallet_id, data)]
         elif edital == "DTRD001_001":
-            return []
+            return [layer.DTRD001_001Capa(wallet_id, data), layer.DTRD001_001Miolo(wallet_id, data), layer.DTRD001_001Rodape(wallet_id, data)]
         elif edital == "DTTRI001_001":
-            return []
+            return [layer.DTTRI001_001Capa(wallet_id, data), layer.DTTRI001_001Miolo(wallet_id, data), layer.DTTRI001_001Rodape(wallet_id, data)]
         
-            
-
-        return ""
+        return Exception('Modelo de edital não encontrado!')

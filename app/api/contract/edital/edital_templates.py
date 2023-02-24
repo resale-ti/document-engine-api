@@ -201,6 +201,19 @@ class EditalDTITPV001_001RodapeDefault(EditalDefault):
                 ly.EditalDTITPV001_001RodapeImovelDefault(imovel))
 
         return current_layer
+    
+class EditalDTPX001_001RodapeDefault(EditalDefault):
+
+    def instance_layers(self) -> None:
+        current_layer = []
+
+        current_layer.append(ly.EditalDTPX001_001RodapeTituloDefault(self.data))
+
+        for imovel in self.data.get('imoveis'):
+            current_layer.append(
+                ly.EditalDTPX001_001RodapeImovelDefault(imovel))
+
+        return current_layer
 
 class EditalDTRD001_001RodapeDefault(EditalDefault):
 
@@ -292,7 +305,11 @@ class DTENF_NPL_001_004(TemplateDefault):
     
 class DTITPV001_001(TemplateDefault):
     folder = "DTITPV001_001"
-
+    
+    
+class DTPX001_001(TemplateDefault):
+    folder = "DTPX001_001"
+    
     
 class DTRD001_001(TemplateDefault):
     folder = "DTRD001_001"

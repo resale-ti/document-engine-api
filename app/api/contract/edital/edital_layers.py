@@ -202,7 +202,7 @@ class DTDV001_001Capa(tp.DTDV001_001, HTMLDocument):
     current_layer = "capa.html"
 
 
-class DTDV001_001Miolo(tp.DTBB006, PDFDocument):
+class DTDV001_001Miolo(tp.DTDV001_001, PDFDocument):
 
     document_name = "DTDV001_001 - MIOLO"
     current_layer = "miolo.pdf"
@@ -311,6 +311,30 @@ class DTITPV001_001Rodape(tp.EditalDTITPV001_001RodapeDefault):
     current_layer = []
 
 # ------------------------------------- DTITPV001_001 -------------------------------------#
+#####################################################################################
+
+#####################################################################################
+# ------------------------------------- DTPX001_001 -------------------------------------#
+
+class DTPX001_001Capa(tp.DTPX001_001, HTMLDocument):
+
+    document_name = "DTPX001_001 - CAPA"
+    current_layer = "capa.html"
+
+
+class DTPX001_001Miolo(tp.DTPX001_001, PDFDocument):
+
+    document_name = "DTPX001_001 - MIOLO"
+    current_layer = "miolo.pdf"
+
+
+class DTPX001_001Rodape(tp.EditalDTPX001_001RodapeDefault):
+
+    document_name = "DTPX001_001 - RODAPÉ"
+    stylesheets = "edital.css"
+    current_layer = []
+
+# ------------------------------------- DTPX001_001 -------------------------------------#
 #####################################################################################
 
 #####################################################################################
