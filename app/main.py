@@ -45,4 +45,4 @@ if (os.environ.get("STAGE")).upper() == "LOCAL":
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="localhost",
-                port=8002, debug=True, reload=True)
+                port=8003, debug=True, reload=True)
