@@ -73,6 +73,7 @@ class EditalFacade(ContractFacadeInterface):
                 "LOTE": property.get("lote") if property.get("lote") else "-",
                 "ID_BANCO": property.get("id_no_banco") if property.get("id_no_banco") else "",
                 "DESCRICAO_LEGAL": property.get("descricao_legal_description") if property.get("descricao_legal_description") else "",
+                "VENDEDOR_IMOVEL": "",
                 "CONSIDERACOES_IMPORTANTES": considerations if considerations else property.get("consideracoes_importantes"),
                 "VALOR_VENDA": self.__return_sell_value(property),
                 "VALOR_PRIMEIRO_LEILAO": number_format_money(property.get('valor_primeiro_leilao_valor') if property.get('valor_primeiro_leilao_valor', 0) else 0),
