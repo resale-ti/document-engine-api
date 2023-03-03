@@ -10,6 +10,7 @@ from api.contract.contract import Contract
 from api.common.repositories.property_repository import PropertyRepository
 
 from api.task_control.repositories import TaskControlRepository
+from api.task_control.services import TaskControlServices
 from api.task_control.progressbar import TaskProgress
 
 from api.common.rollback.rollback_factory import RollbackFactory
@@ -23,6 +24,7 @@ class CallbackTask(Task, ABC):
     def on_success(self, retval, task_id, args, kwargs):
         task_control_repository = TaskControlRepository()
         task_control_repository.update_task_state(task_id, 'SUCCESS')
+        TaskControlServices.send_task_protection_state(False)
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         task_control_repository = TaskControlRepository()
@@ -30,6 +32,7 @@ class CallbackTask(Task, ABC):
 
         extra_data = {"task_id": task_id, "args": args, "kwargs": kwargs}
         rollbar_celery.report_exc_info(extra_data=extra_data)
+        TaskControlServices.send_task_protection_state(False)
 
         print(f"kwargs: {kwargs}")
 
