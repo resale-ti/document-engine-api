@@ -47,6 +47,8 @@ services:
   document-engine-flower:
     image: mher/flower
     container_name: document-engine-flower
+    env:
+      - BROKER_URL=amqp://guest:guest@document-engine-rabbitmq:5672//
     env_file:
       - .env
     ports:
