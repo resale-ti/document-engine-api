@@ -25,6 +25,8 @@ ManagerProperty = Base.classes.imovel_gestor
 
 Management = Base.classes.gerenciador
 
+Seller, SellerProperty = Base.classes.vendedor, Base.classes.imovel_vendedor
+
 DisputaWuzu = Base.classes.disputa_wuzu
 Qualification = Base.classes.qualificacao
 

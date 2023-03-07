@@ -22,6 +22,7 @@ metadata.reflect(engine, only=['imovel', 'carteira_imovel', 'qualificacao', 'car
                                'carteira_condicoes_pagamento', 'carteira_parcelas', 'documento', 'imovel_endereco', 'endereco', 'gerenciador',
                                'documento_revisao', 'carteira_documento', 'usuario', 'certificados_venda_logs', 'cidade',
                                'imovel_history', 'carteira_history', 'cronograma_canal_venda',
-                               'gestor_categoria_venda', 'imovel_gestor', 'gestor_responsavel', 'contato', 'contato_email', 'email', 'canal_venda'])
+                               'gestor_categoria_venda', 'imovel_gestor', 'gestor_responsavel', 'contato', 'contato_email', 
+                               'email', 'canal_venda', 'vendedor', 'imovel_vendedor'])
 
 Base = automap_base(metadata=metadata)
