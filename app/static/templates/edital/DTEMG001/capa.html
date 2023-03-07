@@ -1,307 +1,297 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-</head>
-
-<body>
-	<div style="float: left; padding-top: 15px; position: absolute">
-		<img src="static/templates/public_notices/DTEMG001/logo-emgea.jpg" width="70" height="auto" />
-	</div>
-	<div class="calibre" id="calibre_link-0">
-		<br>
-		<br class="calibre5" />
-		<br>
-		<p class="block_"><span class="text_">LEILÃO PÚBLICO Nº {{NUMERO_LEILAO}}</span><span class="text_1"></span></p>
-		<br class="calibre5" />
-		<p class="block_"><span class="text_">SUMÁRIO DO EDITAL PARA VENDA DE IMÓVEL</span><span class="text_1"></span>
-		</p>
-		<br>
-		<p class="block_1"></p>
-		<p class="block_2"></p>
-		<table class="table_" border="1">
-			<tbody class="calibre1">
-				<tr class="tr_">
-					<td colspan="2" class="td_">
-						<p class="block_3"><b class="calibre2">1. OBJETO</b>: </p>
-					</td>
-					<td colspan="5" class="td_1">
-						<p class="block_3">Alienação dos bem(ns) imóvel(is) descritos no anexo 05 do presente edital.
-						</p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_2">
-						<p class="block_4"><span class="text_3">2. SESSÃO PÚBLICA DO LEILÃO/ INÍCIO DA DISPUTA DE
-								LANCES</span><span class="text_1"></span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="2" class="td_3">
-						<p class="block_5">Data:</p>
-					</td>
-					<td colspan="2" class="td_4">
-						<p class="block_3"><span class="text_4">{{DATA}}</span></p>
-					</td>
-					<td class="td_4">
-						<p class="block_5">Hora:</p>
-					</td>
-					<td colspan="2" class="td_5">
-						<p class="block_4"><span class="text_5">{{HORA}}</span><span class="text_1"></span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="2" class="td_3">
-						<p class="block_5">Modalidade:</p>
-					</td>
-					<td colspan="3" class="td_5">
-						<p class="block_3"><span class="calibre3">(X) online: <span
-									class="text_4">{{SITE}}</span></span></p>
-					</td>
-					<td colspan="2" class="td_4">
-						<p class="block_3"><span class="calibre3">( ) presencial</span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="2" class="td_3">
-						<p class="block_5">Modo de Disputa</p>
-					</td>
-					<td colspan="2" class="td_4">
-						<p class="block_3"><span class="calibre3">(X) Aberto<br>( ) Fechado</span></p>
-					</td>
-					<td class="td_4">
-						<p class="block_4"><span class="text_3">Tipo:</span><span class="text_1"></span></p>
-					</td>
-					<td colspan="2" class="td_5">
-						<p class="block_3">Maior Oferta de Preço (Lance)</p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_2">
-						<p class="block_4"><span class="text_3">3. LEILOEIRO(A) OFICIAL [“LEILOEIRO”]</span><span
-								class="text_1"></span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="1" class="td_3">
-						<p class="block_5">Nome:</p>
-					</td>
-					<td colspan="3" class="td_4">
-						<p class="block_3"><span class="text_4">{{NOME_LEILOEIRO_OFICIAL}}</span></p>
-					</td>
-					<td colspan="1" class="td_4">
-						<p class="block_5">CPF:</p>
-					</td>
-					<td colspan="2" class="td_5">
-						<p class="block_3"><span class="text_4">{{CPF_CNPJ}}</span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="1" class="td_3">
-						<p class="block_5">Inscrição na Junta Comercial (UF):</p>
-					</td>
-					<td colspan="3" class="td_4">
-						<p class="block_3"><span class="text_4">{{UF_JUCESP}}</span></p>
-					</td>
-					<td colspan="1" class="td_4">
-						<p class="block_5">Nº da Inscrição: </p>
-					</td>
-					<td colspan="2" class="td_5">
-						<p class="block_3"><span class="text_4">{{NUMERO_JUCESP}}</span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="1" class="td_3">
-						<p class="block_4"><span class="text_3">Preposto</span><span class="text_6">:</span><span
-								class="text_1"></span></p>
-					</td>
-					<td colspan="3" class="td_4">
-						<p class="block_3"><span class="text_4">{{NOME_RESPONSAVEL}}</span></p>
-					</td>
-					<td colspan="1" class="td_4">
-						<p class="block_5">CPF:</p>
-					</td>
-					<td colspan="2" class="td_5">
-						<p class="block_3">{{CPF_RESPONSAVEL}}</p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="1" class="td_3">
-						<p class="block_5">Telefone:</p>
-					</td>
-					<td colspan="3" class="td_4">
-						<p class="block_3"><span class="text_4">{{TELEFONE_RESPONSAVEL}}</span></p>
-					</td>
-					<td colspan="1" class="td_4">
-						<p class="block_5">E-mail:</p>
-					</td>
-					<td colspan="2" class="td_5">
-						<p class="block_3"><span class="text_4">{{EMAIL_RESPONSAVEL}}</span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="1" class="td_3">
-						<p class="block_5">Endereço:</p>
-					</td>
-					<td colspan="3" class="td_4">
-						<p class="block_3"><span class="text_4">{{RUA}}</span></p>
-					</td>
-					<td colspan="1" class="td_4">
-						<p class="block_5">Complemento:</p>
-					</td>
-					<td colspan="2" class="td_5">
-						<p class="block_3"><span class="text_4">{{COMPLEMENTO}}</span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="1" class="td_3">
-						<p class="block_5">Cidade/UF:</p>
-					</td>
-					<td colspan="3" class="td_4">
-						<p class="block_3"><span class="text_4">{{CIDADE}}</span></p>
-					</td>
-					<td colspan="1" class="td_4">
-						<p class="block_5">CEP:</p>
-					</td>
-					<td colspan="2" class="td_5">
-						<p class="block_3"><span class="text_4">{{CEP}}</span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_2">
-						<p class="block_4"><span class="text_3">4. PORTAL EMGEA [“Portal”]</span><span
-								class="text_1"></span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_2">
-						<div class="calibre4">
-							<div class="block_6">a)&nbsp;<span class="text_7">Portal de imóveis disponíveis para venda,
-									desenvolvido e mantido por Resale Tecnologia e Serviços S/A:</span>
-								<a href="http://www.resale.com.br" class="text_8">www.resale.com.br</a><span
-									class="text_7">.</span>
-							</div>
-							<div class="block_7">b)&nbsp;<span class="text_7">Portal da Emgea: </span><a
-									href="www.emgeaimoveis.com.br" class="text_8">www.emgeaimoveis.com.br</a><span
-									class="text_7">.</span></div>
+<div style="float: left; padding-top: 15px; position: absolute">
+	<img src="data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAANMAAABACAYAAACA9UI0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAABZ0RVh0Q3JlYXRpb24gVGltZQAwMi8xNS8xOJQ8lrgAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAANrElEQVR4nO2dz3HbuhPHv8z4LqcC0xVYqSBMBU+ZeTyHvj2enlJB5Apin3gMfeYhcgWPqiBSBaEq+EkV8HfAQlxCAAn+kezY+Mx4LIkksAC5WGCxAL2yLOFwOMx4cXgJYAFgViaZbzrv3bkEcjj+RLw4DACsAfwL4MqLw4XxXGeZHA49pDjflJ/3APwyyXbq+RfnEMrh+JPw4nAKIAVwozk8ATCH6PbVr3OWyeGoMFgjFa11cpbJ4QDgxaEPYAm9NVLRWifngHC8ebw4nEM4GWwUSTI/Ssd18xxvFbJGKYCPPZO4LZMslV+cZXK8Sbw4jCCsUV9FAoColqazTI63BE3ApgD+GinJ6zLJCsBZJscbwovDGYAC4ykSAMzkB+fNc7x6TmCNOBGAe8BZJsfbIAAwPVHaN+TIcMrkeP2USbakANVPAFYnyCIAnDI53hBlkuVlkgUYX6kCwHnzHG8YighPAVwNTGpbJpnvlMnx5rGMx2vj2nXzHG+eMskWEF2/7YBkpk6ZHA6I8RSEx6/vWGrqunkOh4IXhymALx0ve3KWyeFQKJMsAvDY8bJLZ5kcDgMdLdTeWSaHw8wcwMby3ImzTA5HAxQqtIZYXduIs0wORwO0vGJhc66zTA6HBV4c5mhZSHi0BIO2OQogfO6+ZV45hCnMdfuJafIIKA/QNTmFyc8oz0B7oaBgea01adukswawA7DUpWEDmf8Z7OtpR/kuyyRb0/URHSv48ueGPG3riLOGqLOlXMTWBXoeZBkvYRd9LevX+pkYC0VeQNSTlGcHYE1zSl1ZAPivMW9pmUiIewxbxruHiHVaNFWgEr5xR//7hHOsILas3bEtbCNY9G8ZWwh5U5uTR6qnJ4h6+knfVxSAacpTlu3fAXkCor7mNg0I3aM5utWljj2Ae4oyOAnUOEcQDY2tvE8A0jLJlh3yydFw372yLOV6+B+2iVqwKZPM2IIpyrTHsBu2gWh9cnTbXUblkeYXjJAi5Rj+gAFCbimvUZlIkXIMK5vKp6bW2YvDJcZfSNdav10hJVpgWMNm3ZjSSt2fxuP4528fx96KFcQeYrZdoACiZeDRt3em1qghsHDL8i065KUq5IbSyRvSmOL4gbk1VSo91Gsl3z71NMOxYjQpU4r6XIesoxyi29KG7Lbzsu7LJLs05Bdh3IaVY6zfLpxo5ewKQNTWFfbicAdDY3qB425RnwLnABZKi6bdQtbAHqK7lnfIK0X1kEn5NxAV0vZw54B248E5xE3SMUNdkYbUUwSLB5bk44r0BFG+LmOQHMA9WdVf9NvEi8PIIH/UIe2uzGCuXyuoHEsMXzah8hHAmuqlqeuXw6DE78A2hIAwxekAgSL2eUJm2AZbReKomwBKhbR2KFArxMvf1JXi562G1BNdazMZGLDPe3RXJJ7nGvUQmZnh1CYHwyOA92WSebo/AB8gFN7EIEvCutljK5JkAuAnNXYmTIq2eof6A5QOkYRuNH9IbDw/mz7eFU1evbxVdM0h9F6u59fAu0Vp13w02Ax8ffZ5DK9YbkibM4NYjqD7mzfJQAobDZRRy8jj1TZ+NCiUsbFWXePFCILwytb2y0fMk+eVD0inQNXa+dDLxBsG3fE+ebYRsM+9XPgNeWqtsGzY6OGVrn95H6deHE4grCSXJ6e08zLJCi8ORxC1gjlhzqFIkh9eHK7Vng5Na+jOz1Vl+j12RVgwxkMCjPOANzH2jSw6nv/Ni8Ohq0FboQd3iWYP2UQ5fvjsxWFTN68vS5xXkSSpF4eBxhpvcdzVLFw4kUOlTZHaGNWlTt2tIfIM4QaaDfqhbwjXuk0oN7Bzudqgy9TRH7V7NSo0j/JcD66JxTPn/82Lw7RlPL4vk6yuTOSRcegZOrmsYuOc4Rjn7UbE5OGTbNA8vyXntEapJ7JKp/LcdSFCs1LngOKA8OLQ7+MReyOsUbXa0rM0BBvnzLnxG45ZKbMynzUUXRfrOWibM82BY2+ej4FdM2pNfJlJz6DClwhvjWeg/aUHEFmck6NS4GBgftLtf8i3o6UrRj6vEZJ1zBCqIUy8OJw1TOYuAaFM3DMRYXiLO0e9Eoam91Lg0R0fvTicl0nWS6EoesOm+8IVeOrF4eXAuaYA9TCuRYdr78nTWzSc42M8axKMlM5YBKjmBnkXfSN7cxd0goxG/uLF4bJLJC2HrBJXpLOF3p+aMslSiimUSvCdXt/YFksokcsC1LCkJpYAvtPnCYQ1jGxl5pDLmz/oe81pvCurMsHpYvZ0BGfMywauQHxMmMoPFxA3iIf2//Ti8BHiRhZt4TkUMuRDPCSqW7SXUr5gZqhPHl6h/7KIVocGTYCuUD3gX6i+7yEe/HXLUhcf1b2JlPx094Y3rM+N/9wCKHwEDmNCzqEeL+iG3aLe6nyhPwyYxH14bc4Mmv2eQjzMQ+ZTHiCsts0kbIR6VP8VKmvV9/5soemO0SLNJwwr21hez67eznPB5Xriz/g74BB4+Rl609+VPYCvZZK9FE/MqJRJVpRJNgNwDVFndxABoKuWvwc697pL3dDN8tEcQNqFFYBpg0WLIGTtwyPGU4LniHhohLrKAfupNmY+ePNonHRJE3dTdtEUzQWTk7wFRBdoaTFILlBtQ1u0nNsE74IOGZ+1pkMWSbqzC3rIC5yhK0v1OWNL5QOS5RLNHq8thIw7iHujXeqvyWtO48MZhCLzsnN2oO4mWCAudU1fIz6qxmKreqrdhiqWKEuWH4ZaXmU91jkmZP8ovDh8iQ/mNYDf9PloPZuLzbMnZ59nZPJ7QVaOL/or+qb1irHd/PGcBPR/q1vP5pTJHt6duwKQe3EYdVEqLw59mj7I2c97vD6v5xi8tGmVLapwq0h3guvmdaBld5q2cYLpOtfF0zDSC8jGRG6A80QOqCN0UeMOM3KeSTfo7xNt/eAUyUiOl6VMsgdiHCs7y9QD6qqpYVNdeITYS+5kyyleA007AT0Tjb0Ip0wDoPGSdJWa3MeAcDAUAHZOgezp+dKxU9G4FyTglMnxgqF5td9t552BPYCgrSF03rw/EOYVPEc+/qnzMUET413f4HcKrLaUdsrUES8Op0PmmEbCx8hbahkUJxo7nx7MMU6YW1+s95LkG/cHqMJkDr9R8KOv/F5bV8Nuwg5i7LBmoSU+cIiAPlrJK6NwVc1n4xFtZDTJazUGoTx2JEPAw0B05WZy+8q5U4iQ+xRVCBIv6xTApXKNDzZnopalRzkAMTZb8C2VTfXYkM5BTpJxQYdT+l+wS2r1IOVm18t7ZVWPXTnxls1NdJq28PDP3ynqg7xD/5BCOngU8CPqbxq4K5Ns4enfmLApk2xKxyJUa3i2EDPJAUSg4NHWzF4crlH3lO0hgjMLWkP0HXW+6hbqac7dA5iUSeZp5jH2JJOMN9OVJcexC/wTxIOkyvRYJlnEYtxkeWRa6tIXAPisW0tmkHVdJllgeNC0Wzd7+o3nHyEUR3VD37HPAcQbI1JKJ4CYaPZxPFWwhyhvgeN6NM7RtPEMzojGN5PoeAch4Ae2xW2K+sYaEf3+ic5dsO/8BqxBW+dCxDBdKtsjXwN4j8p6RRDuYZnvZ1Q+/BspE12zROUp8yFutNxl9A7mjUBmEA+WzIPPEXyDeBuEPHZPx32S8T3LfwcAVLkrfh21uJGSzwcchwu9pzrwWdCsWg7THEYEoWhcVskcojGRx25h7ppdQkSfyzw/A/hCre8dROMoy7Vg1y1QX5W7IBlkOd6z/JeoAmR5PV5jwL4XZb83oPdlg/bNZY6Qk7a/lHUxh9l82VJSdw/SAsjvjEPUMFmQgh07bF1MrbusVNPGiltFJvneJ0C0kjcQhb2EsHim6IOPqFdKrhz/T1PugtL8Hzu21S0ZJ6UoANxwS0BWfc8aE9kV3FELK8txheqNHJOGclwpFitHFSd2A7HqV7XAOgKItUo+qro7Qh070b3ekRVck7wzVF07Xi8pKmWzqkdbyNIDp7VQG4ieWWcZpQPiM6rWqu9aFtUHz1shPmaYswePt8y37PwUonWXx3LUH57rMsmmZZL5dNzECmI5QeBVL8Ti8HLzbs0t6ntsS2uqlk22zlvqQgE4jCEmunEClX8NoSBemWRBKV7vcquey9grKzx53W5Rr8evDen4EFZV1t21cpzP8kfKsXsIJZlD9Ch2yjUS2cUDjusRGLjeiSxUUxmH8EB100vZLyA08Sf99yFayD7C/kVjLBnDJDdMDAznryG6WhHEw3qDagHcnP7WJNMVqmDQDcQ2zlxeU4ueQjwE/MVqkhWqcstWWpb7B5NfWg1ZwTnE0n6ZTkGy/fTicMvK0hb1vGX1ZVOOX5Q+SF7paFiiqkdQOUzdoQLCGm/ZuZI1lUGO427Blo6X1R4YM/Z7AdFtLUl2WVefScYfqNZUyWOFQTZryiS798Tri1KMs2nmBsL9nQ9J5IIGwwH7jXuW1Fa/6fsd6t2odSlej5nqMi6TbE7HLtlv8nof9RbsIJNOXl36RARRSSlwcEjMKZ3AVG4vDq9R34Pg4KUih4scw8nfm8qSGmSbKmUsYBhTUF0tdee21KOaTqTcjx1LZ+nF4Qf6viur9+5yAggvIO/O+2o5WJdepnd0bCiUjryHc/Rbar+BsLLpGDKNEgFBLVbXfdhOThdPl+PPRlmFPIV+PCit5BI9X0HUxP8Bp7Nczxla3NMAAAAASUVORK5CYII="
+		width="70" height="auto" />
+</div>
+<div class="calibre" id="calibre_link-0">
+	<br>
+	<br class="calibre5" />
+	<br>
+	<p class="block_"><span class="text_">LEILÃO PÚBLICO Nº {{NUMERO_LEILAO}}</span><span class="text_1"></span></p>
+	<br class="calibre5" />
+	<p class="block_"><span class="text_">SUMÁRIO DO EDITAL PARA VENDA DE IMÓVEL</span><span class="text_1"></span>
+	</p>
+	<br>
+	<p class="block_1"></p>
+	<p class="block_2"></p>
+	<table class="table_" border="1">
+		<tbody class="calibre1">
+			<tr class="tr_">
+				<td colspan="2" class="td_">
+					<p class="block_3"><b class="calibre2">1. OBJETO</b>: </p>
+				</td>
+				<td colspan="5" class="td_1">
+					<p class="block_3">Alienação dos bem(ns) imóvel(is) descritos no anexo 05 do presente edital.
+					</p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_2">
+					<p class="block_4"><span class="text_3">2. SESSÃO PÚBLICA DO LEILÃO/ INÍCIO DA DISPUTA DE
+							LANCES</span><span class="text_1"></span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="2" class="td_3">
+					<p class="block_5">Data:</p>
+				</td>
+				<td colspan="2" class="td_4">
+					<p class="block_3"><span class="text_4">{{DATA}}</span></p>
+				</td>
+				<td class="td_4">
+					<p class="block_5">Hora:</p>
+				</td>
+				<td colspan="2" class="td_5">
+					<p class="block_4"><span class="text_5">{{HORA}}</span><span class="text_1"></span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="2" class="td_3">
+					<p class="block_5">Modalidade:</p>
+				</td>
+				<td colspan="3" class="td_5">
+					<p class="block_3"><span class="calibre3">(X) online: <span class="text_4">{{SITE}}</span></span>
+					</p>
+				</td>
+				<td colspan="2" class="td_4">
+					<p class="block_3"><span class="calibre3">( ) presencial</span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="2" class="td_3">
+					<p class="block_5">Modo de Disputa</p>
+				</td>
+				<td colspan="2" class="td_4">
+					<p class="block_3"><span class="calibre3">(X) Aberto<br>( ) Fechado</span></p>
+				</td>
+				<td class="td_4">
+					<p class="block_4"><span class="text_3">Tipo:</span><span class="text_1"></span></p>
+				</td>
+				<td colspan="2" class="td_5">
+					<p class="block_3">Maior Oferta de Preço (Lance)</p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_2">
+					<p class="block_4"><span class="text_3">3. LEILOEIRO(A) OFICIAL [“LEILOEIRO”]</span><span
+							class="text_1"></span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="1" class="td_3">
+					<p class="block_5">Nome:</p>
+				</td>
+				<td colspan="3" class="td_4">
+					<p class="block_3"><span class="text_4">{{NOME_LEILOEIRO_OFICIAL}}</span></p>
+				</td>
+				<td colspan="1" class="td_4">
+					<p class="block_5">CPF:</p>
+				</td>
+				<td colspan="2" class="td_5">
+					<p class="block_3"><span class="text_4">{{CPF_CNPJ}}</span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="1" class="td_3">
+					<p class="block_5">Inscrição na Junta Comercial (UF):</p>
+				</td>
+				<td colspan="3" class="td_4">
+					<p class="block_3"><span class="text_4">{{UF_JUCESP}}</span></p>
+				</td>
+				<td colspan="1" class="td_4">
+					<p class="block_5">Nº da Inscrição: </p>
+				</td>
+				<td colspan="2" class="td_5">
+					<p class="block_3"><span class="text_4">{{NUMERO_JUCESP}}</span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="1" class="td_3">
+					<p class="block_4"><span class="text_3">Preposto</span><span class="text_6">:</span><span
+							class="text_1"></span></p>
+				</td>
+				<td colspan="3" class="td_4">
+					<p class="block_3"><span class="text_4">{{NOME_RESPONSAVEL}}</span></p>
+				</td>
+				<td colspan="1" class="td_4">
+					<p class="block_5">CPF:</p>
+				</td>
+				<td colspan="2" class="td_5">
+					<p class="block_3">{{CPF_RESPONSAVEL}}</p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="1" class="td_3">
+					<p class="block_5">Telefone:</p>
+				</td>
+				<td colspan="3" class="td_4">
+					<p class="block_3"><span class="text_4">{{TELEFONE_RESPONSAVEL}}</span></p>
+				</td>
+				<td colspan="1" class="td_4">
+					<p class="block_5">E-mail:</p>
+				</td>
+				<td colspan="2" class="td_5">
+					<p class="block_3"><span class="text_4">{{EMAIL_RESPONSAVEL}}</span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="1" class="td_3">
+					<p class="block_5">Endereço:</p>
+				</td>
+				<td colspan="3" class="td_4">
+					<p class="block_3"><span class="text_4">{{RUA}}</span></p>
+				</td>
+				<td colspan="1" class="td_4">
+					<p class="block_5">Complemento:</p>
+				</td>
+				<td colspan="2" class="td_5">
+					<p class="block_3"><span class="text_4">{{COMPLEMENTO}}</span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="1" class="td_3">
+					<p class="block_5">Cidade/UF:</p>
+				</td>
+				<td colspan="3" class="td_4">
+					<p class="block_3"><span class="text_4">{{CIDADE}}</span></p>
+				</td>
+				<td colspan="1" class="td_4">
+					<p class="block_5">CEP:</p>
+				</td>
+				<td colspan="2" class="td_5">
+					<p class="block_3"><span class="text_4">{{CEP}}</span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_2">
+					<p class="block_4"><span class="text_3">4. PORTAL EMGEA [“Portal”]</span><span
+							class="text_1"></span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_2">
+					<div class="calibre4">
+						<div class="block_6">a)&nbsp;<span class="text_7">Portal de imóveis disponíveis para venda,
+								desenvolvido e mantido por Resale Tecnologia e Serviços S/A:</span>
+							<a href="http://www.resale.com.br" class="text_8">www.resale.com.br</a><span
+								class="text_7">.</span>
 						</div>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_2">
-						<p class="block_5">5. FORMALIZAÇÃO DE COMPRA/ARREMATAÇÃO</p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_2">
-						<div class="calibre4">
-							<div class="block_6">a)&nbsp;Plataforma PAGIMOVEL (CNPJ: 21.129.873/0001-79) [“Pagimovel®”]
-							</div>
-							<div class="block_8">b)&nbsp;<span class="text_9">Site: </span><a
-									href="https://pagimovel.com.br/" class="text_10">https://pagimovel.com.br</a><span
-									class="text_1"></span></div>
-							<div class="block_8">c)&nbsp;<span class="text_9">Email: </span><a
-									href="mailto:leiloes@resale.com.br" class="text_10">leiloes@resale.com.br</a><span
-									class="text_1"></span></div>
-							<div class="block_9">d)&nbsp;Telefone: (19) 3422.6222</div>
+						<div class="block_7">b)&nbsp;<span class="text_7">Portal da Emgea: </span><a
+								href="www.emgeaimoveis.com.br" class="text_8">www.emgeaimoveis.com.br</a><span
+								class="text_7">.</span></div>
+					</div>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_2">
+					<p class="block_5">5. FORMALIZAÇÃO DE COMPRA/ARREMATAÇÃO</p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_2">
+					<div class="calibre4">
+						<div class="block_6">a)&nbsp;Plataforma PAGIMOVEL (CNPJ: 21.129.873/0001-79) [“Pagimovel®”]
 						</div>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_2">
-						<p class="block_5">6. FORMA DE PAGAMENTO</p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="1" class="td_6">
-						<p class="block_10"></p>
-						<p class="block_10"></p>
-						<p class="block_4"><span class="text_5"></span><span class="text_1"></span></p>
-						<p class="block_3"><b class="calibre2">(</b><span
-								class="text_11">{{PAGAMENTO_DINHEIRO}}</span><b class="calibre2">) À
-								Vista{{PAGAMENTO_DINHEIRO_TEXTO}}</b></p>
-					</td>
-					<td colspan="6" class="td_6">
-						<p class="block_4"><span class="text_6"></span><span
-								class="text_5">{{CONDICOES_PAGAMENTO_DINHEIRO}}</span>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="1" class="td_6">
-						<p class="block_3"><b class="calibre2">(</b><span
-								class="text_11">{{PAGAMENTO_PARCELADO}}</span><b class="calibre2">) À vista com prazo de
-								pagamento de até 90 dias</b></p>
-					</td>
-					<td colspan="6" class="td_6">
-						<p class="block_4"><span class="text_6"></span><span class="text_5"> À Vista com prazo de 90
-								dias para pagamento (30/60/90) e entrada de 30%.</span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="1" class="td_6">
-						<p class="block_3"><b class="calibre2">(</b><span
-								class="text_11">{{PAGAMENTO_FINANCIAMENTO}}</span><b class="calibre2">) Financiamento
-								imobiliário</b></p>
-					</td>
-					<td colspan="6" class="td_6">
-						<p class="block_4"><span class="text_6"></span><span
-								class="text_5">{{PAGAMENTO_FINANCIAMENTO_TEXTO}}</span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_6">
-						<p class="block_4"><span class="text_3">7.TAXA DE SERVIÇO PAGIMOVEL </span><span
-								class="text_1"></span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_7">
-						<p class="block_4"><span class="text_6">{{TAXA_PAGIMOVEL}}% sobre o valor líquido da venda,
-								considerando eventuais descontos aplicados de acordo com a forma de pagamento ou o valor
-								de {{taxa_minima}}, o que for maior.</span></p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_6">
-						<p class="block_4"><span class="text_3">8. ELEIÇÃO DO FORO </span><span class="text_1"></span>
-						</p>
-					</td>
-				</tr>
-				<tr class="tr_">
-					<td colspan="7" class="td_7">
-						<p class="block_4"><span class="text_6">Fica eleito o foro da cidade de {{CIDADE}} </span><span
-								class="text_5"></span><span class="text_6"></span><span class="text_5"></span><span
-								class="text_6">para dirimir quaisquer questões decorrentes deste</span><span
-								class="text_1"> </span><span class="text_6"> Edital.</span></p>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+						<div class="block_8">b)&nbsp;<span class="text_9">Site: </span><a
+								href="https://pagimovel.com.br/" class="text_10">https://pagimovel.com.br</a><span
+								class="text_1"></span></div>
+						<div class="block_8">c)&nbsp;<span class="text_9">Email: </span><a
+								href="mailto:leiloes@resale.com.br" class="text_10">leiloes@resale.com.br</a><span
+								class="text_1"></span></div>
+						<div class="block_9">d)&nbsp;Telefone: (19) 3422.6222</div>
+					</div>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_2">
+					<p class="block_5">6. FORMA DE PAGAMENTO</p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="1" class="td_6">
+					<p class="block_10"></p>
+					<p class="block_10"></p>
+					<p class="block_4"><span class="text_5"></span><span class="text_1"></span></p>
+					<p class="block_3"><b class="calibre2">(</b><span class="text_11">{{PAGAMENTO_DINHEIRO}}</span><b
+							class="calibre2">) À
+							Vista{{PAGAMENTO_DINHEIRO_TEXTO}}</b></p>
+				</td>
+				<td colspan="6" class="td_6">
+					<p class="block_4"><span class="text_6"></span><span
+							class="text_5">{{CONDICOES_PAGAMENTO_DINHEIRO}}</span>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="1" class="td_6">
+					<p class="block_3"><b class="calibre2">(</b><span class="text_11">{{PAGAMENTO_PARCELADO}}</span><b
+							class="calibre2">) À vista com prazo de
+							pagamento de até 90 dias</b></p>
+				</td>
+				<td colspan="6" class="td_6">
+					<p class="block_4"><span class="text_6"></span><span class="text_5"> À Vista com prazo de 90
+							dias para pagamento (30/60/90) e entrada de 30%.</span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="1" class="td_6">
+					<p class="block_3"><b class="calibre2">(</b><span
+							class="text_11">{{PAGAMENTO_FINANCIAMENTO}}</span><b class="calibre2">) Financiamento
+							imobiliário</b></p>
+				</td>
+				<td colspan="6" class="td_6">
+					<p class="block_4"><span class="text_6"></span><span
+							class="text_5">{{PAGAMENTO_FINANCIAMENTO_TEXTO}}</span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_6">
+					<p class="block_4"><span class="text_3">7.TAXA DE SERVIÇO PAGIMOVEL </span><span
+							class="text_1"></span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_7">
+					<p class="block_4"><span class="text_6">{{TAXA_PAGIMOVEL}}% sobre o valor líquido da venda,
+							considerando eventuais descontos aplicados de acordo com a forma de pagamento ou o valor
+							de {{taxa_minima}}, o que for maior.</span></p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_6">
+					<p class="block_4"><span class="text_3">8. ELEIÇÃO DO FORO </span><span class="text_1"></span>
+					</p>
+				</td>
+			</tr>
+			<tr class="tr_">
+				<td colspan="7" class="td_7">
+					<p class="block_4"><span class="text_6">Fica eleito o foro da cidade de {{CIDADE}} </span><span
+							class="text_5"></span><span class="text_6"></span><span class="text_5"></span><span
+							class="text_6">para dirimir quaisquer questões decorrentes deste</span><span class="text_1">
+						</span><span class="text_6"> Edital.</span></p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-		<table
-			style="border-color: #ffffff; background-color: #ffffff; width: 489px; margin-left: auto; margin-right: auto;">
-			<tbody>
-				<tr>
-					<td colspan="8"></td>
-				</tr>
-				<tr>
-					<td colspan="8">&nbsp;</td>
-				</tr>
-				<tr>
-					<td colspan="7" class="td_6">
-						<p class="block_3">{{CIDADE}}, <span class="text_4"></span><span class="text_4"></span><span
-								class="text_4">{{DIA_CORRENTE}}</span><span class="calibre3"> de </span><span
-								class="text_4">{{MES_CORRENTE}}</span> de <span class="text_4">{{ANO_CORRENTE}}</span>.
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="8">&nbsp;</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</body>
-
-</html>
+	<table
+		style="border-color: #ffffff; background-color: #ffffff; width: 489px; margin-left: auto; margin-right: auto;">
+		<tbody>
+			<tr>
+				<td colspan="8"></td>
+			</tr>
+			<tr>
+				<td colspan="8">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="td_6">
+					<p class="block_3">{{CIDADE}}, <span class="text_4"></span><span class="text_4"></span><span
+							class="text_4">{{DIA_CORRENTE}}</span><span class="calibre3"> de </span><span
+							class="text_4">{{MES_CORRENTE}}</span> de <span class="text_4">{{ANO_CORRENTE}}</span>.
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="8">&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
