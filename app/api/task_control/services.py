@@ -1,3 +1,5 @@
+import os
+import requests
 from celery import Task
 from core.celery import celery_app
 from api.task_control.repositories import TaskControlRepository
@@ -66,6 +68,7 @@ class TaskControlServices:
             self.celery.control.revoke(task_id, terminate=True)
             self.task_control_repository.update_task_state(task_id, 'REVOKED')
             self.celery.backend.store_result(task_id=task_id, state='REVOKED', result={})
+            TaskControlServices.send_task_protection_state(False)
 
     @staticmethod
     def send_task(task_params: dict):
@@ -75,6 +78,8 @@ class TaskControlServices:
 
         task = celery_app.send_task(task_name,
                                     kwargs={'task_request': dict(task_request)}, meta={'current': 0, 'total': 0})
+
+        TaskControlServices.send_task_protection_state(True)
 
         task_control_repository = TaskControlRepository()
         task_control_repository.save_task(task_id=task.id,
@@ -87,3 +92,14 @@ class TaskControlServices:
                                           payload=json.dumps(dict(task_request), indent=4, sort_keys=True, default=str))
 
         return task
+
+    @staticmethod
+    def send_task_protection_state(state):
+        if not bool(os.environ.get('IS_LOCAL')):
+            paylod_state = str(state).lower()
+            payload = {'ProtectionEnabled': paylod_state}
+            url = os.environ['ECS_AGENT_URI'] + "/task-protection/v1/state"
+
+            print(f'ProtectionEnabled: {paylod_state}')
+
+            requests.put(url, data=payload)
