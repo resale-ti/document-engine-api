@@ -240,6 +240,20 @@ class EditalDTTRI001_001RodapeDefault(EditalDefault):
                 ly.EditalDTTRI001_001RodapeImovelDefault(imovel))
 
         return current_layer
+    
+class EditalDTCOMSPGIRodapeDefault(EditalDefault):
+
+    def instance_layers(self) -> None:
+        current_layer = []
+
+        current_layer.append(ly.EditalDTCOMSPGIRodapeTituloDefault(self.data))
+
+        for imovel in self.data.get('imoveis'):
+            current_layer.append(
+                ly.EditalDTCOMSPGIRodapeImovelDefault(imovel))
+
+        return current_layer
+
 
 
 class TemplateDefault(ContractBuilderInterface):
@@ -317,5 +331,11 @@ class DTRD001_001(TemplateDefault):
     
 class DTTRI001_001(TemplateDefault):
     folder = "DTTRI001_001"
+
+
+class DTCOMSPGI(TemplateDefault):
+    folder = "DTCOMSPGI"
+
+
 
 

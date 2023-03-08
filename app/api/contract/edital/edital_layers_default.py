@@ -180,3 +180,15 @@ class EditalDTTRI001_001RodapeImovelDefault(EditalImovelDefault):
     folder = "DTTRI001_001"
 # ------------------------------------- DTTRI001_001 -------------------------------------#
 ######################################################################################
+######################################################################################
+# ------------------------------------- DTCOMSPGI -------------------------------------#
+class EditalDTCOMSPGIRodapeTituloDefault(EditalRodapeDefault):
+
+    current_layer = "imovel-titulo.html"
+    folder = "DTCOMSPGI"
+class EditalDTCOMSPGIRodapeImovelDefault(EditalImovelDefault):
+
+    folder = "DTCOMSPGI"
+# ------------------------------------- DTCOMSPGI -------------------------------------#
+######################################################################################
+

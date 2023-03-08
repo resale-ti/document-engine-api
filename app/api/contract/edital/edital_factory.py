@@ -5,7 +5,7 @@ class EditalFactory:
 
     def get_instance(self, wallet_id, data):
         # edital = data.get("EDITAL")
-        edital = "DTTRI001_001" 
+        edital = "DTCOMSPGI" 
         if edital == "DTBB001":
             return [layer.DTBB001Capa(wallet_id, data), layer.DTBB001Miolo(wallet_id, data), layer.DTBB001Rodape(wallet_id, data)]
         elif edital == "DTBB002":
@@ -38,5 +38,7 @@ class EditalFactory:
             return [layer.DTRD001_001Capa(wallet_id, data), layer.DTRD001_001Miolo(wallet_id, data), layer.DTRD001_001Rodape(wallet_id, data)]
         elif edital == "DTTRI001_001":
             return [layer.DTTRI001_001Capa(wallet_id, data), layer.DTTRI001_001Miolo(wallet_id, data), layer.DTTRI001_001Rodape(wallet_id, data)]
+        elif edital == "DTCOMSPGI":
+            return [layer.DTCOMSPGICapa(wallet_id, data), layer.DTCOMSPGIMiolo(wallet_id, data), layer.DTCOMSPGIRodape(wallet_id, data)]
         
         return Exception('Modelo de edital não encontrado!')

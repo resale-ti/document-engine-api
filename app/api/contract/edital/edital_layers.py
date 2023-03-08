@@ -384,3 +384,25 @@ class DTTRI001_001Rodape(tp.EditalDTTRI001_001RodapeDefault):
 
 # ------------------------------------- DTTRI001_001 -------------------------------------#
 #####################################################################################
+#####################################################################################
+# ------------------------------------- DTCOMSPGI -------------------------------------#
+class DTCOMSPGICapa(tp.DTCOMSPGI, HTMLDocument):
+
+    document_name = "DTCOMSPGI - CAPA"
+    current_layer = "capa.html"
+
+
+class DTCOMSPGIMiolo(tp.DTCOMSPGI, PDFDocument):
+
+    document_name = "DTCOMSPGI - MIOLO"
+    current_layer = "miolo.pdf"
+
+
+class DTCOMSPGIRodape(tp.EditalDTCOMSPGIRodapeDefault):
+
+    document_name = "DTCOMSPGI - RODAPÉ"
+    stylesheets = "edital.css"
+    current_layer = []
+
+# ------------------------------------- DTCOMSPGI -------------------------------------#
+#####################################################################################
