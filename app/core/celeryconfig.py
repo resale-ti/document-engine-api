@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 if os.path.isfile(os.path.join(BASE_DIR, '.env')):
     load_dotenv()
 
-broker_url = os.environ.get('BROKER_URL')
+broker_url = os.environ.get('BROKER_AMQ_URL')
 
 RESULT_BACKEND_HOST = os.environ.get('RESULT_BACKEND_HOST')
 RESULT_BACKEND_NAME = os.environ.get('RESULT_BACKEND_NAME')
