@@ -1,0 +1,30 @@
+version: 0.2
+ 
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+  build:
+   commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build  --build-arg extra_index_url=$PIP_EXTRA_INDEX_URL --build-arg trusted_host=$PIP_TRUSTED_HOST -f ./Dockerfile   -t  $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"%s-api","imageUri":"%s"}]' $REPOSITORY_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions-api.json
+      - printf '[{"name":"%s-worker","imageUri":"%s"}]' $REPOSITORY_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions-worker.json
+artifacts:
+  files:
+    - imagedefinitions-api.json
+    - imagedefinitions-worker.json
+  discard-paths: yes
+
