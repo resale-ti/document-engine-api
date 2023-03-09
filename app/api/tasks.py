@@ -124,7 +124,7 @@ def generate_document(task_request: dict) -> str:
     base=CallbackTask,
 )
 def generate_document(task_request: dict) -> str:
-    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 5})
+    current_task.update_state(state='STARTED', meta={'current': 0, 'total': 6})
 
     contract_type = "edital"
 
