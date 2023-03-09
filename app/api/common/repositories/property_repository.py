@@ -150,6 +150,7 @@ class PropertyRepository(DBSessionContext):
                 .join(Schedule, WalletSchedule.cronograma_id == Schedule.id) \
                 .filter(Wallet.id == wallet_id,
                         and_(Schedule.data_inicio <= func.current_date(), Schedule.data_final >= func.current_date())) \
-                .group_by(Property.id) 
+                .group_by(Property.id) \
+                .order_by(Property.lote) 
 
             return transform_dict(properties)
