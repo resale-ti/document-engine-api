@@ -18,7 +18,6 @@ class EditalFacade(ContractFacadeInterface):
     def parse(self) -> dict:
         base_data = self.__get_base_data()
         imoveis = self.__get_imoveis_data()
-        imoveis = sorted(imoveis, key=lambda k: k["LOTE"])
         return dict(imoveis=imoveis, **base_data)
 
     def __get_base_data(self) -> dict:
