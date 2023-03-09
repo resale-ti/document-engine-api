@@ -65,6 +65,7 @@ class EditalFacade(ContractFacadeInterface):
 
     def __get_imoveis_data(self) -> dict:
         data = []
+        self.properties = sorted(self.properties, key=lambda k: k["lote"]) 
         for property in self.properties:
             considerations = get_property_considerations_full(property.get('imovel_id'), self.wallet.id)
             valor_proposto = property.get('valor_proposto', 0) if property.get('valor_proposto', 0) else 0
