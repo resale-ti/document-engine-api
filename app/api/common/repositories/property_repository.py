@@ -198,6 +198,6 @@ class PropertyRepository(DBSessionContext):
                 .filter(Wallet.id == wallet_id,
                         and_(Schedule.data_inicio <= func.current_date(), Schedule.data_final >= func.current_date())) \
                 .group_by(Property.id) \
-                .order_by(Property.lote) 
+                .order_by(Property.lote.asc()) 
 
             return transform_dict(properties)
