@@ -1,5 +1,5 @@
 from api.common.repositories.payment_repository import PaymentRepository
-from app.api.common.helpers import parse_to_money
+from api.common.helpers import parse_to_money
 
 
 def number_format(number):
