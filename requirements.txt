@@ -1,8 +1,7 @@
-fastapi~=0.75.0
-uvicorn[standard]==0.20.0
-celery[amqp]==5.2.7
-python-dotenv==1.0.0
-SQLAlchemy~=1.4.32
+fastapi==0.85.0
+celery==5.2.7
+python-dotenv==0.21.0
+SQLAlchemy==1.4.41
 PyMySQL==1.0.2
 rollbar==0.16.3
 weasyprint==58.0
