@@ -18,7 +18,6 @@ class EditalFacade(ContractFacadeInterface):
     def parse(self) -> dict:
         base_data = self.__get_base_data()
         imoveis = self.__get_imoveis_data()
-
         return dict(imoveis=imoveis, **base_data)
  
     def __get_base_data(self) -> dict:

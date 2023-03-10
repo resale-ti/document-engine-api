@@ -16,10 +16,12 @@ class EditalRollback:
             "documento_status": {"new": "failed"},
             "description": "Documento FAILED (Falha na geração do Edital)"}, wallet_id=self.wallet_id)
 
-
+    # ----------------------------------------------- HELPER -------------------------------------------------
+    # --------------------------------------------------------------------------------------------------------
     def __send_message_rollbar(self):
+
         user = UserRepository().get_user_detail(
             user_id=self.payload.get("requester_id"))
         carteira = WalletRepository().get_wallet_gestor_detail(wallet_id=self.wallet_id)
         rollbar_celery.report_message(
-            f'Edital. Carteira = {carteira.codigo}, Gestor = {carteira.gestor_nome}', 'info')
+            f'Edital. Carteira = {carteira.codigo}, Gestor = {carteira.gestor_nome}, Usuário = {user.username}', 'info')

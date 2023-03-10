@@ -8,5 +8,5 @@ class RollbackFactory:
             return RegulamentoRollback(task_payload=data)
         elif contract_type == "edital":
             return EditalRollback(task_payload=data)
-            
+
         raise Exception(f"Nenhum Rollback está parametrizado para o contract_type: {contract_type}")

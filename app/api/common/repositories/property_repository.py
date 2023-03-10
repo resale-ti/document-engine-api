@@ -153,6 +153,7 @@ class PropertyRepository(DBSessionContext):
                 .join(Seller, SellerProperty.vendedor_id == Seller.id, isouter=True) \
                 .filter(Wallet.id == wallet_id,
                         and_(Schedule.data_inicio <= func.current_date(), Schedule.data_final >= func.current_date())) \
-                .group_by(Property.id) 
+                .group_by(Property.id) \
+                .order_by(func.abs(Property.lote)) 
 
             return transform_dict(properties)

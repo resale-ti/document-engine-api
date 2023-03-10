@@ -1,4 +1,6 @@
 from api.common.repositories.payment_repository import PaymentRepository
+from api.common.helpers import parse_to_money
+
 
 def number_format(number):
     if number:
@@ -7,7 +9,7 @@ def number_format(number):
 
 def number_format_money(number):
     if number:
-        return f'R$ {number_format(number)}'
+        return f'R$ {parse_to_money(number)}'
     return 'R$ 0,00'
 
 def normalize_payment_method(field: str):
