@@ -4,8 +4,7 @@ import api.contract.edital.edital_layers as layer
 class EditalFactory:
 
     def get_instance(self, wallet_id, data):
-        # edital = data.get("EDITAL")
-        edital = "DTCOMSPGI" 
+        edital = data.get("EDITAL")
         if edital == "DTBB001":
             return [layer.DTBB001Capa(wallet_id, data), layer.DTBB001Miolo(wallet_id, data), layer.DTBB001Rodape(wallet_id, data)]
         elif edital == "DTBB002":

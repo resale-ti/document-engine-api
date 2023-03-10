@@ -31,7 +31,7 @@ class EditalFacade(ContractFacadeInterface):
             'NUMERO_LEILAO': self.wallet.numero_leilao,
             'PESSOA_ENCARREGADA': self.manager_responsible.nome if self.manager_responsible else "",
             'DATA': self.properties[0].get('data_limite').strftime("%d/%m/%Y") if self.properties[0].get('data_limite') 
-                else self.properties[0].get('data_primeiro_leilao_data').strftime("%d/%m/%Y")  if self.properties[0].get('data_primeiro_leilao_data') else "",
+                else self.properties[0].get('data_primeiro_leilao_data').strftime("%d/%m/%Y") if self.properties[0].get('data_primeiro_leilao_data') else "",
             'HORA': self.properties[0].get('data_limite').strftime("%H:%M") if self.properties[0].get('data_limite') 
                 else self.properties[0].get('data_primeiro_leilao_data').strftime("%H:%M") if self.properties[0].get('data_primeiro_leilao_data') else "",
             'SITE': self.cronograma.site,
