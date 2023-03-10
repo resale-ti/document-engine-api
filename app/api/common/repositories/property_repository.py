@@ -1,6 +1,6 @@
 from api.common.database_common import DBSessionContext
 from api.common.models import Wallet, Property, Manager, Schedule, DisputaWuzu, WalletProperty, WalletSchedule, \
-    WalletManager, City, Address, PropertyAddress
+    WalletManager, City, Address, PropertyAddress, Seller, SellerProperty
 from api.common.repositories.history_repository import HistoryRepository
 from sqlalchemy import func, and_, or_, update
 from api.common.helpers import transform_dict
@@ -183,6 +183,7 @@ class PropertyRepository(DBSessionContext):
                 Property.valor_segundo_leilao_valor,
                 Property.id.label('imovel_id'),
                 Property.nome,
+                Seller.nome.label('seller_name'),
                 Property.idr_imovel,
                 Manager.id.label('manager_id'),
                 Manager.nome.label('manager_name'),
@@ -195,6 +196,8 @@ class PropertyRepository(DBSessionContext):
                 .join(Manager, WalletManager.gestor_id == Manager.id) \
                 .join(WalletSchedule, Wallet.id == WalletSchedule.carteira_id) \
                 .join(Schedule, WalletSchedule.cronograma_id == Schedule.id) \
+                .join(SellerProperty, SellerProperty.imovel_id == Property.id, isouter=True) \
+                .join(Seller, SellerProperty.vendedor_id == Seller.id, isouter=True) \
                 .filter(Wallet.id == wallet_id,
                         and_(Schedule.data_inicio <= func.current_date(), Schedule.data_final >= func.current_date())) \
                 .group_by(Property.id) \

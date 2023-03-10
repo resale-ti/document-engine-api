@@ -105,7 +105,7 @@ class WalletRepository(DBSessionContext):
                 .join(SalesChannel, ScheduleSalesChannel.canal_venda_id == SalesChannel.id, isouter=True)\
                 .join(Management, Management.id == Schedule.gerenciador_id, isouter=True)\
                 .filter(Wallet.id == wallet_id,
-                        and_(Schedule.data_inicio <= func.current_date(), Schedule.data_final >= func.current_date())).one()
+                        and_(Schedule.data_inicio <= func.current_date(), Schedule.data_final >= func.current_date())).first()
 
             return schedule_sales_channel_data
         

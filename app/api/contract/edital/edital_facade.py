@@ -19,7 +19,7 @@ class EditalFacade(ContractFacadeInterface):
         base_data = self.__get_base_data()
         imoveis = self.__get_imoveis_data()
         return dict(imoveis=imoveis, **base_data)
-
+ 
     def __get_base_data(self) -> dict:
         return {
             'EDITAL': self.wallet.modelo_edital,
@@ -30,8 +30,10 @@ class EditalFacade(ContractFacadeInterface):
             'NOME_CANAL_VENDA': self.cronograma.canal_venda_id,
             'NUMERO_LEILAO': self.wallet.numero_leilao,
             'PESSOA_ENCARREGADA': self.manager_responsible.nome if self.manager_responsible else "",
-            'DATA': self.properties[0].get('data_limite').strftime("%d/%m/%Y") if self.properties[0].get('data_limite') else self.properties[0].get('data_primeiro_leilao_data').strftime("%d/%m/%Y") if self.properties[0].get('data_primeiro_leilao_data') else "",
-            'HORA': self.properties[0].get('data_limite').strftime("%H:%M") if self.properties[0].get('data_limite') else self.properties[0].get('data_primeiro_leilao_data').strftime("%H:%M") if self.properties[0].get('data_primeiro_leilao_data') else "",
+            'DATA': self.properties[0].get('data_limite').strftime("%d/%m/%Y") if self.properties[0].get('data_limite') 
+                else self.properties[0].get('data_primeiro_leilao_data').strftime("%d/%m/%Y") if self.properties[0].get('data_primeiro_leilao_data') else "",
+            'HORA': self.properties[0].get('data_limite').strftime("%H:%M") if self.properties[0].get('data_limite') 
+                else self.properties[0].get('data_primeiro_leilao_data').strftime("%H:%M") if self.properties[0].get('data_primeiro_leilao_data') else "",
             'SITE': self.cronograma.site,
             'NOME_LEILOEIRO_OFICIAL': self.cronograma.responsavel_nome,
             'CPF_CNPJ': self.cronograma.responsavel_cpf,
@@ -52,8 +54,8 @@ class EditalFacade(ContractFacadeInterface):
             'PAGAMENTO_PARCELADO_TEXTO': self.text_payments.get('parceled_payment_text') if self.text_payments.get('parceled_payment_text') else "",
             'CONDICOES_PAGAMENTO_DINHEIRO': self.text_payments.get('in_cash_payment_desc') if self.text_payments.get('in_cash_payment_desc') else "",
             'CONDICOES_PAGAMENTO_PARCELADO': self.text_payments.get('installments_payment_desc') if self.text_payments.get('installments_payment_desc') else "",
-            'PAGAMENTO_FINANCIAMENTO_TEXTO':  self.text_payments.get('financing_payment_text') if self.text_payments.get('financing_payment_text') else "",
-            'PAGAMENTO_FINANCIAMENTO':  self.text_payments.get('condition_type_financiado') if self.text_payments.get('condition_type_financiado') else "",
+            'PAGAMENTO_FINANCIAMENTO_TEXTO': self.text_payments.get('financing_payment_text') if self.text_payments.get('financing_payment_text') else "",
+            'PAGAMENTO_FINANCIAMENTO': self.text_payments.get('condition_type_financiado') if self.text_payments.get('condition_type_financiado') else "",
             'DIA_CORRENTE': datetime.now().strftime("%d"),
             'MES_CORRENTE': self.__month_in_full(datetime.now().strftime("%m")),
             'ANO_CORRENTE': datetime.now().strftime("%Y"),
@@ -65,20 +67,24 @@ class EditalFacade(ContractFacadeInterface):
     def __get_imoveis_data(self) -> dict:
         data = []
         for property in self.properties:
-            considerations = get_property_considerations_full(property.get('imovel_id'), self.wallet.id)
-            valor_proposto = property.get('valor_proposto', 0) if property.get('valor_proposto', 0) else 0
-            pgi_amount = property.get('pgi_amount', 0) if property.get('pgi_amount', 0) else 0 
+            considerations = get_property_considerations_full(
+                property.get('imovel_id'), self.wallet.id)
+            valor_proposto = property.get('valor_proposto', 0) if property.get(
+                'valor_proposto', 0) else 0
+            pgi_amount = property.get('pgi_amount', 0) if property.get(
+                'pgi_amount', 0) else 0
             data.append({
                 "LOTE": property.get("lote") if property.get("lote") else "-",
                 "ID_BANCO": property.get("id_no_banco") if property.get("id_no_banco") else "",
                 "DESCRICAO_LEGAL": property.get("descricao_legal_description") if property.get("descricao_legal_description") else "",
+                "VENDEDOR_IMOVEL": property.get("seller_name") if property.get("seller_name") else "",
                 "CONSIDERACOES_IMPORTANTES": considerations if considerations else property.get("consideracoes_importantes"),
                 "VALOR_VENDA": self.__return_sell_value(property),
                 "VALOR_PRIMEIRO_LEILAO": number_format_money(property.get('valor_primeiro_leilao_valor') if property.get('valor_primeiro_leilao_valor', 0) else 0),
-                "VALOR_SEGUNDO_LEILAO": number_format_money(property.get('valor_segundo_leilao_valor') if property.get('valor_segundo_leilao_valor', 0) else 0 ),
+                "VALOR_SEGUNDO_LEILAO": number_format_money(property.get('valor_segundo_leilao_valor') if property.get('valor_segundo_leilao_valor', 0) else 0),
                 "VALOR_PROPOSTO": self.__return_sell_value(property),
-	            "VALOR_PGI": number_format_money(pgi_amount),
-	            "VALOR_PROPOSTO": number_format_money(valor_proposto + pgi_amount)
+                "VALOR_PGI": number_format_money(pgi_amount),
+                "VALOR_PROPOSTO": number_format_money(valor_proposto + pgi_amount)
             })
         return data
 
@@ -91,7 +97,8 @@ class EditalFacade(ContractFacadeInterface):
 
     def __return_sell_value(self, property):
         value = 0
-        dict_value = get_property_valor_venda(property.get('imovel_id'), self.wallet.id)
+        dict_value = get_property_valor_venda(
+            property.get('imovel_id'), self.wallet.id)
         if dict_value:
             value = dict_value.get('valor_venda')
 
