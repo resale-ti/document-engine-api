@@ -9,8 +9,7 @@ class ContractBaseSchema(BaseModel):
     requester_id: str
     origin_application: str
     manager_id: Optional[str] = None
-
-
+    
 class RegulamentoSchema(ContractBaseSchema):
     data_inicio: str
     data_fim: str
@@ -26,3 +25,8 @@ class RegulamentoSchema(ContractBaseSchema):
 
 class CertificadoVendaSchema(ContractBaseSchema):
     property_id: str
+    
+    
+class EditalSchema(ContractBaseSchema):
+    contact_id: str
+    manager_charge_id: Optional[str] = '0'

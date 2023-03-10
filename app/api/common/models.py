@@ -14,6 +14,19 @@ WalletSchedule, Schedule = Base.classes.carteira_cronograma, Base.classes.cronog
 
 WalletManager, Manager = Base.classes.carteira_gestor, Base.classes.gestor
 
+ResponsibleManager = Base.classes.gestor_responsavel
+
+Contact, ContactEmail, Email = Base.classes.contato, Base.classes.contato_email, Base.classes.email
+
+ScheduleSalesChannel, SalesChannel = Base.classes.cronograma_canal_venda, Base.classes.canal_venda
+
+ManagerSalesCategory = Base.classes.gestor_categoria_venda
+ManagerProperty = Base.classes.imovel_gestor
+
+Management = Base.classes.gerenciador
+
+Seller, SellerProperty = Base.classes.vendedor, Base.classes.imovel_vendedor
+
 DisputaWuzu = Base.classes.disputa_wuzu
 Qualification = Base.classes.qualificacao
 
