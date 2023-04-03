@@ -30,7 +30,7 @@ class Auctions:
         print(f"Total tasks: {int((len(properties)/5) *2) + 10}")
 
         self.schedule_id = properties[0].schedule_id if len(properties) > 0 else ""
-
+        type_vault = properties[0].tipo_cofre
         self._set_times(task_requests)
 
         properties_with_auction = self._get_and_validate_properties_auction(properties=properties)
@@ -41,19 +41,20 @@ class Auctions:
 
         # Imóveis COM Disputa aberta.
         if len(properties_with_auction) > 0:
-            self.send_wuzu(properties_with_auction, "update")
+            self.send_wuzu(properties_with_auction, "update", type_vault)
 
         # Imóveis SEM Disputa aberta.
         if len(properties_without_auction) > 0:
-            self.send_wuzu(properties_without_auction, "send")
+            self.send_wuzu(properties_without_auction, "send", type_vault)
 
         # Validação se algum imóvel ficou sem auction.
         self.validate_auctions(properties)
 
     # ------------------------------------------------------------------------------------------
 
-    def send_wuzu(self, ids, action):
-        wuzu_service = WuzuService()
+    def send_wuzu(self, ids, action, type_vault):
+        type_vault
+        wuzu_service = WuzuService(type_vault)
 
         for idx, id in enumerate(ids):
             data = self._parse_data(id, action)
