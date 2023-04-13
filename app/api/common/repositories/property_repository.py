@@ -116,6 +116,7 @@ class PropertyRepository(DBSessionContext):
                 Schedule.id.label('schedule_id'),
                 Property.idr_imovel.label('idr'),
                 Wallet.codigo,
+                Wallet.tipo_cofre,
                 DisputaWuzu.wuzu_disputa_id,
                 DisputaWuzu.data_inicio_disputa,
                 DisputaWuzu.data_final_disputa) \

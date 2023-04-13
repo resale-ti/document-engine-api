@@ -5,10 +5,12 @@ import requests
 
 class WuzuService(object):
 
-    def __init__(self, *args, **kwargs):
-        self.wuzu_url = os.environ.get("WUZU_URL")
+    def __init__(self, type_vault):
+        self.wuzu_url = os.environ.get("WUZU_URL") if type_vault == 'wuzu' else os.environ.get("PAGIMOVEL_MP_URL")
+        self.api_key =  os.environ.get("WUZU_API_KEY") if type_vault == 'wuzu' else os.environ.get("PAGIMOVEL_MP_API_KEY")
+        
         self.headers = {"Content-Type": "application/json",
-                        "x-api-key": os.environ.get("WUZU_API_KEY")}
+                        "x-api-key": self.api_key}
 
     def call_wuzu(self, endpoint, data, method="post"):
         """
