@@ -86,7 +86,7 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
         return description
 
     def _get_base_data(self) -> dict:
-        tx_intermedicao = self.wallet.tx_comissao + self.wallet.tx_gereciamento
+        tx_intermedicao = self.wallet.tx_comissao + self.wallet.tx_gerenciamento
         return {
             "regulamento": self.wallet.modelo_regulamento if self.wallet.modelo_regulamento else "MLP_002",
             "N_REGULAMENTO": self.wallet.disputa_id,
