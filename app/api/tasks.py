@@ -49,10 +49,12 @@ class CallbackTask(Task, ABC):
 )
 def generate_document(task_request: dict) -> str:
     data_inicio = task_request.get("data_inicio")
-    print(f"data inicio : {data_inicio}")
-    print(f"Data inicio tipo: {type(data_inicio)}")
-    task_request["data_inicio"] = datetime.datetime.strptime(task_request.get("data_inicio"), "%Y-%m-%dT%H:%M:%S")
-    task_request["data_fim"] = datetime.datetime.strptime(task_request.get("data_fim"), "%Y-%m-%dT%H:%M:%S")
+    if isinstance(data_inicio, str): 
+        task_request["data_inicio"] = datetime.datetime.strptime(data_inicio, "%Y-%m-%dT%H:%M:%S")
+        
+    data_fim = task_request.get("data_fim")
+    if isinstance(data_fim, str): 
+        task_request["data_fim"] = datetime.datetime.strptime(data_fim, "%Y-%m-%dT%H:%M:%S")
 
     print(f"Iniciando Task p/ geração de Regulamento com payload: {task_request}")
     os.environ["REQUESTER_ID"] = task_request.get('requester_id')
@@ -93,11 +95,12 @@ def generate_document(task_request: dict) -> str:
 )
 def generate_document(task_request: dict) -> str:
     data_inicio = task_request.get("data_inicio")
-    print(f"data inicio : {data_inicio}")
-    print(f"Data inicio tipo: {type(data_inicio)}")
+    if isinstance(data_inicio, str): 
+        task_request["data_inicio"] = datetime.datetime.strptime(data_inicio, "%Y-%m-%dT%H:%M:%S")
     
-    task_request["data_inicio"] = datetime.datetime.strptime(task_request.get("data_inicio"), "%Y-%m-%dT%H:%M:%S")
-    task_request["data_fim"] = datetime.datetime.strptime(task_request.get("data_fim"), "%Y-%m-%dT%H:%M:%S")
+    data_fim = task_request.get("data_fim")
+    if isinstance(data_fim, str):     
+        task_request["data_fim"] = datetime.datetime.strptime(data_fim, "%Y-%m-%dT%H:%M:%S")
 
     print(f"Iniciando Task p/ geração de Regulamento com payload: {task_request}")
     os.environ["REQUESTER_ID"] = task_request.get('requester_id')
