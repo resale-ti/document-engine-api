@@ -86,13 +86,14 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
         return description
 
     def _get_base_data(self) -> dict:
+        tx_intermedicao = self.wallet.tx_comissao + self.wallet.tx_gereciamento
         return {
             "regulamento": self.wallet.modelo_regulamento if self.wallet.modelo_regulamento else "MLP_002",
             "N_REGULAMENTO": self.wallet.disputa_id,
             "QUALIFICACAO_VENDEDORES": self.qualificacao[0].conteudo if self.qualificacao else "",
             "PORTAL_VENDEDOR": self.properties[0].get("url_whitelabel"),
             "TAXA_SERVICO": round(self.wallet.tx_servico, 2) if self.wallet.tx_servico else 0,
-            "TAXA_INTERMEDIACAO": round(self.wallet.tx_comissao, 2) if self.wallet.tx_comissao else 0,
+            "TAXA_INTERMEDIACAO": round(tx_intermedicao, 2) if tx_intermedicao else 0,
             "DATA_ATUAL": today.strftime('%d/%m/%Y')
         }
 
