@@ -48,6 +48,9 @@ class CallbackTask(Task, ABC):
     base=CallbackTask,
 )
 def generate_document(task_request: dict) -> str:
+    data_inicio = task_request.get("data_inicio")
+    print(f"data inicio : {data_inicio}")
+    print(f"Data inicio tipo: {type(data_inicio)}")
     task_request["data_inicio"] = datetime.datetime.strptime(task_request.get("data_inicio"), "%Y-%m-%dT%H:%M:%S")
     task_request["data_fim"] = datetime.datetime.strptime(task_request.get("data_fim"), "%Y-%m-%dT%H:%M:%S")
 
@@ -89,6 +92,10 @@ def generate_document(task_request: dict) -> str:
     base=CallbackTask,
 )
 def generate_document(task_request: dict) -> str:
+    data_inicio = task_request.get("data_inicio")
+    print(f"data inicio : {data_inicio}")
+    print(f"Data inicio tipo: {type(data_inicio)}")
+    
     task_request["data_inicio"] = datetime.datetime.strptime(task_request.get("data_inicio"), "%Y-%m-%dT%H:%M:%S")
     task_request["data_fim"] = datetime.datetime.strptime(task_request.get("data_fim"), "%Y-%m-%dT%H:%M:%S")
 
