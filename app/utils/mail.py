@@ -14,7 +14,7 @@ class Mail(object):
         self.subject = self.get_subject_by_stage(kwargs.get('subject'))
         self.to = self.get_recipient_by_stage(kwargs.get('to'))
         self.cc = self.get_copy_recipient_by_stage(
-            kwargs.get('cc', "prezo@resale.com.br"))
+            kwargs.get('cc', "tec@resale.com.br"))
         self.from_email = kwargs.get('from_email')
         self.from_name = kwargs.get('from_name')
         self.template_name = kwargs.get('template_name')
