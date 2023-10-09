@@ -28,6 +28,7 @@ class RegulamentoConcorrenciaLibrary:
 
     def _get_data_email(self, regulamento, doc_stream) -> dict:
         template_name = "PGI-0025"
+        template_name = "PGI-0025"
         subject = f"Regulamento Ativo - Melhor Proposta - {regulamento.disputa_id} - {regulamento.manager_name} - {date.today().strftime('%d/%m/%Y')}"
 
         if os.environ.get("STAGE").upper() == "PROD":
@@ -40,8 +41,12 @@ class RegulamentoConcorrenciaLibrary:
         variables = [
             {"name": "NOME_GESTOR", "content": regulamento.manager_name},
             {"name": "ID_CARTEIRA", "content": regulamento.codigo},
-            {"name": "NOME_disputa", "content": regulamento.wallet_name},
-            {"name": "DATA_HORA", "content": datetime.now().strftime('%d/%m/%Y %H:%M:%S')}]
+            {"name": "NOME_CARTEIRA", "content": regulamento.wallet_name},
+            {"name": "N_DISPUTA", "content": regulamento.disputa_id},
+            {"name": "DATA_HORA", "content": datetime.now().strftime('%d/%m/%Y %H:%M:%S')},
+            {"name": "CURRENT_YEAR", "content": datetime.now().year},
+            {"name": "COMPANY", "content": "Resale"},
+            {"name": "ADDRESS", "content": "Av. Independência, 950, sala 22/24 - Alemães Piracicaba / SP CEP: 3419-155"}]
 
         attachments = [{"type": "application/pdf",
                         "name": regulamento.documento_nome,
