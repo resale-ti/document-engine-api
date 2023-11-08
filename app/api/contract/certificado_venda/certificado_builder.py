@@ -103,8 +103,8 @@ class CertificadoVendaBuilder(ContractBuilderBase):
     def _generate_property_log(self, wallet, property_obj):
         values = get_property_valor_venda(property_id=property_obj.imovel_id, wallet_id=wallet.id)
 
-        valor_avaliado = values.get("valor_avaliacao")
-        valor_venda = values.get("valor_venda")
+        valor_avaliado = values.get("valor_avaliacao", 0)
+        valor_venda = values.get("valor_venda",0)
 
         condicoes_pagamento_texto = CarteirasIntegration(
         ).get_condicoes_pagamentos(property_obj.imovel_id)
