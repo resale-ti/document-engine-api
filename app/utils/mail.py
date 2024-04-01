@@ -5,7 +5,7 @@ import os
 now = datetime.now()
 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
-MAILCHIMP_API_KEY = "OI1VfXftZJyq73X7Xh1czQ"
+MAILCHIMP_API_KEY = "md-twzkqvvbffm5i5skpvrwha"
 mailchimp = MailchimpTransactional.Client(MAILCHIMP_API_KEY)
 
 
