@@ -58,6 +58,6 @@ class RegulamentoConcorrenciaLibrary:
             "subject": subject,
             "variables": variables,
             "from_name": 'Pagimovel',
-            "from_email": 'contato@pagimovel.com.br',
+            "from_email": 'pagimovel@pagimovel.com.br',
             "attachments": attachments
         }
