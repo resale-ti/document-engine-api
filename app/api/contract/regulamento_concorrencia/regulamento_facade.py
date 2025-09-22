@@ -120,6 +120,7 @@ class RegulamentoConcorrenciaFacade(ContractFacadeInterface):
 
         return {
             "LOTE" : property_obj.get("lote") if property_obj.get("lote") else "-",
+            "IDR_IMOVEL" : property_obj.get("idr_imovel"),
             "ID_BANCO" : property_obj.get("id_no_banco"),
             "DESCRICAO_LEGAL" : property_obj.get("descricao_legal_description"),
             "CONSIDERACOES_IMPORTANTES" : property_obj.get("consideracoes_importantes"),

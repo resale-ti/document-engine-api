@@ -1,4 +1,4 @@
-from api.contract.regulamento_concorrencia.regulamento_layers import MLP002Capa, MLP002Miolo, MLP002Rodape, MLPVA001Capa, MLPVA001Miolo, MLPVA001Rodape
+from api.contract.regulamento_concorrencia.regulamento_layers import MLP002Capa, MLP002Miolo, MLP002Rodape, MLPVA001Capa, MLPVA001Miolo, MLPVA001Rodape, DOR027Capa, DOR027Miolo, DOR027Rodape
 
 class RegulamentoDocumentsFactory:
 
@@ -9,4 +9,6 @@ class RegulamentoDocumentsFactory:
             return [MLP002Capa(wallet_id, data), MLP002Miolo(wallet_id, data), MLP002Rodape(wallet_id, data)]
         elif regulamento_type == "MLPVA_001":
             return [MLPVA001Capa(wallet_id, data), MLPVA001Miolo(wallet_id, data), MLPVA001Rodape(wallet_id, data)]
+        elif regulamento_type == "DOR_027":
+            return [DOR027Capa(wallet_id, data), DOR027Miolo(wallet_id, data), DOR027Rodape(wallet_id, data)]
         return ""
