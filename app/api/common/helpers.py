@@ -1,9 +1,6 @@
 from utils.pagimovel_integrations.service import PagimovelIntegration
-import locale
 from celery import current_task
 import os
-
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 def get_property_valor_venda(property_id, wallet_id):
     if (os.environ.get("STAGE")).upper() == "LOCAL":
@@ -29,7 +26,24 @@ def number_format(number, decimal_places=2) -> str:
     return str(number).replace(".", ",")
 
 def parse_to_money(number) -> str:
-    return locale.currency(number, grouping=True, symbol=None)
+    """
+    Formata um número para o formato monetário brasileiro (sem símbolo R$).
+    Ex: 1234.56 -> '1.234,56'
+    """
+    if number is None:
+        number = 0
+    
+    # Converte para float e formata com 2 casas decimais
+    value = float(number)
+    
+    # Formata com 2 casas decimais
+    formatted = f"{value:,.2f}"
+    
+    # Substitui vírgula por ponto (milhar) e ponto por vírgula (decimal)
+    # formato americano: 1,234.56 -> formato brasileiro: 1.234,56
+    formatted = formatted.replace(",", "X").replace(".", ",").replace("X", ".")
+    
+    return formatted
 
 def update_task_progress(current: int, total: int):
     if current_task:
