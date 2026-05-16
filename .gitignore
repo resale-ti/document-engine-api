@@ -136,3 +136,9 @@ dmypy.json
 .pyre/
 .vscode/
 .omc
+
+# SAM build artifacts
+/template.yaml
+src/.dependencies
+src/.packages-test
+src/.package_utils
